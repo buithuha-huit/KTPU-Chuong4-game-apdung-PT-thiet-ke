@@ -660,6 +660,7 @@ const GAME='KTPU-C4 Đấu trường Hệ thiết bị';
 const GS_URL='https://script.google.com/macros/s/AKfycbw9J5bx5x6UhP26abUrmKzSHryfJ8UZ1-g-JCUsqzXwZHKlVYzWUcN-g2oVEu8jRslsLw/exec';                       /* (tùy chọn) dán URL …/exec vào đây thì link chỉ cần ?nha=1 */
 const QP=new URLSearchParams(location.search);
 const NHA_ID=(QP.get('nha')||'').trim(),NHA=!!NHA_ID,BAI=(QP.get('bai')||'').trim();
+const LOPB=(BAI.match(/^[^_]+_([^_]+)_C\d+$/)||[])[1]||'';   /* lớp lấy từ mã đợt HK_LỚP_Cx trong link giao bài */
 const GS=/^https:\/\/script\.google(usercontent)?\.com\//.test(NHA_ID)?NHA_ID:NHA_ID.length>20?`https://script.google.com/macros/s/${NHA_ID}/exec`:GS_URL;
 const SKEY=NHA?KEY+'-nha':KEY;
 const LET=['A','B','C','D','E','F','G','H'];
@@ -1106,7 +1107,7 @@ function vLogin(){$('#tabs').innerHTML='';$('#board').innerHTML='';$('#ctrl').in
    <p>Bài tập về nhà${BAI?` · <b>${esc(BAI)}</b>`:''}. Nhập đúng thông tin; kết quả từng vòng sẽ tự gửi cho giáo viên để tính điểm chuyên cần.</p>
    <label for="sv1">Mã số sinh viên</label><input id="sv1" name="mssv" inputmode="numeric" required maxlength="12" placeholder="2001230001">
    <label for="sv2">Họ và tên</label><input id="sv2" name="name" required maxlength="60" placeholder="Nguyễn Văn An">
-   <label for="sv3">Lớp</label><input id="sv3" name="lop" required maxlength="20" placeholder="14DHHH01">
+   <label for="sv3">Lớp</label>${LOPB?`<input id="sv3" name="lop" value="${esc(LOPB)}" readonly style="background:#F3F4F6;font-weight:800;color:#4B2A8C" title="Lớp theo link giáo viên giao">`:`<input id="sv3" name="lop" required maxlength="20" placeholder="14DHHH01">`}
    <p class="err" id="sverr" role="alert"></p><button class="btn pri" type="submit">Vào làm bài ▶</button></form>`;}
 document.addEventListener('submit',e=>{if(e.target.id!=='svf')return;e.preventDefault();
   const m=$('#sv1').value.replace(/\s/g,''),t=$('#sv2').value.trim().replace(/\s+/g,' '),l=$('#sv3').value.trim().toUpperCase().replace(/\s+/g,'');
