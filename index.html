@@ -1,0 +1,1168 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Đấu trường Hệ thiết bị</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;700;800;900&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']]},svg:{fontCache:'global'},options:{enableMenu:false},
+ startup:{typeset:false,ready(){MathJax.startup.defaultReady();window.__mjReady=true;if(window.__typeset)window.__typeset();}}};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<style>
+/* Giao diện sáng, nhiều màu cho máy chiếu: thanh trên (vòng + điểm) · sân khấu · thanh điều khiển. Mỗi vòng một màu chủ đạo (--rc, --rc2). */
+:root{
+  --bg:#F5F3FF; --stage:#FFFFFF; --ink:#1A1F3A; --ink2:#454B6B; --muted:#6E7391; --line:#DCDDEB; --soft:#EEEDF8;
+  --brand:#1B2A6B; --gold:#FACC15; --ok:#16A34A; --ok-bg:#DCFCE7; --bad:#E11D48; --bad-bg:#FFE4E6;
+  --t0:#7C3AED; --t1:#0D9488; --t2:#EA580C; --t3:#2563EB;
+  --oA:#F43F5E; --oB:#3B82F6; --oC:#F59E0B; --oD:#22C55E;
+  --cL:#F26B3A; --cL2:#FFB13B; --cR:#2F7DE1; --cR2:#06B6D4;
+  --display:'Lexend','Be Vietnam Pro',system-ui,sans-serif; --body:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;color:var(--ink);font:clamp(15px,1.05vw,20px)/1.5 var(--body);
+  background:radial-gradient(1100px 600px at 0% 0%,#FFE4D3 0,transparent 60%),radial-gradient(900px 600px at 100% 0%,#DCE9FF 0,transparent 55%),radial-gradient(1000px 700px at 50% 110%,#E3F9EC 0,transparent 60%),var(--bg);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+mjx-container{color:inherit}
+.app{max-width:1640px;margin:0 auto;padding-block:12px 18px;display:flex;flex-direction:column;gap:12px;min-height:100%}
+
+/* thanh trên */
+.top{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;background:linear-gradient(110deg,#1B2A6B,#4B2A8C 55%,#9D2C7A);color:#fff;border-radius:18px;padding:10px 14px;box-shadow:0 8px 24px #4B2A8C33}
+.logo{font-family:var(--display);font-weight:900;font-size:1.25em;white-space:nowrap}
+.logo small{display:block;font:600 .6em/1.2 var(--body);opacity:.8;letter-spacing:.06em;text-transform:uppercase}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tabs button{border:0;background:rgba(255,255,255,.08);color:#E4E6F7;border-radius:12px;padding:6px 11px;font-weight:700;font-size:.86em;display:flex;gap:6px;align-items:center}
+.tabs button i{font-style:normal;width:1.55em;height:1.55em;border-radius:50%;display:grid;place-items:center;background:var(--rc);color:#fff;font-size:.85em}
+.tabs button[aria-current="page"]{background:#fff;color:var(--brand);box-shadow:0 0 0 3px var(--rc)}
+.tabs button:not([aria-current]):hover{background:rgba(255,255,255,.2)}
+#board{margin-left:auto}
+.board4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;min-width:min(100%,660px)}
+.team{background:#fff;color:var(--ink);border-radius:14px;padding:6px 10px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 8px;border-left:8px solid var(--tc);position:relative}
+.team .nm{font-weight:800;font-size:.85em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tc)}
+.team .sc{grid-row:span 3;font-family:var(--display);font-weight:900;font-size:2em;line-height:1;color:var(--tc);font-variant-numeric:tabular-nums}
+.team .sub{font-size:.7em;color:var(--muted);font-weight:600}
+.team .adj{display:flex;gap:4px}
+.team .adj button{border:1px solid var(--line);background:var(--soft);border-radius:6px;padding:0 7px;font-size:.72em;line-height:1.5}
+.team.turn{box-shadow:0 0 0 4px var(--gold),0 0 18px var(--gold);animation:turn 1.4s ease-in-out infinite}
+@keyframes turn{50%{box-shadow:0 0 0 4px var(--gold),0 0 30px var(--gold)}}
+.team.bump .sc,.clsb.bump .cl-s{animation:bump .7s ease}
+@keyframes bump{30%{transform:scale(1.45)}}
+.team .star{position:absolute;right:6px;top:-9px;font-size:.78em;background:var(--gold);color:var(--brand);border-radius:8px;padding:0 6px;font-weight:800}
+.clsb{display:flex;align-items:center;gap:14px;background:#fff;color:var(--ink);border-radius:16px;padding:6px 16px;font-weight:800}
+.cl-l{font-size:.8em;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.cl-s{font:900 2.1em/1 var(--display);background:linear-gradient(90deg,#F26B3A,#E0457B,#8B5CF6);-webkit-background-clip:text;background-clip:text;color:transparent;min-width:2ch;display:inline-block}
+.okc{color:var(--ok)}.bdc{color:var(--bad)}
+.clsb .okc,.clsb .bdc,.clsb .run{font-size:1.15em;border-radius:12px;padding:2px 10px}
+.clsb .okc{background:var(--ok-bg)}.clsb .bdc{background:var(--bad-bg)}
+.clsb .run{background:#FFEDD5;color:#C2410C;animation:bump 1s ease}
+
+/* sân khấu */
+.stage{flex:1;background:var(--stage);border-radius:22px;padding:clamp(14px,2vw,30px);border:1px solid var(--line);border-top:8px solid var(--rc);display:flex;flex-direction:column;gap:14px;min-height:0;box-shadow:0 10px 30px #1B2A6B14}
+.rhead{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px}
+.rnum{font-family:var(--display);font-weight:900;color:#fff;background:linear-gradient(120deg,var(--rc),var(--rc2));border-radius:12px;padding:3px 14px;font-size:.95em;box-shadow:0 4px 12px color-mix(in srgb,var(--rc) 40%,transparent)}
+.rhead h1{font-family:var(--display);font-weight:900;font-size:clamp(22px,2.1vw,40px);margin:0;letter-spacing:-.01em;color:var(--rc)}
+.rhead .rule{color:var(--muted);font-size:.9em;flex-basis:100%}
+.qcount{margin-left:auto;font-weight:800;color:var(--rc);font-variant-numeric:tabular-nums}
+.prog{width:clamp(120px,14vw,240px);height:12px;border-radius:8px;background:var(--soft);overflow:hidden}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--rc),var(--rc2));border-radius:8px;transition:width .6s}
+.qbox{font-size:clamp(20px,1.65vw,34px);line-height:1.5;font-weight:600;max-width:64ch;margin:0}
+.qbox.sm{font-size:clamp(18px,1.4vw,28px);margin:0 0 8px}
+.qbox.eq{margin:0 0 8px}
+.qq{margin:0 0 8px;font-weight:800;font-size:1.05em;color:var(--rc)}
+.ctx{color:var(--ink2);font-size:.95em;margin:0}
+
+/* phương án */
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.opt{display:flex;gap:14px;align-items:center;width:100%;text-align:left;border:2px solid color-mix(in srgb,var(--oc) 40%,#fff);border-radius:16px;padding:12px 16px;font-size:clamp(17px,1.35vw,28px);
+  background:color-mix(in srgb,var(--oc) 8%,#fff);box-shadow:0 4px 0 color-mix(in srgb,var(--oc) 30%,#fff);min-width:0;transition:transform .15s,box-shadow .15s;position:relative}
+button.opt:not(:disabled):hover{transform:translateY(-3px);box-shadow:0 7px 0 color-mix(in srgb,var(--oc) 40%,#fff)}
+button.opt:not(:disabled):active{transform:translateY(2px);box-shadow:0 1px 0 color-mix(in srgb,var(--oc) 40%,#fff)}
+button.opt:disabled{cursor:default}
+.opt .lt{flex:none;width:2.1em;height:2.1em;border-radius:50%;display:grid;place-items:center;color:#fff;font-family:var(--display);font-weight:900;background:var(--oc);box-shadow:0 3px 0 color-mix(in srgb,var(--oc) 60%,#000)}
+.opt.right{border-color:var(--ok);background:var(--ok-bg);box-shadow:0 0 0 5px #16A34A33;animation:glow 1.3s ease 2}
+.opt.right .lt{background:var(--ok)}
+.opt.right::after{content:'✔';position:absolute;right:12px;top:6px;font-size:1.3em;color:var(--ok);font-weight:900}
+@keyframes glow{50%{box-shadow:0 0 0 12px #16A34A22}}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg);opacity:.72;box-shadow:none}
+.opt.wrong .lt{background:var(--bad)}
+.opt.wrong::after{content:'✘';position:absolute;right:12px;top:6px;font-size:1.3em;color:var(--bad);font-weight:900}
+.opt.dim{opacity:.38;box-shadow:none}
+.opt .who{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.opt .ot{min-width:0}
+.chip{border-radius:20px;padding:0 9px;font-size:.6em;font-weight:800;color:#fff;background:var(--tc);white-space:nowrap}
+.why{border-left:6px solid var(--ok);background:var(--ok-bg);border-radius:0 14px 14px 0;padding:10px 16px;font-size:clamp(16px,1.2vw,24px);animation:slidein .5s ease}
+.why b.h{color:var(--ok)}
+.why.ask{border-left-color:var(--gold);background:#FEF9C3}.why.ask b.h{color:#A16207}
+@keyframes slidein{from{opacity:0;transform:translateY(10px)}}
+
+/* thẻ chọn của các đội */
+.picks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.pk{border:3px solid var(--tc);border-radius:14px;padding:6px 8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:color-mix(in srgb,var(--tc) 6%,#fff)}
+.pk .tn{font-weight:800;color:var(--tc);font-size:.85em;margin-right:auto}
+.pk button{width:2.1em;height:2.1em;border-radius:50%;border:2px solid color-mix(in srgb,var(--oc) 50%,#fff);background:#fff;font-family:var(--display);font-weight:900;font-size:.85em;color:var(--oc)}
+.pk button[aria-pressed="true"]{background:var(--oc);border-color:var(--oc);color:#fff;transform:scale(1.1)}
+.pk.ok{background:var(--ok-bg)}.pk.no{background:var(--bad-bg)}
+
+/* điều khiển */
+.ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:8px 10px;box-shadow:0 6px 18px #1B2A6B10}
+.btn{border:2px solid var(--line);background:#fff;border-radius:12px;padding:7px 14px;font-weight:800}
+.btn:hover{border-color:var(--brand)}
+.btn.pri{background:linear-gradient(120deg,#1B2A6B,#4B2A8C);border-color:transparent;color:#fff}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--brand)}
+.btn.call{background:linear-gradient(120deg,#F26B3A,#E0457B);border-color:transparent;color:#fff}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.timer{font-family:var(--display);font-weight:900;font-size:1.6em;font-variant-numeric:tabular-nums;min-width:3.2em;text-align:center;color:var(--brand)}
+.timer.low{color:var(--bad);animation:bump .5s infinite}
+.sp{flex:1}
+.hint{color:var(--muted);font-size:.85em;margin:0}
+
+/* bảng số liệu */
+.dtw{overflow-x:auto}
+.dt{border-collapse:separate;border-spacing:0;font-size:clamp(17px,1.35vw,28px);font-variant-numeric:tabular-nums;border-radius:14px;overflow:hidden;border:2px solid color-mix(in srgb,var(--rc) 35%,#fff)}
+.dt th,.dt td{padding:6px 18px;text-align:center;white-space:nowrap;border-bottom:1px solid var(--line)}
+.dt th{background:color-mix(in srgb,var(--rc) 14%,#fff);font-weight:700;color:var(--ink)}
+.dt tr:nth-child(even) td{background:color-mix(in srgb,var(--rc) 4%,#fff)}
+.v3{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:22px;align-items:start}
+.v3 .opts{grid-template-columns:minmax(0,1fr)}
+.v3.nt{grid-template-columns:minmax(0,1fr)}.v3.nt .opts{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+/* vòng 2: lật thẻ, hai phía hai màu */
+.mem2{display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1}
+.side{border-radius:20px;padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px}
+.side.sL{background:linear-gradient(180deg,#FFE9DC,#FFF6EF)}.side.sR{background:linear-gradient(180deg,#DFEBFF,#F1F7FF)}
+.side h3{margin:0;font:800 1em var(--display)}.side.sL h3{color:var(--cL)}.side.sR h3{color:var(--cR)}
+.side .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;flex:1}
+.card{position:relative;border:0;border-radius:16px;min-height:clamp(84px,9.5vh,150px);padding:0;background:transparent;perspective:900px}
+.card .in{position:absolute;inset:0;transition:transform .5s cubic-bezier(.3,1.4,.5,1);transform-style:preserve-3d}
+.card.up .in{transform:rotateY(180deg)}
+.card .f,.card .b{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;display:grid;place-items:center;padding:8px 10px;text-align:center}
+.card .b{color:#fff;font-family:var(--display);font-weight:900;font-size:clamp(26px,2.6vw,48px);text-shadow:0 3px 0 #0003;box-shadow:0 5px 0 #0002}
+.card.sL .b{background:radial-gradient(circle at 20% 20%,#ffffff33 0 10%,transparent 11%) 0 0/28px 28px,linear-gradient(135deg,var(--cL2),var(--cL) 60%,#E0457B)}
+.card.sR .b{background:radial-gradient(circle at 20% 20%,#ffffff33 0 10%,transparent 11%) 0 0/28px 28px,linear-gradient(135deg,var(--cR2),var(--cR) 60%,#5B5BF0)}
+.card:not(.up):hover .b{filter:brightness(1.08);transform:translateY(-2px)}
+.card .f{transform:rotateY(180deg);border:3px solid var(--kc);font-size:clamp(14px,1.18vw,24px);padding-top:18px;line-height:1.35;overflow:hidden}
+.card.sL{--kc:var(--cL)}.card.sR{--kc:var(--cR)}
+.card.sL .f{background:#FFF5EE}.card.sR .f{background:#F0F6FF}
+.card .f .tag{position:absolute;left:8px;top:4px;font:900 .75em var(--display);color:#fff;background:var(--kc);border-radius:8px;padding:0 7px}
+.card.done .f{border-color:var(--ok);box-shadow:inset 0 0 0 3px #16A34A44}
+.card.done .f::before{content:'✔';position:absolute;right:8px;top:2px;color:var(--ok);font-weight:900}
+.card.done .f::after{content:attr(data-team);position:absolute;right:8px;bottom:4px;font-size:.62em;font-weight:800;color:#fff;background:var(--tc);border-radius:10px;padding:0 8px}
+.card.done:not([data-team]) .f::after{display:none}
+.card.miss .f{background:var(--bad-bg);border-color:var(--bad)}
+.card.pulse .in{animation:pulse .8s ease}
+@keyframes pulse{40%{transform:rotateY(180deg) scale(1.08)}}
+.card .f mjx-container>svg{max-width:100%;height:auto}
+.card .f.sm{font-size:clamp(12px,.88vw,18px)}
+
+/* vòng 3: phân nhóm */
+.pnq{color:var(--rc)}
+.pnw{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,1fr);gap:16px;flex:1;align-items:stretch}
+.bin{border-radius:22px;padding:12px;min-height:42vh;display:flex;flex-direction:column;gap:8px;border:3px dashed;text-align:left;transition:transform .2s}
+.bin.b0{background:linear-gradient(180deg,#FFE4D6,#FFF6F0);border-color:var(--cL)}
+.bin.b1{background:linear-gradient(180deg,#DCE9FF,#F2F7FF);border-color:var(--cR)}
+.bin:not([aria-disabled]):hover{transform:scale(1.015)}
+.bin .bh{display:block;text-align:center;color:#fff;border-radius:14px;padding:8px 10px;font:800 clamp(17px,1.35vw,26px)/1.3 var(--display)}
+.bin.b0 .bh{background:linear-gradient(120deg,var(--cL2),var(--cL))}.bin.b1 .bh{background:linear-gradient(120deg,var(--cR2),var(--cR))}
+.bin .drop{display:block;text-align:center;font-weight:800;min-height:1.4em;animation:bump 1s infinite}
+.bin.b0 .drop{color:var(--cL)}.bin.b1 .drop{color:var(--cR)}
+.placed{display:flex;gap:6px;align-items:center;justify-content:space-between;background:#fff;border-radius:12px;padding:6px 10px;font-size:clamp(14px,1vw,20px);animation:slidein .5s ease}
+.bin.b0 .placed{border-left:6px solid var(--cL)}.bin.b1 .placed{border-left:6px solid var(--cR)}
+.pile{display:flex;flex-direction:column;gap:8px;justify-content:center}
+.itm{border:2px solid #CBD0E6;background:#fff;border-radius:14px;padding:10px 14px;font-size:clamp(15px,1.15vw,23px);text-align:left;box-shadow:0 4px 0 #CBD0E6;transition:transform .15s}
+.itm:hover{transform:translateY(-2px)}
+.itm.sel{border-color:#8B5CF6;background:#F3EEFF;box-shadow:0 0 0 5px #8B5CF655;transform:scale(1.03)}
+
+/* vòng 5: đồ thị */
+.v4{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+.plotw{border:2px solid color-mix(in srgb,var(--rc) 25%,#fff);border-radius:16px;padding:10px 12px;background:#FBFCFF}
+.plotw>svg{width:100%;height:auto;display:block;max-height:38vh}
+.axl{display:flex;justify-content:space-between;gap:10px;font-size:clamp(14px,1.05vw,20px);color:var(--ink2);margin-top:4px}
+.v4 .opts{grid-template-columns:minmax(0,1fr)}
+.v4 .opt{font-size:clamp(15px,1.12vw,23px);padding:8px 12px}
+.v4 .opts.g{grid-template-columns:repeat(2,minmax(0,1fr))}.v4 .opts.g .opt{flex-wrap:wrap;padding:6px 8px;gap:6px;align-items:flex-start}
+.v4 .opts.g .ot{flex:1 1 70%;min-width:0}.mini{width:100%;height:auto;display:block;max-height:15vh}
+
+/* vòng 6 */
+.steps{display:grid;gap:8px}
+.step{display:flex;gap:12px;align-items:center;border:2px solid var(--line);border-left:8px solid var(--oc,var(--line));border-radius:14px;padding:8px 14px;background:#fff;text-align:left;font-size:clamp(16px,1.25vw,26px);width:100%;transition:transform .15s}
+.step:not(:disabled):hover{transform:translateX(4px)}
+.step .lt{flex:none;width:1.9em;height:1.9em;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--oc,#888) 18%,#fff);color:var(--ink);font-family:var(--display);font-weight:900}
+.step .no{margin-left:auto;flex:none;width:1.9em;height:1.9em;border-radius:50%;display:grid;place-items:center;background:var(--brand);color:#fff;font-family:var(--display);font-weight:900;animation:bump .4s}
+.step .no.gr{background:var(--muted)}
+.step.on{background:#F3EEFF}
+.step.ok{border-color:var(--ok);background:var(--ok-bg)}
+.step.ln{border-left-color:var(--rc)}
+.step.badl{border-color:var(--bad);background:var(--bad-bg)}
+.step.wl{opacity:.5;text-decoration:line-through;text-decoration-color:var(--bad)}
+.buzz{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.buzz button{border:3px solid var(--tc);background:#fff;border-radius:12px;padding:6px 14px;font-weight:800;color:var(--tc)}
+.buzz button[aria-pressed="true"]{background:var(--tc);color:#fff}
+.buzz button.tried{opacity:.45}
+.banner{border-radius:14px;padding:10px 16px;font-weight:800;font-size:clamp(17px,1.3vw,26px);animation:slidein .5s ease}
+.banner.ok{background:var(--ok-bg);color:var(--ok)}.banner.bad{background:var(--bad-bg);color:var(--bad)}
+
+/* trang chủ */
+.home{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px}
+.hero h1{font-family:var(--display);font-weight:900;font-size:clamp(38px,4vw,72px);line-height:1;margin:0 0 12px;color:var(--brand);letter-spacing:-.02em}
+.hero h1 span{background:linear-gradient(90deg,#F26B3A,#E0457B,#8B5CF6,#2F7DE1);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin:0 0 12px;max-width:62ch;color:var(--ink2)}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.modes button{border:3px solid var(--line);background:#fff;border-radius:18px;padding:12px 14px;text-align:left;display:flex;flex-direction:column;gap:2px;color:var(--ink);transition:transform .15s}
+.modes button:hover{transform:translateY(-2px)}
+.modes .me{font-size:1.8em;line-height:1.1}
+.modes button b{font:900 1.2em var(--display)}.modes button span:not(.me){font-size:.8em;color:var(--muted)}
+.modes button[aria-pressed="true"]{border-color:transparent;background:linear-gradient(130deg,#4B2A8C,#E0457B);color:#fff;box-shadow:0 8px 20px #E0457B44}
+.modes button[aria-pressed="true"] span:not(.me){color:#FCE7F3}
+.setup1 label{display:flex;flex-direction:column;gap:4px;font-weight:700;color:var(--ink2);max-width:22em}
+.setup1 input{border:2px solid var(--line);border-radius:12px;padding:6px 10px;font:800 1.2em var(--display);width:7em}
+.setup1 .hint{margin-top:8px;max-width:62ch}
+.rounds{display:grid;gap:8px;align-content:start}
+.rnd{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:2px solid color-mix(in srgb,var(--rc) 30%,#fff);border-radius:18px;padding:10px 14px;background:color-mix(in srgb,var(--rc) 6%,#fff);text-align:left;width:100%;transition:transform .15s}
+.rnd:hover{transform:translateX(4px)}
+.rnd b{font-family:var(--display);font-size:1.08em;color:var(--rc)}
+.rnd span{color:var(--muted);font-size:.85em}
+.rnd .n{width:2.3em;height:2.3em;border-radius:12px;background:linear-gradient(130deg,var(--rc),var(--rc2));color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:1.1em}
+.rnd .pts{font-weight:800;color:var(--rc);font-size:.85em;white-space:nowrap}
+.setup{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.setup label{display:flex;flex-direction:column;gap:2px;font-size:.8em;font-weight:700;color:var(--tc)}
+.setup input{border:2px solid var(--line);border-left:8px solid var(--tc);border-radius:12px;padding:6px 10px;font:700 1.1em var(--body);color:var(--ink)}
+.cards4{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:.9em;color:var(--ink2)}
+.cards4 i{font-style:normal;width:1.8em;height:1.8em;border-radius:8px;display:inline-grid;place-items:center;color:#fff;font-weight:900;background:var(--oc)}
+.confirm{background:var(--bad-bg);border-radius:12px;padding:10px 14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+/* tổng kết */
+.kq{display:flex;flex-direction:column;align-items:center;gap:14px}
+.stars{display:flex;gap:18px}
+.stars span{font-size:clamp(60px,7vw,120px);line-height:1;color:#E2E4F0;animation:starin .7s cubic-bezier(.3,1.6,.5,1) both;animation-delay:var(--d)}
+.stars span.on{color:var(--gold);text-shadow:0 6px 0 #CA8A04,0 0 30px #FACC1588}
+@keyframes starin{from{transform:scale(0) rotate(-90deg);opacity:0}}
+.kmsg{font:800 clamp(20px,1.7vw,32px) var(--display);color:var(--rc);margin:0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;width:100%}
+.stats div{background:#fff;border:2px solid var(--line);border-radius:18px;padding:10px 14px;display:flex;flex-direction:column;animation:slidein .5s ease both}
+.stats b{font:900 2.3em var(--display);color:var(--brand);line-height:1.1}.stats span{font-size:.82em;color:var(--muted);font-weight:600}
+.stats .t-pts{background:linear-gradient(130deg,#FFF1E6,#FCE7F3);border-color:#F9A8D4}.stats .t-pts b{color:#DB2777}
+.stats .t-ok{background:var(--ok-bg);border-color:#86EFAC}.stats .t-ok b{color:var(--ok)}
+.stats .t-bad{background:var(--bad-bg);border-color:#FDA4AF}.stats .t-bad b{color:var(--bad)}
+.ratio{width:100%;height:18px;border-radius:10px;background:var(--bad-bg);overflow:hidden}
+.ratio i{display:block;height:100%;background:linear-gradient(90deg,#22C55E,#16A34A);border-radius:10px;animation:grow 1.2s ease both}
+@keyframes grow{from{width:0!important}}
+.pod{display:flex;gap:14px;align-items:flex-end;justify-content:center;flex-wrap:wrap;padding-top:10px}
+.pod .col{width:clamp(120px,14vw,220px);text-align:center;animation:slidein .6s ease both;animation-delay:var(--d)}
+.pod .bar{border-radius:16px 16px 0 0;background:linear-gradient(180deg,color-mix(in srgb,var(--tc) 70%,#fff),var(--tc));color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:clamp(26px,2.6vw,48px)}
+.pod .nm{font-weight:800;font-size:1.05em;margin-bottom:6px;color:var(--tc)}
+.pod .rk{font-size:2em}
+.tblw{overflow-x:auto}
+.tbl{border-collapse:separate;border-spacing:0;width:100%;font-size:clamp(15px,1.1vw,22px);border:2px solid var(--line);border-radius:16px;overflow:hidden}
+.tbl th,.tbl td{padding:7px 12px;text-align:center;border-bottom:1px solid var(--line)}
+.tbl th{background:var(--soft)}.tbl td:first-child,.tbl th:first-child{text-align:left}
+.tbl tfoot td{background:#FFF7ED;font-weight:800}
+.tbl .dot{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;background:var(--rc);color:#fff;font-weight:900;font-size:.85em}
+.stx{color:var(--gold);letter-spacing:2px;text-shadow:0 1px 0 #CA8A04}.stx span{color:#E2E4F0;text-shadow:none}
+.sumh{font:800 1.1em var(--display);margin:6px 0 0;color:var(--bad)}
+.sum{display:flex;flex-direction:column;gap:6px}
+.srow{display:grid;grid-template-columns:9em 1fr auto;gap:12px;align-items:center;text-align:left;background:#fff;border:2px solid var(--line);border-left:8px solid var(--bad);border-radius:12px;padding:8px 12px;color:var(--ink)}
+.srow:hover{border-color:var(--brand)}.sv{font-weight:800;color:var(--brand)}
+.st{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:.9em}.sw{font-weight:800;color:var(--bad);font-size:.85em;white-space:nowrap}
+
+/* lớp hiệu ứng */
+#fxc{position:fixed;inset:0;pointer-events:none;z-index:70}
+.flash{position:fixed;inset:0;pointer-events:none;z-index:65;opacity:0}
+.flash.ok.go{animation:fl .8s ease;box-shadow:inset 0 0 0 18px #22C55E88,inset 0 0 120px #22C55E55}
+.flash.bad.go{animation:fl .8s ease;box-shadow:inset 0 0 0 18px #E11D4888,inset 0 0 120px #E11D4855}
+@keyframes fl{20%{opacity:1}}
+.pop{position:fixed;left:50%;top:44%;transform:translate(-50%,-50%) scale(.3);opacity:0;pointer-events:none;z-index:68;background:#fff;border-radius:30px;padding:16px 46px 20px;text-align:center;box-shadow:0 24px 70px #0005;border:7px solid;min-width:min(90vw,420px)}
+.pop.ok{border-color:#22C55E}.pop.bad{border-color:#E11D48}
+.pop.go{animation:popin 1.7s cubic-bezier(.3,1.5,.5,1) forwards}
+.pop.big.go{animation-duration:2.3s}
+@keyframes popin{0%{transform:translate(-50%,-50%) scale(.3) rotate(-8deg);opacity:0}14%{transform:translate(-50%,-50%) scale(1.1) rotate(2deg);opacity:1}24%{transform:translate(-50%,-50%) scale(1)}82%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-60%) scale(.9)}}
+.pe{font-size:clamp(56px,6vw,96px);line-height:1.1}
+.pop.ok .pe{animation:wig .6s ease 2}.pop.bad .pe{animation:shk .5s ease 2}
+.pt{font:900 clamp(34px,3.6vw,64px)/1.1 var(--display)}
+.pop.ok .pt{background:linear-gradient(90deg,#16A34A,#0EA5A0,#2F7DE1);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pop.bad .pt{color:#E11D48}
+.pop.big .pt{background:linear-gradient(90deg,#F26B3A,#E0457B,#8B5CF6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ps{font-weight:800;font-size:clamp(16px,1.3vw,24px);color:var(--ink2);margin-top:6px}
+@keyframes wig{25%{transform:rotate(-14deg) scale(1.15)}75%{transform:rotate(14deg) scale(1.15)}}
+@keyframes shk{25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.shake{animation:shake .55s ease}
+@keyframes shake{15%,55%{transform:translateX(-12px)}35%,75%{transform:translateX(12px)}}
+.card.shake .in{animation:none}
+.fpt{position:fixed;z-index:69;transform:translate(-50%,-50%);font:900 clamp(30px,3vw,54px) var(--display);color:#16A34A;text-shadow:0 3px 0 #fff,0 0 12px #fff;pointer-events:none;animation:flt 1.4s ease forwards}
+@keyframes flt{to{transform:translate(-50%,-260%);opacity:0}}
+#call{position:fixed;inset:0;z-index:80;background:radial-gradient(circle at 50% 45%,#4B2A8Cee,#1B2A6Bf5);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;cursor:pointer;text-align:center}
+#call[hidden]{display:none}
+#call .cl{font:800 clamp(26px,3vw,52px) var(--display);opacity:.9}
+#call .cn{font:900 clamp(140px,24vh,320px)/1 var(--display);background:linear-gradient(90deg,#FFB13B,#F26B3A,#E0457B);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
+#call.done .cn{animation:bump .6s ease}
+#call .cs{font-weight:700;opacity:.75}
+@media (max-width:900px){.home,.v4,.v3,.pnw,.mem2{grid-template-columns:minmax(0,1fr)}.board4{grid-template-columns:repeat(2,minmax(0,1fr));min-width:0}#board{margin-left:0;width:100%}.opts,.picks,.v3.nt .opts{grid-template-columns:minmax(0,1fr)}.bin{min-height:20vh}.modes{grid-template-columns:1fr}.srow{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.pop.go{opacity:1;transform:translate(-50%,-50%)}}
+.nw{white-space:nowrap}
+.card .f>span:last-child{max-width:100%}
+.ctx.big{font-size:clamp(18px,1.45vw,30px);line-height:1.45;color:var(--ink);font-weight:600}
+.qcard{background:linear-gradient(120deg,color-mix(in srgb,var(--rc) 12%,#fff),color-mix(in srgb,var(--rc2) 10%,#fff));border:2px solid color-mix(in srgb,var(--rc) 35%,#fff);border-left:8px solid var(--rc);border-radius:16px;padding:10px 16px;margin-bottom:10px}
+.qcard .qbox.eq{font-size:clamp(24px,2.1vw,42px);margin:4px 0 0;color:var(--brand)}
+.qcard .ctx.big mjx-container,.ctx.big mjx-container{font-size:108%}
+.v3 + .ctx.big,.ctx.big+.v3{margin-top:4px}
+.pop .ps .pf{margin-top:8px;font-size:1.15em;color:var(--ink)}
+.pop{max-width:min(92vw,900px)}
+.rost{max-width:none!important;width:100%}
+.rost textarea{border:2px solid var(--line);border-radius:12px;padding:8px 10px;font:500 .95em/1.45 var(--body);width:100%;resize:vertical;color:var(--ink)}
+.rost textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.rrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:6px}
+.rrow .sz{flex-direction:row!important;align-items:center;gap:6px;font-size:.85em}
+.rrow .sz input{width:5em;font-size:1em}
+#call.nm .cn{font-size:clamp(56px,9vw,150px);line-height:1.1;max-width:92vw;text-align:center;padding:0 2vw}
+#call .cm{font:800 clamp(22px,2.4vw,40px) var(--display);color:#FDE68A;min-height:1.2em;margin-bottom:6px}
+.sys{display:flex;gap:12px;flex-wrap:wrap;margin:4px 0}
+.sysp{flex:1 1 260px;min-width:0;background:#F7FAFF;border:2px solid #DCE3EE;border-radius:14px;padding:6px 10px;display:flex;flex-direction:column;gap:2px}
+.sysp b{font:800 1em var(--display);color:var(--rc)}
+.sysv{width:100%;height:auto;display:block;max-height:20vh}
+.qcard .sysv{max-height:16vh}
+.opt .ot .sysv{max-height:11vh}
+.pnd{display:flex;flex-direction:column;gap:2px;width:100%}.pnd .sysv{max-height:8vh;max-width:100%}.pnd>span{font-size:.9em}
+.placed .pnd .sysv{max-height:6vh}
+.v4 .opts.g1{grid-template-columns:minmax(0,1fr)}.v4 .opts.g1 .opt{padding:6px 10px}.v4 .opts.g1 .ot .sysv{max-height:12vh}
+.sysv.par{max-height:26vh}.qcard .sysv.par{max-height:20vh}
+.pile.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:center}
+.pnd .sysv{max-height:10vh}.pnd .sysv.par{max-height:12vh}
+.opt .ot{flex:1 1 auto}.v4 .opts.g1 .ot .sysv{max-height:13vh;width:100%}
+/* ---- làm bài ở nhà ---- */
+.login{max-width:560px;margin:4vh auto;background:#fff;border-radius:22px;padding:26px 28px;box-shadow:0 10px 40px rgba(30,20,80,.15);border-top:8px solid #4B2A8C}
+.login h1{font:800 clamp(26px,3vw,38px) var(--display);margin:0 0 4px;color:#4B2A8C}
+.login p{margin:4px 0 14px;color:var(--muted)}
+.login label{display:block;font-weight:700;margin:12px 0 4px}
+.login input{width:100%;box-sizing:border-box;font:inherit;font-size:1.1em;padding:10px 12px;border:2px solid #D6D3E8;border-radius:12px}
+.login input:focus{outline:none;border-color:#4B2A8C}
+.login .err{color:#B91C1C;font-weight:700;min-height:1.3em;margin:8px 0 0}
+.login button{margin-top:14px;width:100%;font-size:1.15em}
+.svcard{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;background:#F5F3FF;border:2px solid #DDD6FE;border-radius:16px;padding:12px 16px;margin:12px 0}
+.svcard b{font-size:1.15em;color:#4B2A8C}.svcard .sp{flex:1}
+.svcard + .hint{max-width:62ch}
+.gsbox{width:100%;box-sizing:border-box;border-radius:14px;padding:12px 16px;font-weight:600;border:2px solid #D6D3E8;background:#FAFAFF}
+.gsbox.ok{border-color:#86EFAC;background:#F0FDF4;color:#166534}.gsbox.wait{border-color:#FDE68A;background:#FFFBEB;color:#92400E}.gsbox.bad{border-color:#FCA5A5;background:#FEF2F2;color:#991B1B}
+.gsbox code{font-size:1.2em;letter-spacing:.08em;background:#fff;padding:2px 8px;border-radius:8px;border:1px solid currentColor}
+.gsbox .btn{margin-left:8px}
+
+/* ---- vòng Về đích: khung đề bài nổi bật ---- */
+.q6{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 22px;align-items:center;padding:16px 22px;margin:4px 0 6px;border-width:3px;border-left-width:12px;box-shadow:0 10px 28px color-mix(in srgb,var(--rc) 22%,transparent);animation:q6in .55s cubic-bezier(.2,1.3,.4,1)}
+.q6 .q6t{justify-self:start;background:var(--rc);color:#fff;font:800 clamp(17px,1.4vw,26px) var(--display);padding:6px 18px;border-radius:999px;letter-spacing:.02em;box-shadow:0 3px 0 color-mix(in srgb,var(--rc) 60%,#000)}
+.q6 .q6q{grid-column:1;font:800 clamp(26px,2.5vw,46px)/1.25 var(--display);color:var(--brand)}
+.q6 .q6r{grid-column:1;font:700 clamp(17px,1.3vw,25px)/1.4 var(--body);color:var(--ink2)}
+.q6 .q6r b{color:var(--rc)}
+.q6 .q6f{grid-column:2;grid-row:1/span 3;width:clamp(240px,26vw,460px);background:#fff;border:2px solid color-mix(in srgb,var(--rc) 30%,#fff);border-radius:14px;padding:6px 8px;display:flex;flex-direction:column;gap:2px}
+.q6 .q6f b{font:800 .85em var(--display);color:var(--rc)}
+.q6 .q6f .sysv{max-height:13vh;width:100%}
+.q6 .q6f.two{flex-direction:row;flex-wrap:wrap;align-items:center}.q6 .q6f.two>span{flex:1 1 45%;min-width:0;display:flex;flex-direction:column}.q6 .q6f.two .sysv{max-height:11vh}
+@keyframes q6in{from{opacity:0;transform:translateY(-10px) scale(.98)}}
+@media (max-width:900px){.q6{grid-template-columns:minmax(0,1fr)}.q6 .q6f{grid-column:1;grid-row:auto;width:min(100%,420px)}}
+@media (prefers-reduced-motion:reduce){.q6{animation:none}}
+</style>
+<div class="app">
+  <header class="top">
+    <div class="logo">Đấu trường Hệ thiết bị<small>KTPU · Chương 4</small></div>
+    <nav class="tabs" id="tabs" aria-label="Các vòng"></nav>
+    <div id="board" aria-live="polite"></div>
+  </header>
+  <main class="stage" id="stage"></main>
+  <div class="ctrl" id="ctrl"></div>
+</div>
+<canvas id="fxc" aria-hidden="true"></canvas>
+<div id="flash" class="flash" aria-hidden="true"></div>
+<div id="pop" class="pop" role="status" aria-live="assertive"></div>
+<div id="call" hidden role="dialog" aria-label="Gọi sinh viên"><div class="cl">🎲 Mời sinh viên số</div><div class="cn">?</div><div class="cm"></div><div class="cs">Đang quay…</div></div>
+<script>
+/* ================= NGÂN HÀNG CÂU HỎI – CHƯƠNG 4: ÁP DỤNG PHƯƠNG TRÌNH THIẾT KẾ (Sách BT KTPU, Bảng 4.1–4.4, VD 4.7–4.8, Q4.1–Q4.23) ================= */
+const R = String.raw;
+
+/* ---------- Vòng 1: Khởi động ---------- */
+const R1 = [
+ {q:R`Phản ứng có \((-r_\mathrm{A}) = kC_\mathrm{A}^{\,n}\) với \(n > 0\). Cùng dòng nhập liệu, cùng \(X_\mathrm{Af}\): so sánh thể tích CSTR (\(V_\mathrm{k}\)) và PFR (\(V_\mathrm{\hat{o}}\)).`,o:[R`\(V_\mathrm{k} > V_\mathrm{\hat{o}}\)`,R`\(V_\mathrm{k} < V_\mathrm{\hat{o}}\)`,R`\(V_\mathrm{k} = V_\mathrm{\hat{o}}\)`,'Không thể xác định'],a:0,
+  why:R`\(1/(-r_\mathrm{A})\) tăng theo \(X_\mathrm{A}\): hình chữ nhật (CSTR) lớn hơn diện tích dưới đường cong (PFR) (Q4.1).`},
+ {q:R`Phản ứng bậc 0. Cùng dòng nhập liệu, cùng \(X_\mathrm{Af}\): so sánh \(V_\mathrm{k}\) và \(V_\mathrm{\hat{o}}\).`,o:[R`\(V_\mathrm{k} > V_\mathrm{\hat{o}}\)`,R`\(V_\mathrm{k} < V_\mathrm{\hat{o}}\)`,R`\(V_\mathrm{k} = V_\mathrm{\hat{o}}\)`,'Không thể xác định'],a:2,
+  why:R`\((-r_\mathrm{A}) = k\) không đổi: \(\tau_\mathrm{k} = \tau_\mathrm{\hat{o}} = C_\mathrm{Ao}X_\mathrm{Af}/k\) (Q4.3).`},
+ {q:R`Cùng dòng nhập liệu, \(n > 0\): một CSTR 4 m³ (đạt \(X_\mathrm{A1}\)) so với hai CSTR 2 m³ mắc nối tiếp (đạt \(X_\mathrm{A2}\)).`,o:[R`\(X_\mathrm{A1} > X_\mathrm{A2}\)`,R`\(X_\mathrm{A1} < X_\mathrm{A2}\)`,R`\(X_\mathrm{A1} = X_\mathrm{A2}\)`,'Không thể xác định'],a:1,
+  why:R`Chia CSTR thành nhiều bình nối tiếp làm hệ gần với PFR hơn, nên cùng tổng thể tích thì \(X_\mathrm{A}\) cao hơn (Q4.10).`},
+ {q:R`Cùng dòng nhập liệu, cùng tổng thể tích: một PFR lớn (\(X_\mathrm{A1}\)) so với hai PFR nhỏ mắc nối tiếp (\(X_\mathrm{A2}\)).`,o:[R`\(X_\mathrm{A1} > X_\mathrm{A2}\)`,R`\(X_\mathrm{A1} < X_\mathrm{A2}\)`,R`\(X_\mathrm{A1} = X_\mathrm{A2}\)`,'Không thể xác định'],a:2,
+  why:R`\(\dfrac{V}{F_\mathrm{Ao}} = \displaystyle\int_0^{X_\mathrm{Af}}\dfrac{dX_\mathrm{A}}{(-r_\mathrm{A})} = \sum\dfrac{V_i}{F_\mathrm{Ao}}\): PFR mắc nối tiếp không thay đổi đặc điểm hoạt động (Q4.12).`},
+ {q:R`Một CSTR 10 L so với hai CSTR 5 L mắc <b>song song</b>, mỗi bình nhận \(v_\mathrm{o}/2\).`,o:[R`\(X_\mathrm{A1} > X_\mathrm{A2}\)`,R`\(X_\mathrm{A1} < X_\mathrm{A2}\)`,R`\(X_\mathrm{A1} = X_\mathrm{A2}\)`,'Không thể xác định'],a:2,
+  why:R`Mỗi bình nhỏ có \(\tau_i = \dfrac{5}{v_\mathrm{o}/2} = \dfrac{10}{v_\mathrm{o}} = \tau\): cùng thời gian lưu nên cùng \(X_\mathrm{A}\) (Q4.13).`},
+ {q:R`A + B → R trong cùng một PFR, cùng lưu lượng. Trường hợp 1: \(C_\mathrm{Ao} = 1\ \mathrm{M}\), \(C_\mathrm{Bo} = 2\ \mathrm{M}\); trường hợp 2: \(C_\mathrm{Ao} = C_\mathrm{Bo} = 1\ \mathrm{M}\).`,o:[R`\(X_\mathrm{A1} > X_\mathrm{A2}\)`,R`\(X_\mathrm{A1} < X_\mathrm{A2}\)`,R`\(X_\mathrm{A1} = X_\mathrm{A2}\)`,'Không thể xác định'],a:0,
+  why:R`\(M = C_\mathrm{Bo}/C_\mathrm{Ao} = 2\): B dư nên \((-r_\mathrm{A}) = kC_\mathrm{Ao}^2(1-X_\mathrm{A})(M-X_\mathrm{A})\) lớn hơn, A chuyển hóa nhiều hơn (Q4.16).`},
+ {q:R`Phản ứng bậc hai, cùng dòng nhập liệu và \(X_\mathrm{Af}\). Tỉ số tổng thể tích của 5 CSTR nối tiếp so với 1 PFR:`,o:[R`\(V_{j\mathrm{k}}/V_\mathrm{\hat{o}} < 1\)`,R`\(V_{j\mathrm{k}}/V_\mathrm{\hat{o}} = 1\)`,R`\(V_{j\mathrm{k}}/V_\mathrm{\hat{o}} > 1\)`,'Không thể xác định'],a:2,
+  why:R`\(V_{1\mathrm{k}} > V_{j\mathrm{k}} > V_\mathrm{\hat{o}}\); chỉ khi \(j\to\infty\) thì \(V_{j\mathrm{k}}/V_\mathrm{\hat{o}} \to 1\) (Q4.17, Hình 4.6).`},
+ {q:R`Đúng hay sai: ở độ chuyển hóa thấp (\(X_\mathrm{A}\to 0\)), thể tích hầu như không phụ thuộc loại thiết bị.`,o:['Đúng','Sai'],a:0,
+  why:R`Khi \(X_\mathrm{A}\to 0\): \(V_\mathrm{k}/V_\mathrm{\hat{o}} \to 1\) với mọi \(n\) (Hình 4.2).`},
+ {q:R`Một CSTR lớn đạt \(X_\mathrm{A} = 0{,}8\) (thể tích \(V_1\)) so với hai CSTR giống nhau, mỗi bình \(V_2\), nối tiếp, cũng đạt 0,8 (\(n > 0\)).`,o:[R`\(V_1 > 2V_2\)`,R`\(V_1 < 2V_2\)`,R`\(V_1 = 2V_2\)`,'Không thể xác định'],a:0,
+  why:R`Hai CSTR nối tiếp cần tổng thể tích nhỏ hơn một CSTR: \(2V_2 < V_1\) (Q4.11).`},
+ {q:R`Phản ứng bậc hai A + B → sản phẩm. Vì sao trong thực tế thường chọn \(M = C_\mathrm{Bo}/C_\mathrm{Ao} > 1\)?`,o:['Tăng X_A của A (tác chất đắt hoặc khó tách), giảm thể tích TBPU','Để A trở thành tác chất dư','Để phản ứng chuyển thành bậc 1 theo A','Để tăng ε_A'],a:0,
+  why:R`B dư làm tốc độ lớn hơn: \(V_{M>1}/V_{M=1} < 1\), A đắt hoặc khó tách được chuyển hóa gần hết (Hình 4.3, 4.4).`}
+];
+R1[9].o=[R`Tăng \(X_\mathrm{A}\) của A (đắt hoặc khó tách) và giảm thể tích TBPU`,'Để A trở thành tác chất dư','Để phản ứng chuyển thành bậc 1 theo A',R`Để tăng \(\varepsilon_\mathrm{A}\)`];
+
+/* ---------- Vòng 2: Lật thẻ ghép đôi ---------- */
+const R2 = [
+ {name:'Bảng 1 · Hệ CSTR nối tiếp (Bảng 4.3)',tags:['Trường hợp','Phương trình'],pairs:[
+  [R`Bình thứ \(i\), bậc 1`, R`\(\dfrac{C_{\mathrm{A},i-1}}{C_{\mathrm{A}i}} = 1 + k\tau_i\)`],
+  [R`\(j\) CSTR giống nhau, bậc 1: nồng độ ra`, R`\(\dfrac{C_\mathrm{Ao}}{C_{\mathrm{A}j}} = (1 + k\tau_i)^j\)`],
+  [R`\(j\) CSTR giống nhau, bậc 1: độ chuyển hóa`, R`\(X_{\mathrm{A}j} = 1 - \dfrac{1}{(1+k\tau_i)^j}\)`],
+  [R`\(j\) CSTR giống nhau, bậc 1: thời gian lưu cả hệ`, R`\(\tau = j\tau_i = \dfrac{j}{k}\left[\left(\dfrac{C_\mathrm{Ao}}{C_{\mathrm{A}j}}\right)^{1/j} - 1\right]\)`],
+  [R`CSTR khác nhau, bậc 1`, R`\(X_{\mathrm{A}j} = 1 - \dfrac{1}{(1+k\tau_1)(1+k\tau_2)\cdots(1+k\tau_j)}\)`],
+  [R`Bình thứ \(i\), bậc 2`, R`\(\tau_i = \dfrac{C_{\mathrm{A},i-1} - C_{\mathrm{A}i}}{kC_{\mathrm{A}i}^2}\)`],
+  [R`\(j\to\infty\) (tương đương PFR), bậc 1`, R`\(\tau = \dfrac{1}{k}\ln\dfrac{C_\mathrm{Ao}}{C_\mathrm{Af}}\)`],
+  [R`\(j\to\infty\) (tương đương PFR), bậc 2`, R`\(\tau = \dfrac{1}{k}\left(\dfrac{1}{C_\mathrm{Af}} - \dfrac{1}{C_\mathrm{Ao}}\right)\)`]]},
+ {name:'Bảng 2 · Kết luận so sánh (Hình 4.2 – 4.6, Bảng 4.4)',tags:['Trường hợp','Kết luận'],pairs:[
+  [R`CSTR so với PFR, \(n > 0\)`, R`\(V_\mathrm{k} > V_\mathrm{\hat{o}}\)`],
+  [R`CSTR so với PFR, \(n < 0\)`, R`\(V_\mathrm{k} < V_\mathrm{\hat{o}}\)`],
+  [R`CSTR so với PFR, \(X_\mathrm{A}\to 0\)`, R`\(V_\mathrm{k}/V_\mathrm{\hat{o}} \to 1\)`],
+  [R`\(j\) CSTR nối tiếp, \(j\to\infty\)`, R`\(V_{j\mathrm{k}} \to V_\mathrm{\hat{o}}\)`],
+  [R`1 CSTR, \(j\) CSTR nối tiếp và PFR (\(n > 0\))`, R`\(V_{1\mathrm{k}} > V_{j\mathrm{k}} > V_\mathrm{\hat{o}}\)`],
+  [R`\(j\) PFR nhỏ nối tiếp hoặc song song`, R`\(V_\text{lớn} = \sum V_i\), không đổi đặc điểm hoạt động`],
+  [R`\(j\) CSTR giống nhau song song, chia đều dòng`, R`\(\tau_i = \dfrac{V_i}{v_\mathrm{o}/j} = \tau\): như 1 CSTR lớn`],
+  [R`Bậc 2, \(M = C_\mathrm{Bo}/C_\mathrm{Ao} > 1\)`, R`\(V_{M>1}/V_{M=1} < 1\)`]]},
+ {name:'Bảng 3 · Hệ TBPU khác loại nối tiếp',tags:['Trường hợp','Biểu thức'],pairs:[
+  [R`CSTR đầu tiên, \(X_\mathrm{Ao} \to X_\mathrm{A1}\)`, R`\(\dfrac{V_1}{F_\mathrm{Ao}} = \dfrac{X_\mathrm{A1} - X_\mathrm{Ao}}{(-r_\mathrm{A})_1}\)`],
+  [R`PFR thứ hai, \(X_\mathrm{A1} \to X_\mathrm{A2}\)`, R`\(\dfrac{V_2}{F_\mathrm{Ao}} = \displaystyle\int_{X_\mathrm{A1}}^{X_\mathrm{A2}}\dfrac{dX_\mathrm{A}}{(-r_\mathrm{A})}\)`],
+  [R`CSTR thứ ba, \(X_\mathrm{A2} \to X_\mathrm{A3}\)`, R`\(\dfrac{V_3}{F_\mathrm{Ao}} = \dfrac{X_\mathrm{A3} - X_\mathrm{A2}}{(-r_\mathrm{A})_3}\)`],
+  [R`PFR: biểu diễn trên đồ thị \(1/(-r_\mathrm{A})\) – \(X_\mathrm{A}\)`, 'Diện tích dưới đường cong'],
+  [R`CSTR: biểu diễn trên đồ thị \(1/(-r_\mathrm{A})\) – \(X_\mathrm{A}\)`, 'Hình chữ nhật, chiều cao đọc tại điểm ra'],
+  [R`Đường thẳng trong phương pháp đồ thị cho bình \(i\)`, R`\((-r_\mathrm{A})_i = -\dfrac{1}{\tau_i}\left(C_{\mathrm{A}i} - C_{\mathrm{A},i-1}\right)\)`],
+  [R`Giao điểm đường thẳng với đường cong \((-r_\mathrm{A}) = f(C_\mathrm{A})\)`, R`Cho \(C_{\mathrm{A}i}\) ở dòng ra bình \(i\)`],
+  [R`Hệ 2 CSTR có tổng thể tích nhỏ nhất`, 'Phương pháp tối đa diện tích hình chữ nhật']]}
+];
+
+/* ---------- Vòng 3: Thám tử thiết bị ---------- */
+const R3 = [
+ {ctx:R`Phản ứng sơ đẳng bậc nhất A → R trong hai CSTR đẳng nhiệt nối tiếp: \(X_\mathrm{Ao} = 0\), \(X_\mathrm{A1} = 0{,}4\), \(X_\mathrm{A2} = 0{,}8\) (Q4.21).`,
+  qq:R`So sánh \(V_2\) và \(V_1\):`,o:[R`\(V_2 = V_1\)`,R`\(V_2 = 2V_1\)`,R`\(V_2 = 3V_1\)`,R`\(V_2 = 6V_1\)`],a:2,
+  why:R`\(k\tau_1 = \dfrac{0{,}4}{1-0{,}4} = 0{,}667\); \(k\tau_2 = \dfrac{0{,}8-0{,}4}{1-0{,}8} = 2\); \(V_2/V_1 = 2/0{,}667 = 3\). Quên trừ \(X_\mathrm{A1}\) sẽ ra 6.`},
+ {ctx:R`Phản ứng sơ đẳng bậc hai A → R trong hai CSTR đẳng nhiệt nối tiếp: \(X_\mathrm{Ao} = 0\), \(X_\mathrm{A1} = 0{,}4\), \(X_\mathrm{A2} = 0{,}8\) (Q4.22).`,
+  qq:R`So sánh \(V_2\) và \(V_1\):`,o:[R`\(V_2 = V_1\)`,R`\(V_2 = 2V_1\)`,R`\(V_2 = 4V_1\)`,R`\(V_2 = 9V_1\)`],a:3,
+  why:R`\(kC_\mathrm{Ao}\tau_1 = \dfrac{0{,}4}{0{,}6^2} = 1{,}11\); \(kC_\mathrm{Ao}\tau_2 = \dfrac{0{,}4}{0{,}2^2} = 10\); \(V_2/V_1 = 9\).`},
+ {ctx:R`Phản ứng bậc nhất A → R trong hai CSTR riêng biệt, cùng \(C_\mathrm{Ao}\), cùng \(v_\mathrm{o}\). Bình 1 ra \(C_\mathrm{A1} = 20\ \%\,C_\mathrm{Ao}\); bình 2 ra \(C_\mathrm{A2} = 90\ \%\,C_\mathrm{Ao}\) (Q4.23).`,
+  qq:R`So sánh \(V_1\) và \(V_2\):`,o:[R`\(V_1 = 2V_2\)`,R`\(V_1 = 4{,}5V_2\)`,R`\(V_1 = 9V_2\)`,R`\(V_1 = 36V_2\)`],a:3,
+  why:R`\(k\tau = \dfrac{C_\mathrm{Ao}-C_\mathrm{A}}{C_\mathrm{A}}\): \(k\tau_1 = \dfrac{0{,}8}{0{,}2} = 4\); \(k\tau_2 = \dfrac{0{,}1}{0{,}9} = 0{,}111\); tỉ số 36.`},
+ {ctx:R`Thủy phân anhydrit axetic, \((-r_\mathrm{A}) = 0{,}158C_\mathrm{A}\) (mol·L⁻¹·min⁻¹), \(v_\mathrm{o} = 0{,}4\ \mathrm{L/min}\), ba CSTR nối tiếp (VD 4.7).`,
+  head:['Bình','V (L)',R`\(\tau_i\) (min)`],rows:[[1,'1','2,5'],[2,'2','5'],[3,'1,5','3,75']],
+  qq:'Độ chuyển hóa ra khỏi bình 3:',o:['64 %','75 %','83 %','95 %'],a:1,
+  why:R`\(X_\mathrm{A3} = 1 - \dfrac{1}{(1+0{,}395)(1+0{,}79)(1+0{,}5925)} = 1 - \dfrac{1}{3{,}98} = 0{,}75\). Một CSTR 4,5 L chỉ đạt 64 %; một PFR 4,5 L đạt 83 %.`},
+ {ctx:R`Ba CSTR giống nhau nối tiếp, phản ứng bậc nhất \(k = 4\cdot10^{-3}\ \mathrm{s^{-1}}\), cần \(X_\mathrm{A3} = 0{,}95\) (VD 4.8).`,
+  qq:R`Thời gian lưu của <b>mỗi</b> bình \(\tau_i\):`,o:['≈ 429 s','≈ 749 s','≈ 1 583 s','≈ 4 750 s'],a:0,
+  why:R`\((1+k\tau_i)^3 = \dfrac{1}{1-0{,}95} = 20\) ⇒ \(1+k\tau_i = 20^{1/3} = 2{,}714\) ⇒ \(\tau_i = \dfrac{1{,}714}{4\cdot10^{-3}} = 429\ \mathrm{s}\). 749 s là τ của PFR; 4 750 s là τ của 1 CSTR.`},
+ {ctx:R`Phản ứng bậc nhất, cùng dòng nhập liệu, cùng \(X_\mathrm{Af} = 0{,}8\). So sánh: 1 CSTR, 2 CSTR giống nhau nối tiếp, 1 PFR.`,
+  qq:R`Tỉ lệ \(k\tau\) toàn hệ (1 CSTR : 2 CSTR : PFR):`,o:['4 : 2,47 : 1,61','4 : 2 : 1','4 : 4 : 1,61','2,47 : 4 : 1,61'],a:0,
+  why:R`1 CSTR: \(k\tau = \dfrac{0{,}8}{0{,}2} = 4\). 2 CSTR: \((1+k\tau_i)^2 = 5\) ⇒ \(k\tau_i = 1{,}236\), cả hệ 2,47. PFR: \(k\tau = \ln 5 = 1{,}61\).`},
+ {ctx:R`Phản ứng bậc hai A + B → R trong PFR, \(V\) = const, \(kC_\mathrm{Ao}\tau = 2\). So sánh nạp \(M = C_\mathrm{Bo}/C_\mathrm{Ao} = 1\) và \(M = 2\).`,
+  qq:R`Độ chuyển hóa của A khi \(M = 2\):`,o:['0,50','0,67','0,80','0,93'],a:3,
+  why:R`\(M = 1\): \(\dfrac{X_\mathrm{A}}{1-X_\mathrm{A}} = 2\) ⇒ \(X_\mathrm{A} = 0{,}67\). \(M = 2\): \(\ln\dfrac{M-X_\mathrm{A}}{M(1-X_\mathrm{A})} = (M-1)kC_\mathrm{Ao}\tau = 2\) ⇒ \(X_\mathrm{A} = 0{,}93\).`}
+];
+
+/* ---------- Vòng 5: Diện tích bí ẩn (đồ thị Levenspiel, hệ nhiều TBPU) ---------- */
+const fG = x=>Math.pow(1-x,-0.8);
+const fX1 = x=>1/(1-x);
+const fDec = x=>4*Math.exp(-2*x)+0.4;
+const fU = x=>1+6*(x-0.6)**2+40*Math.max(0,x-0.6)**3;
+const f41 = x=>0.6+2.4*x*x;
+const f42 = x=>x<0.4?f41(x)+1.7*Math.exp(-(((x-0.13)/0.09)**2))*(0.4-x)/0.4*1.6:f41(x)*(1-0.32*(x-0.4));
+const AX = {xl:R`\(X_\mathrm{A}\)`,yl:R`\(\dfrac{1}{(-r_\mathrm{A})}\)`,x0:0,x1:1.04,xt:[0,0.2,0.4,0.6,0.8,1],xf:1};
+const R4 = [
+ {ctx:'Đồ thị dưới đây mô tả thể tích các TBPU trong một hệ mắc nối tiếp (Q4.20).',eq:R`\(X_\mathrm{A}:\ 0 \to 0{,}5 \to 0{,}7 \to 0{,}9\)`,
+  qq:'Hệ gồm các TBPU nào, theo thứ tự nào?',ax:{...AX,y1:7.2},f:fG,pts:[],xmax:0.93,
+  pre:[{k:'R',a:0,b:0.5,h:0.5,c:'b'},{k:'U',a:0.5,b:0.7,c:'r'},{k:'R',a:0.7,b:0.9,h:0.9,c:'g'}],
+  o:['PFR → CSTR → PFR','CSTR → PFR → PFR','PFR → CSTR → CSTR','CSTR → PFR → CSTR'],a:3,shade:[],
+  why:R`Xanh dương: hình chữ nhật cao tại 0,5 → CSTR. Đỏ: dưới đường cong 0,5 → 0,7 → PFR. Xanh lá: hình chữ nhật cao tại 0,9 → CSTR.`},
+ {ctx:R`Hệ 3 TBPU nối tiếp theo thứ tự <b>CSTR – CSTR – PFR</b>, \(X_\mathrm{A}\) sau các bình lần lượt 0,5; 0,7; 0,85 (Q4.19).`,eq:R`\(\dfrac{V_i}{F_\mathrm{Ao}}\) = diện tích tương ứng`,
+  qq:'Hình nào mô tả đúng thể tích các TBPU?',ax:{...AX,y1:4.6},f:fG,pts:[],xmax:0.87,
+  o:[{g:[{k:'R',a:0,b:0.5,h:0.5,c:'b'},{k:'R',a:0.5,b:0.7,h:0.7,c:'r'},{k:'U',a:0.7,b:0.85,c:'g'}]},
+     {g:[{k:'R',a:0,b:0.5,h:0,c:'b'},{k:'R',a:0.5,b:0.7,h:0.5,c:'r'},{k:'U',a:0.7,b:0.85,c:'g'}]},
+     {g:[{k:'U',a:0,b:0.5,c:'b'},{k:'U',a:0.5,b:0.7,c:'r'},{k:'R',a:0.7,b:0.85,h:0.85,c:'g'}]},
+     {g:[{k:'R',a:0,b:0.5,h:0.5,c:'b'},{k:'U',a:0.5,b:0.7,c:'r'},{k:'R',a:0.7,b:0.85,h:0.85,c:'g'}]}],a:0,
+  shade:[{k:'R',a:0,b:0.5,h:0.5,c:'b'},{k:'R',a:0.5,b:0.7,h:0.7,c:'r'},{k:'U',a:0.7,b:0.85,c:'g'}],
+  why:R`Mỗi CSTR là hình chữ nhật cao tại điểm <b>ra</b> của chính bình đó (0,5 và 0,7); PFR là diện tích dưới đường cong từ 0,7 đến 0,85.`},
+ {ctx:R`Phản ứng bậc nhất, \(F_\mathrm{Ao} = 2\ \mathrm{mol/min}\), đồ thị \(1/(-r_\mathrm{A})\) (L·min/mol). Hai CSTR nối tiếp: 0 → 0,5 → 0,8.`,eq:R`\(V_i = F_\mathrm{Ao}\dfrac{X_{\mathrm{A}i}-X_{\mathrm{A},i-1}}{(-r_\mathrm{A})_i}\)`,
+  qq:'Đọc đồ thị: tổng thể tích hai CSTR',ax:{...AX,y1:10.5,x1:1,yt:[0,2,4,6,8,10]},f:fX1,pts:[0.5,0.8],xmax:0.905,guide:[0.5,0.8],
+  o:['3,2 L','5 L','6,5 L','8 L'],a:1,
+  shade:[{k:'R',a:0,b:0.5,h:0.5,c:'b'},{k:'R',a:0.5,b:0.8,h:0.8,c:'r'},{k:'R',a:0,b:0.8,h:0.8,c:'o'}],leg:[['b','CSTR 1'],['r','CSTR 2'],['o','1 CSTR']],
+  why:R`\(V_1 = 2\times0{,}5\times2 = 2\ \mathrm{L}\); \(V_2 = 2\times0{,}3\times5 = 3\ \mathrm{L}\); tổng 5 L, nhỏ hơn 1 CSTR (8 L).`},
+ {ctx:R`Biến đổi tốc độ ở điều kiện đẳng nhiệt như đồ thị. Cần \(X_\mathrm{A} = 80\ \%\) (Q4.4).`,eq:R`\(1/(-r_\mathrm{A})\) tăng theo \(X_\mathrm{A}\)`,
+  qq:'Hệ TBPU nào có thể tích nhỏ nhất?',ax:{...AX,y1:4.2},f:x=>0.7+3*x**2.4,pts:[],xmax:1,
+  o:['CSTR','PFR','3 CSTR mắc nối tiếp','Cần thêm thông tin'],a:1,
+  shade:[{k:'R',a:0,b:0.8,h:0.8,c:'o'},{k:'U',a:0,b:0.8,c:'b'}],leg:[['b','PFR'],['o','CSTR']],
+  why:R`Đường cong tăng: diện tích dưới đường cong (PFR) nhỏ nhất; 3 CSTR nối tiếp nằm giữa CSTR và PFR.`},
+ {ctx:R`Biến đổi tốc độ như đồ thị. Cần \(X_\mathrm{A} = 80\ \%\) (Q4.5).`,eq:R`\(1/(-r_\mathrm{A})\) giảm theo \(X_\mathrm{A}\)`,
+  qq:'Hệ TBPU nào có thể tích nhỏ nhất?',ax:{...AX,y1:4.8},f:fDec,pts:[],xmax:1,
+  o:['CSTR','PFR','3 CSTR nối tiếp','3 PFR mắc nối tiếp'],a:0,
+  shade:[{k:'U',a:0,b:0.8,c:'b'},{k:'R',a:0,b:0.8,h:0.8,c:'o'}],leg:[['b','PFR'],['o','CSTR']],
+  why:R`Đường cong giảm: hình chữ nhật cao tại \(X_\mathrm{Af}\) nằm dưới đường cong, nên CSTR nhỏ nhất.`},
+ {ctx:R`Đường \(1/(-r_\mathrm{A})\) có cực tiểu tại \(X_\mathrm{A} = 60\ \%\) (ví dụ phản ứng tự xúc tác). Cần \(X_\mathrm{A} = 60\ \%\) (Q4.6).`,eq:R`\(X_\mathrm{Af}\) trùng điểm cực tiểu`,
+  qq:'Hệ TBPU nào có thể tích nhỏ nhất?',ax:{...AX,y1:4.6},f:fU,pts:[],xmax:1,guide:[0.6],
+  o:['CSTR','PFR','3 CSTR nối tiếp','3 PFR mắc nối tiếp'],a:0,
+  shade:[{k:'U',a:0,b:0.6,c:'b'},{k:'R',a:0,b:0.6,h:0.6,c:'o'}],leg:[['b','PFR'],['o','CSTR']],
+  why:R`Trước cực tiểu đường cong đi xuống: hình chữ nhật cao tại \(X_\mathrm{Af} = 0{,}6\) là thấp nhất, CSTR nhỏ nhất.`},
+ {ctx:R`Cùng đường cong có cực tiểu tại 60 %, nhưng cần \(X_\mathrm{A} = 90\ \%\).`,eq:'Hệ tối ưu về thể tích?',
+  qq:'Cách ghép có tổng thể tích nhỏ nhất:',ax:{...AX,y1:4.6},f:fU,pts:[],xmax:1,guide:[0.6],
+  o:['Một PFR từ 0 đến 0,9','Một CSTR từ 0 đến 0,9','CSTR đến 0,6 rồi PFR từ 0,6 đến 0,9','PFR đến 0,6 rồi CSTR từ 0,6 đến 0,9'],a:2,
+  shade:[{k:'R',a:0,b:0.6,h:0.6,c:'o'},{k:'U',a:0.6,b:0.9,c:'b'}],leg:[['o','CSTR'],['b','PFR']],
+  why:R`Đoạn đi xuống dùng CSTR (hình chữ nhật thấp tại cực tiểu), đoạn đi lên dùng PFR (diện tích dưới đường cong). Trong bốn phương án của Q4.7 không có hệ này nên sách chọn “cần thêm thông tin”.`},
+ {ctx:R`Hai phản ứng (1) và (2) đẳng nhiệt. Dùng <b>PFR</b> để đạt \(X_\mathrm{A} = 40\ \%\) (Q4.8).`,eq:R`\(\dfrac{V}{F_\mathrm{Ao}} = \displaystyle\int_0^{0{,}4}\dfrac{dX_\mathrm{A}}{(-r_\mathrm{A})}\)`,
+  qq:'Phản ứng nào cần thể tích PFR nhỏ hơn?',ax:{...AX,y1:3.4},f:f41,f2:f42,pts:[],xmax:1,guide:[0.4],
+  o:['Phản ứng (1)','Phản ứng (2)','Bằng nhau','Cần thêm thông tin'],a:0,
+  shade:[{k:'U',a:0,b:0.4,c:'b'},{k:'U',a:0,b:0.4,c:'r',f2:true}],leg:[['b','(1)'],['r','(2)']],
+  why:R`Từ 0 đến 0,4 đường (2) có “bướu” nằm trên đường (1): diện tích dưới đường (1) nhỏ hơn.`},
+ {ctx:R`Cùng hai phản ứng, dùng <b>CSTR</b> để đạt \(X_\mathrm{A} = 40\ \%\) (Q4.9).`,eq:R`\(\dfrac{V}{F_\mathrm{Ao}} = \dfrac{0{,}4}{(-r_\mathrm{A})_f}\)`,
+  qq:'Phản ứng nào cần thể tích CSTR nhỏ hơn?',ax:{...AX,y1:3.4},f:f41,f2:f42,pts:[0.4],xmax:1,guide:[0.4],
+  o:['Phản ứng (1)','Phản ứng (2)','Bằng nhau','Cần thêm thông tin'],a:2,
+  shade:[{k:'R',a:0,b:0.4,h:0.4,c:'o'}],
+  why:R`CSTR chỉ phụ thuộc giá trị tại điểm ra: hai đường cắt nhau tại \(X_\mathrm{A} = 0{,}4\) nên cùng \(1/(-r_\mathrm{A})_f\), cùng thể tích.`}
+];
+
+/* ---------- Vòng 6: Về đích ---------- */
+const R5 = [
+ {type:'order',title:'Sắp thứ tự: phương pháp đồ thị cho hệ CSTR nối tiếp',steps:[
+   R`Vẽ đường cong tốc độ \((-r_\mathrm{A}) = f(C_\mathrm{A})\) từ số liệu động học`,
+   R`Tính \(\tau_i = V_i/v_\mathrm{o}\) và hệ số góc \(-1/\tau_i\) của từng bình`,
+   R`Từ điểm \((C_\mathrm{Ao};\,0)\) vẽ đường thẳng hệ số góc \(-1/\tau_1\), cắt đường cong tại M: hoành độ là \(C_\mathrm{A1}\)`,
+   R`Từ \((C_\mathrm{A1};\,0)\) vẽ đường thẳng hệ số góc \(-1/\tau_2\) để có \(C_\mathrm{A2}\); lặp lại đến bình cuối`,
+   R`Tính \(X_{\mathrm{A}j} = 1 - C_{\mathrm{A}j}/C_\mathrm{Ao}\)`]},
+ {type:'error',title:'Tìm dòng sai đầu tiên: so sánh V2 và V1 của hai CSTR nối tiếp, phản ứng bậc 1 (Q4.21)',lines:[
+   R`Dữ kiện: \(X_\mathrm{Ao} = 0\), \(X_\mathrm{A1} = 0{,}4\), \(X_\mathrm{A2} = 0{,}8\)`,
+   R`\(k\tau_1 = \dfrac{X_\mathrm{A1}}{1-X_\mathrm{A1}} = \dfrac{0{,}4}{0{,}6} = 0{,}667\)`,
+   R`\(k\tau_2 = \dfrac{X_\mathrm{A2}}{1-X_\mathrm{A2}} = \dfrac{0{,}8}{0{,}2} = 4\)`,
+   R`\(\dfrac{V_2}{V_1} = \dfrac{4}{0{,}667} = 6\)`],bad:2,
+  fix:R`Bình 2 nhận dòng đã chuyển hóa 0,4: \(k\tau_2 = \dfrac{X_\mathrm{A2}-X_\mathrm{A1}}{1-X_\mathrm{A2}} = \dfrac{0{,}4}{0{,}2} = 2\), nên \(V_2 = 3V_1\).`},
+ {type:'order',title:'Sắp thứ tự: tính độ chuyển hóa của hệ CSTR khác nhau nối tiếp, bậc 1 (VD 4.7)',steps:[
+   R`Tính thời gian lưu từng bình \(\tau_i = V_i/v_\mathrm{o}\)`,
+   R`Tính \(k\tau_i\) của từng bình`,
+   R`\(\dfrac{C_\mathrm{Ao}}{C_{\mathrm{A}j}} = (1+k\tau_1)(1+k\tau_2)\cdots(1+k\tau_j)\)`,
+   R`\(X_{\mathrm{A}j} = 1 - \dfrac{C_{\mathrm{A}j}}{C_\mathrm{Ao}}\)`]},
+ {type:'error',title:'Tìm dòng sai đầu tiên: ba CSTR giống nhau nối tiếp, bậc 1, k = 4·10⁻³ s⁻¹, X = 0,95',lines:[
+   R`\(1 - X_\mathrm{A3} = \dfrac{1}{(1+k\tau_i)^3}\)`,
+   R`\((1+k\tau_i)^3 = \dfrac{1}{1-0{,}95} = 20\)`,
+   R`\(k\tau_i = \dfrac{20}{3} - 1 = 5{,}67\)`,
+   R`\(\tau_i = \dfrac{5{,}67}{4\cdot10^{-3}} = 1417\ \mathrm{s}\)`],bad:2,
+  fix:R`Lấy căn bậc ba: \(1+k\tau_i = 20^{1/3} = 2{,}714\), nên \(\tau_i = \dfrac{1{,}714}{4\cdot10^{-3}\ \mathrm{s^{-1}}} = 429\ \mathrm{s}\) (VD 4.8).`},
+ {type:'order',title:'Sắp thứ tự: xác định hệ 2 CSTR nối tiếp tối ưu về thể tích',steps:[
+   R`Vẽ đường \(1/(-r_\mathrm{A})\) theo \(X_\mathrm{A}\), đánh dấu \(X_\mathrm{Ao}\) và \(X_\mathrm{Af}\)`,
+   R`Chọn thử \(X_\mathrm{A1}\) trung gian, vẽ hình chữ nhật của bình 1 và bình 2`,
+   R`So với 1 CSTR, phần diện tích tiết kiệm được là hình chữ nhật KLMN`,
+   R`Chọn \(X_\mathrm{A1}\) sao cho diện tích KLMN lớn nhất`,
+   R`Tính \(V_1\) và \(V_2\) từ PT thiết kế CSTR với \(X_\mathrm{A1}\) tối ưu`]},
+ {type:'error',title:'Tìm dòng sai đầu tiên: so sánh 1 CSTR và 1 PFR, phản ứng bậc 1, X = 0,9',lines:[
+   R`CSTR: \(k\tau_\mathrm{k} = \dfrac{0{,}9}{1-0{,}9} = 9\)`,
+   R`PFR: \(k\tau_\mathrm{\hat{o}} = -\ln 0{,}9 = 0{,}105\)`,
+   R`\(\dfrac{V_\mathrm{k}}{V_\mathrm{\hat{o}}} = \dfrac{9}{0{,}105} = 85{,}7\)`],bad:1,
+  fix:R`\(k\tau_\mathrm{\hat{o}} = -\ln(1-X_\mathrm{A}) = -\ln 0{,}1 = 2{,}303\), nên \(V_\mathrm{k}/V_\mathrm{\hat{o}} = 9/2{,}303 = 3{,}9\).`}
+];
+
+/* ---------- Vòng 3: Phân nhóm ---------- */
+const PN = [
+ {name:'Ghép nhiều TBPU: có thay đổi đặc điểm hoạt động so với 1 TBPU lớn?',groups:['Không thay đổi (tương đương 1 bình lớn)','Thay đổi'],items:[
+  ['j PFR mắc nối tiếp',0,R`\(\sum\dfrac{V_i}{F_\mathrm{Ao}} = \displaystyle\int_0^{X_\mathrm{Af}}\dfrac{dX_\mathrm{A}}{(-r_\mathrm{A})}\).`],
+  ['j PFR mắc song song, chia dòng tỉ lệ thể tích',0,R`Mọi nhánh cùng \(\tau_i = V_i/v_i\), cùng \(X_\mathrm{Af}\).`],
+  ['j CSTR giống nhau mắc song song, chia đều dòng',0,R`\(\tau_i = \dfrac{V_i}{v_\mathrm{o}/j} = \tau\).`],
+  ['j CSTR mắc nối tiếp',1,R`\(V_{1\mathrm{k}} > V_{j\mathrm{k}}\): hệ tiến dần về PFR khi \(j\) tăng.`],
+  ['Chia 1 CSTR lớn thành 4 CSTR nhỏ nối tiếp',1,R`Cùng tổng \(V\): \(X_\mathrm{A}\) tăng (với \(n > 0\)).`],
+  ['CSTR nối tiếp PFR',1,'Hệ khác loại: thay đổi tùy trường hợp (Bảng 4.4).'],
+  ['PFR nối tiếp CSTR',1,'Hệ khác loại: thay đổi tùy trường hợp (Bảng 4.4).'],
+  ['1 PFR lớn chia thành 2 PFR nối tiếp có tổng thể tích bằng',0,R`\(V_\text{lớn} = V_1 + V_2\), cùng \(X_\mathrm{Af}\) (Q4.12).`]]},
+ {name:'Cùng X_Af: thiết bị nào nhỏ hơn?',groups:['CSTR nhỏ hơn','PFR nhỏ hơn'],items:[
+  [R`\((-r_\mathrm{A}) = kC_\mathrm{A}^{\,n}\), \(n > 0\)`,1,R`\(1/(-r_\mathrm{A})\) tăng theo \(X_\mathrm{A}\).`],
+  [R`\((-r_\mathrm{A}) = kC_\mathrm{A}^{\,n}\), \(n < 0\)`,0,R`\(1/(-r_\mathrm{A})\) giảm theo \(X_\mathrm{A}\).`],
+  [R`\(1/(-r_\mathrm{A})\) giảm dần theo \(X_\mathrm{A}\)`,0,'Hình chữ nhật nằm dưới đường cong (Q4.5).'],
+  [R`\(1/(-r_\mathrm{A})\) tăng dần theo \(X_\mathrm{A}\)`,1,'Diện tích dưới đường cong nhỏ hơn hình chữ nhật (Q4.4).'],
+  [R`Tự xúc tác, \(X_\mathrm{Af}\) đúng tại cực tiểu của \(1/(-r_\mathrm{A})\)`,0,'Hình chữ nhật cao bằng giá trị nhỏ nhất (Q4.6).'],
+  [R`Phản ứng bậc 2, \(X_\mathrm{Af} = 0{,}9\)`,1,R`\(V_\mathrm{k}/V_\mathrm{\hat{o}} = \dfrac{1}{1-X_\mathrm{A}} = 10\).`],
+  [R`Phản ứng bậc 1, \(X_\mathrm{Af} = 0{,}9\)`,1,R`\(V_\mathrm{k}/V_\mathrm{\hat{o}} = \dfrac{9}{2{,}303} = 3{,}9\).`],
+  [R`Tốc độ phản ứng tăng khi A cạn dần`,0,R`\((-r_\mathrm{A})\) lớn nhất ở dòng ra: CSTR làm việc ở tốc độ đó.`]]},
+ {name:'Giữ nguyên dòng nhập liệu (n > 0): X_Af tăng hay giảm?',groups:[R`\(X_\mathrm{Af}\) tăng`,R`\(X_\mathrm{Af}\) giảm`],items:[
+  ['Chia 1 CSTR thành 2 CSTR nối tiếp, cùng tổng thể tích',0,'Hệ gần với PFR hơn (Q4.10).'],
+  ['Thay CSTR bằng PFR cùng thể tích',0,R`\(V_\mathrm{\hat{o}} < V_\mathrm{k}\) khi cùng \(X_\mathrm{A}\).`],
+  [R`Bậc 2: tăng \(M = C_\mathrm{Bo}/C_\mathrm{Ao}\) từ 1 lên 2`,0,'B dư làm tốc độ lớn hơn (Q4.16).'],
+  ['Ghép thêm một CSTR nối tiếp sau hệ',0,R`Tăng tổng \(\tau\).`],
+  [R`Tăng lưu lượng \(v_\mathrm{o}\), giữ nguyên \(V\)`,1,R`\(\tau = V/v_\mathrm{o}\) giảm.`],
+  ['Thay PFR bằng CSTR cùng thể tích',1,'Hình chữ nhật lớn hơn diện tích dưới đường cong.'],
+  [R`Hạ nhiệt độ phản ứng (\(k\) giảm)`,1,R`\(k = A\,e^{-E_\mathrm{a}/(RT)}\) giảm.`],
+  [R`Bậc 2: giảm \(C_\mathrm{Ao}\), giữ nguyên \(\tau\)`,1,R`\(\dfrac{X_\mathrm{A}}{1-X_\mathrm{A}} = kC_\mathrm{Ao}\tau\) giảm.`]]}
+];
+
+/* câu hỏi gợi ý */
+const ASK1=['Đường \\(1/(-r_\\mathrm{A})\\) đi lên hay đi xuống khi \\(n>0\\)?','Bậc 0 thì \\(1/(-r_\\mathrm{A})\\) có dạng gì?','Nhiều CSTR nối tiếp gần với thiết bị nào hơn?','Cộng các tích phân liên tiếp được gì?','Tính \\(\\tau\\) của mỗi bình nhỏ.','B dư thì tốc độ thay đổi thế nào?','Khi nào \\(V_{j\\mathrm{k}}\\) bằng \\(V_\\mathrm{\\hat{o}}\\)?','Thay \\(X_\\mathrm{A}\\to0\\) vào hai PT thiết kế.','Hai CSTR nhỏ nối tiếp hay một CSTR lớn cần ít thể tích hơn?','Tác chất nào thường đắt hoặc khó tách?'];
+const ASK3=['Bình 2 nhận dòng có \\(X_\\mathrm{A}\\) bằng bao nhiêu?','Bậc 2: \\((-r_\\mathrm{A}) = kC_\\mathrm{Ao}^2(1-X_\\mathrm{A})^2\\).','Viết \\(k\\tau\\) theo \\(C_\\mathrm{Ao}\\) và \\(C_\\mathrm{A}\\) cho từng bình.','Nhân các thừa số \\((1+k\\tau_i)\\).','\\((1+k\\tau_i)^3 = ?\\) Lấy căn bậc mấy?','Tính \\(k\\tau\\) cho từng hệ.','Dùng PT thiết kế PFR bậc 2 khi \\(M\\neq1\\).'];
+const ASK4=['Hình chữ nhật hay dưới đường cong? Chiều cao đọc ở đâu?','Mỗi CSTR cao tại điểm ra của chính nó.','Đọc tung độ tại 0,5 và 0,8.','Đường đi lên: hình nào nhỏ hơn?','Đường đi xuống: hình chữ nhật nằm trên hay dưới đường cong?','Điểm ra trùng cực tiểu thì hình chữ nhật thế nào?','Đoạn đi xuống và đoạn đi lên nên dùng thiết bị nào?','So sánh diện tích dưới hai đường từ 0 đến 0,4.','CSTR chỉ cần giá trị tại điểm nào?'];
+R1.forEach((x,i)=>{if(ASK1[i])x.ask=ASK1[i];});R3.forEach((x,i)=>x.ask=ASK3[i]);R4.forEach((x,i)=>x.ask=ASK4[i]);
+
+/* ---------- Sơ đồ hệ thiết bị (thay cho mô tả bằng lời) ---------- */
+const K=v=>({k:'k',v}),O=v=>({k:'o',v});
+/* sơ đồ minh họa cho từng câu Về đích */
+const R5SYS=[[{s:['C_Ao',K('τ_1'),'C_A1',K('τ_2'),'C_A2',K('τ_3'),'C_A3']}],
+ [{s:['X_Ao = 0',K('V_1'),'X_A1 = 0,4',K('V_2'),'X_A2 = 0,8']}],
+ [{s:['υ_o',K('1 L'),'',K('2 L'),'',K('1,5 L'),'X_A3']}],
+ [{s:['υ_o',K('τ_i'),'',K('τ_i'),'',K('τ_i'),'X_A3 = 0,95']}],
+ [{s:['X_Ao',K('V_1'),'X_A1',K('V_2'),'X_Af']}],
+ [{t:'CSTR',s:['υ_o',K('V_k'),'X_A = 0,9']},{t:'PFR',s:['υ_o',O('V_ô'),'X_A = 0,9']}]];
+const cmpXV=R`So sánh thể tích CSTR (\(V_\mathrm{k}\)) và PFR (\(V_\mathrm{\hat{o}}\)) khi cùng dòng nhập liệu, cùng \(X_\mathrm{Af}\):`;
+R1[0].q=R`\((-r_\mathrm{A}) = kC_\mathrm{A}^{\,n}\), \(n > 0\). `+cmpXV;
+R1[1].q=R`Phản ứng bậc 0. `+cmpXV;
+[0,1].forEach(i=>R1[i].sys=[{t:'(1) CSTR',s:['υ_o',K('V_k'),'X_Af']},{t:'(2) PFR',s:['υ_o',O('V_ô'),'X_Af']}]);
+R1[2].q=R`Cùng dòng nhập liệu, \(n > 0\). So sánh độ chuyển hóa đạt được (Q4.10):`;
+R1[2].sys=[{t:'(1)',s:['υ_o',K('4 m³'),'X_A1']},{t:'(2)',s:['υ_o',K('2 m³'),'',K('2 m³'),'X_A2']}];
+R1[3].q=R`Cùng dòng nhập liệu, cùng tổng thể tích. So sánh độ chuyển hóa đạt được (Q4.12):`;
+R1[3].sys=[{t:'(1)',s:['υ_o',O('V'),'X_A1']},{t:'(2)',s:['υ_o',O('V/2'),'',O('V/2'),'X_A2']}];
+R1[4].q=R`Cùng dòng nhập liệu. So sánh độ chuyển hóa đạt được (Q4.13):`;
+R1[4].sys=[{t:'(1)',s:['υ_o',K('10 L'),'X_A1']},{t:'(2)',s:{par:[['υ_o/2',K('5 L'),''],['υ_o/2',K('5 L'),'']],i:'υ_o',o:'X_A2'}}];
+R1[5].q=R`A + B → R trong cùng một PFR, cùng lưu lượng. So sánh độ chuyển hóa của A (Q4.16):`;
+R1[5].sys=[{t:'(1)',s:['C_Ao = 1 M, C_Bo = 2 M',O(''),'X_A1']},{t:'(2)',s:['C_Ao = C_Bo = 1 M',O(''),'X_A2']}];
+R1[6].q=R`Phản ứng bậc hai, cùng dòng nhập liệu và \(X_\mathrm{Af}\). Tỉ số tổng thể tích hệ (1) so với hệ (2) (Q4.17):`;
+R1[6].sys=[{t:'(1) 5 CSTR nối tiếp',s:['',K(''),'',K(''),'',K(''),'',K(''),'',K(''),'X_Af']},{t:'(2) 1 PFR',s:['',O(''),'X_Af']}];
+R1[8].q=R`Cùng dòng nhập liệu, \(n > 0\), cả hai hệ đạt \(X_\mathrm{A} = 0{,}8\). So sánh thể tích (Q4.11):`;
+R1[8].sys=[{t:'(1)',s:['υ_o',K('V_1'),'X_A1 = 0,8']},{t:'(2)',s:['υ_o',K('V_2'),'',K('V_2'),'X_A2 = 0,8']}];
+
+R3[0].ctx=R`Phản ứng sơ đẳng <b>bậc nhất</b> A → R, hai CSTR đẳng nhiệt nối tiếp (Q4.21).`;
+R3[0].sys=[{s:['X_Ao = 0',K('V_1'),'X_A1 = 0,4',K('V_2'),'X_A2 = 0,8']}];
+R3[1].ctx=R`Phản ứng sơ đẳng <b>bậc hai</b> A → R, hai CSTR đẳng nhiệt nối tiếp (Q4.22).`;
+R3[1].sys=R3[0].sys;
+R3[2].ctx=R`Phản ứng bậc nhất A → R trong hai CSTR riêng biệt, cùng \(C_\mathrm{Ao}\) và \(v_\mathrm{o}\) (Q4.23).`;
+R3[2].sys=[{t:'(1)',s:['C_Ao, υ_o',K('V_1'),'C_A1 = 20 % C_Ao']},{t:'(2)',s:['C_Ao, υ_o',K('V_2'),'C_A2 = 90 % C_Ao']}];
+R3[3].ctx=R`Thủy phân anhydrit axetic, \((-r_\mathrm{A}) = 0{,}158C_\mathrm{A}\) (mol·L⁻¹·min⁻¹), ba CSTR nối tiếp (VD 4.7).`;
+R3[3].sys=[{s:['υ_o = 0,4 L/min',K('1 L'),'X_A1',K('2 L'),'X_A2',K('1,5 L'),'X_A3 = ?']}];
+R3[4].ctx=R`Ba CSTR giống nhau nối tiếp, phản ứng bậc nhất \(k = 4\cdot10^{-3}\ \mathrm{s^{-1}}\) (VD 4.8).`;
+R3[4].sys=[{s:['C_Ao',K('τ_i'),'',K('τ_i'),'',K('τ_i'),'X_A3 = 0,95']}];
+R3[5].ctx=R`Phản ứng bậc nhất, cùng dòng nhập liệu, ba hệ cùng đạt \(X_\mathrm{Af} = 0{,}8\).`;
+R3[5].sys=[{t:'(1)',s:['',K(''),'0,8']},{t:'(2)',s:['',K(''),'',K(''),'0,8']},{t:'(3)',s:['',O(''),'0,8']}];
+R3[5].qq=R`Tỉ lệ \(k\tau\) toàn hệ (1) : (2) : (3):`;
+R3[6].ctx=R`Phản ứng bậc hai A + B → R trong PFR, \(V\) = const, cùng \(kC_\mathrm{Ao}\tau = 2\).`;
+R3[6].sys=[{t:'(1) M = 1',s:['C_Bo/C_Ao = 1',O(''),'X_A = 0,67']},{t:'(2) M = 2',s:['C_Bo/C_Ao = 2',O(''),'X_A = ?']}];
+
+const SQ=(a,b,c)=>['X_A = 0',a,'0,5',b,'0,7',c,'0,9'];
+R4[0].eq='';R4[0].o=[{s:SQ(O(),K(),O())},{s:SQ(K(),O(),O())},{s:SQ(O(),K(),K())},{s:SQ(K(),O(),K())}];
+R4[1].ctx='Hệ 3 TBPU nối tiếp (Q4.19):';R4[1].eq='';R4[1].sys=[{s:['X_A = 0',K(),'0,5',K(),'0,7',O(),'0,85']}];
+R4[2].ctx=R`Phản ứng bậc nhất, đồ thị \(1/(-r_\mathrm{A})\) có đơn vị L·min/mol.`;R4[2].eq='';R4[2].sys=[{s:['F_Ao = 2 mol/min',K('V_1'),'X_A1 = 0,5',K('V_2'),'X_A2 = 0,8']}];
+[3,4,5].forEach(i=>{const o=R4[i].o;R4[i].o=[{s:['',K(''),'X_Af']},{s:['',O(''),'X_Af']},{s:['',K(''),'',K(''),'',K(''),'X_Af']},i===3?o[3]:{s:['',O(''),'',O(''),'',O(''),'X_Af']}];});
+R4[6].o=[{s:['0',O(''),'0,9']},{s:['0',K(''),'0,9']},{s:['0',K(''),'0,6',O(''),'0,9']},{s:['0',O(''),'0,6',K(''),'0,9']}];
+
+PN[0].items[0][0]={s:['',O(''),'',O(''),'',O(''),''],t:'PFR mắc nối tiếp'};
+PN[0].items[1][0]={s:{par:[['',O('V_1'),''],['',O('V_2'),'']],i:'',o:''},t:'PFR song song, chia dòng tỉ lệ thể tích'};
+PN[0].items[2][0]={s:{par:[['υ_o/2',K(''),''],['υ_o/2',K(''),'']],i:'υ_o',o:''},t:'CSTR giống nhau song song'};
+PN[0].items[3][0]={s:['',K(''),'',K(''),'',K(''),''],t:'CSTR mắc nối tiếp'};
+PN[0].items[5][0]={s:['',K(''),'',O(''),''],t:'CSTR rồi PFR'};
+PN[0].items[6][0]={s:['',O(''),'',K(''),''],t:'PFR rồi CSTR'};
+
+R4[0].o1=true;R4[6].o1=true;
+
+/* ================= ĐIỀU KHIỂN GAME · 2 chế độ: Nhiều đội / Cả lớp ================= */
+const KEY='ktpu-c4-dau-truong-v2';
+/* ---- Chế độ LÀM BÀI Ở NHÀ: link ?nha=<mã triển khai Apps Script>[&bai=<tên đợt>] ---- */
+const GAME='KTPU-C4 Đấu trường Hệ thiết bị';
+const GS_URL='https://script.google.com/macros/s/AKfycbw9J5bx5x6UhP26abUrmKzSHryfJ8UZ1-g-JCUsqzXwZHKlVYzWUcN-g2oVEu8jRslsLw/exec';                       /* (tùy chọn) dán URL …/exec vào đây thì link chỉ cần ?nha=1 */
+const QP=new URLSearchParams(location.search);
+const NHA_ID=(QP.get('nha')||'').trim(),NHA=!!NHA_ID,BAI=(QP.get('bai')||'').trim();
+const GS=/^https:\/\/script\.google(usercontent)?\.com\//.test(NHA_ID)?NHA_ID:NHA_ID.length>20?`https://script.google.com/macros/s/${NHA_ID}/exec`:GS_URL;
+const SKEY=NHA?KEY+'-nha':KEY;
+const LET=['A','B','C','D','E','F','G','H'];
+const OC=['var(--oA)','var(--oB)','var(--oC)','var(--oD)'];
+const TCOL=['var(--t0)','var(--t1)','var(--t2)','var(--t3)'];
+const RK=['r1','r2','pn','r3','r4','r5'];
+const RD={r1:{n:1,name:'Khởi động',tab:'Khởi động',pts:10,rc:'#F26B3A',rc2:'#FFB13B'},
+  r2:{n:2,name:'Lật thẻ ghép đôi',tab:'Ghép đôi',pts:10,rc:'#8B5CF6',rc2:'#D946EF'},
+  pn:{n:3,name:'Phân nhóm',tab:'Phân nhóm',pts:10,rc:'#E0457B',rc2:'#FF8A4C'},
+  r3:{n:4,name:'Thám tử thiết bị',tab:'Thám tử',pts:20,rc:'#0EA5A0',rc2:'#22C55E'},
+  r4:{n:5,name:'Diện tích bí ẩn',tab:'Diện tích',pts:20,rc:'#2F7DE1',rc2:'#06B6D4'},
+  r5:{n:6,name:'Về đích',tab:'Về đích',pts:30,rc:'#E3A008',rc2:'#F26B3A'}};
+const VIEWS=['home',...RK,'kq','end'];
+const TDEF={r1:20,r2:20,pn:20,r3:45,r4:40,r5:60};
+const BK=r=>({r1:R1,r3:R3,r4:R4,r5:R5})[r];
+const $=s=>document.querySelector(s);
+const LOP=()=>S.mode==='lop';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const NB=s=>String(s).split(/(\\\(.*?\\\))/s).map((p,k)=>k%2?`<span class="nw">${p}</span>`:p.replace(/ ([=→⇄⇌+≠−<>]) /g,'\u00A0$1\u00A0').replace(/\S+(?:\u00A0[=→⇄⇌+≠−<>]\u00A0\S+)+/g,m=>`<span class="nw">${m}</span>`)).join('');
+function fit(){document.querySelectorAll('.card .f').forEach(el=>{el.style.fontSize='';let fs=parseFloat(getComputedStyle(el).fontSize),k=0;while(el.scrollHeight>el.clientHeight+1&&fs>10&&k++<20){fs-=1;el.style.fontSize=fs+'px';}});}
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const RM=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+const half=r=>Math.round(RD[r].pts/2);
+
+function freshRound(r){return {r1:{i:0,q:{}},r3:{i:0,q:{}},r4:{i:0,q:{}},r5:{i:0,q:{},starUsed:[false,false,false,false]},
+  r2:{b:0,decks:{},m:{},turn:0,open:false},pn:{b:0,ord:{},m:{},turn:0,sel:null}}[r];}
+const fst=()=>({ok:0,bad:0,pts:0,run:0,best:0});
+function fresh(){const s={mode:'lop',teams:[0,1,2,3].map(i=>({name:'Đội '+(i+1)})),size:40,roster:[],called:[],view:'home',kq:'r1',mute:false,sc:{},st:{}};
+  RK.forEach(r=>{s[r]=freshRound(r);s.sc[r]=[0,0,0,0];s.st[r]=fst();});return s;}
+let S;try{S=JSON.parse(localStorage.getItem(SKEY))||fresh();}catch(_){S=fresh();}
+if(!S.pn||!S.st||!S.sc)S=fresh();
+if(NHA)S.mode='lop';
+function save(){try{localStorage.setItem(SKEY,JSON.stringify(S));}catch(_){}}
+const HIST=[];function snap(){HIST.push(JSON.stringify(S));if(HIST.length>60)HIST.shift();}
+function undo(){if(!HIST.length)return;S=JSON.parse(HIST.pop());save();render();}
+const CR=()=>RK.includes(S.view)?S.view:(S.view==='kq'?S.kq:null);
+const tot=t=>RK.reduce((a,r)=>a+S.sc[r][t],0);
+
+/* ---------- âm thanh ---------- */
+let AC=null;
+function tone(fr,dur,type='sine',vol=.12,delay=0,to=null){if(S.mute)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+  const o=AC.createOscillator(),g=AC.createGain();o.type=type;const t=AC.currentTime+delay;o.frequency.setValueAtTime(fr,t);if(to)o.frequency.exponentialRampToValueAtTime(to,t+dur);
+  g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+dur+.02);}catch(_){}}
+const sGood=big=>{[523,659,784,1047].forEach((f,k)=>tone(f,.2,'triangle',.14,k*.075));tone(1568,.4,'sine',.07,.32);tone(2093,.3,'sine',.05,.42);
+  if(big)[784,988,1175,1568,1976].forEach((f,k)=>tone(f,.25,'square',.045,.55+k*.09));};
+const sBad=()=>{tone(330,.22,'sawtooth',.08,0,247);tone(247,.5,'sawtooth',.08,.22,140);tone(90,.35,'square',.05,.22);};
+const sTick=()=>tone(1200,.04,'square',.035);
+const sSel=()=>tone(660,.07,'triangle',.07,0,990);
+const sFlip=()=>tone(420,.09,'triangle',.07,0,700);
+const sWin=()=>{[[523,0],[523,.14],[523,.28],[698,.42],[880,.62],[784,.78],[1047,.98]].forEach(([f,d])=>tone(f,.28,'triangle',.13,d));[262,330,392].forEach(f=>tone(f,1.2,'sine',.05,.98));};
+const sEnd=()=>{tone(440,.2,'triangle');tone(440,.2,'triangle',.12,.3);tone(330,.5,'triangle',.12,.6);};
+
+/* ---------- hiệu ứng ---------- */
+const PAL=['#F26B3A','#FFB13B','#22C55E','#2F7DE1','#8B5CF6','#E0457B','#06B6D4','#FACC15'];
+const FX={parts:[],run:false};
+function confetti(x,y,n=120,pow=1){if(RM())return;const c=$('#fxc');c.width=innerWidth;c.height=innerHeight;
+  for(let k=0;k<n;k++){const a=Math.random()*Math.PI*2,v=(4+Math.random()*10)*pow;
+    FX.parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-7*pow,s:6+Math.random()*8,r:Math.random()*6,vr:(Math.random()-.5)*.35,c:pick(PAL),sh:k%3,life:0});}
+  if(!FX.run){FX.run=true;requestAnimationFrame(fxLoop);}}
+function fxLoop(){const c=$('#fxc'),g=c.getContext('2d');g.clearRect(0,0,c.width,c.height);
+  FX.parts=FX.parts.filter(p=>p.y<c.height+40&&p.life<260);
+  FX.parts.forEach(p=>{p.life++;p.vy+=.32;p.vx*=.985;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;g.save();g.translate(p.x,p.y);g.rotate(p.r);g.fillStyle=p.c;
+    if(p.sh===0)g.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);else if(p.sh===1){g.beginPath();g.arc(0,0,p.s/2.6,0,7);g.fill();}
+    else{g.beginPath();for(let i=0;i<5;i++){const a=i*1.2566-1.5708;g.lineTo(Math.cos(a)*p.s/1.6,Math.sin(a)*p.s/1.6);g.lineTo(Math.cos(a+.628)*p.s/3.4,Math.sin(a+.628)*p.s/3.4);}g.fill();}
+    g.restore();});
+  if(FX.parts.length)requestAnimationFrame(fxLoop);else{FX.run=false;g.clearRect(0,0,c.width,c.height);}}
+const PRAISE=[['🎉','Chính xác!'],['🌟','Tuyệt vời!'],['🚀','Xuất sắc!'],['🏆','Quá đỉnh!'],['💯','Chuẩn luôn!'],['👏','Hoan hô!']];
+const OOPS=[['🤔','Chưa đúng rồi!'],['😅','Suýt nữa thôi!'],['💡','Nghĩ thêm chút nhé!'],['🙈','Ối, chưa phải!']];
+let popT=null;
+function pop(kind,sub,big){const d=$('#pop'),[e,t]=kind==='ok'?pick(PRAISE):pick(OOPS);
+  d.className='pop '+kind+(big?' big':'');d.innerHTML=`<div class="pe">${e}</div><div class="pt">${t}</div>${sub?`<div class="ps">${sub}</div>`:''}`;
+  void d.offsetWidth;d.classList.add('go');const m=/\\\(/.test(sub||'');if(m)tset(d);clearTimeout(popT);popT=setTimeout(()=>d.classList.remove('go'),big||m?3200:1700);}
+function flash(kind){const f=$('#flash');f.className='flash '+kind;void f.offsetWidth;f.classList.add('go');}
+function shake(el){if(!el||RM())return;el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');}
+function floatTxt(el,txt){if(!el)return;const r=el.getBoundingClientRect(),s=document.createElement('span');s.className='fpt';s.textContent=txt;
+  s.style.left=(r.left+r.width/2)+'px';s.style.top=(r.top+r.height/2)+'px';document.body.appendChild(s);setTimeout(()=>s.remove(),1400);}
+const ctr=el=>{const r=el?el.getBoundingClientRect():{left:innerWidth/2,top:innerHeight/2,width:0,height:0};return [r.left+r.width/2,r.top+r.height/2];};
+function good(el,sub,{big=false,pts=''}={}){sGood(big);const [x,y]=ctr(el);confetti(x,y,big?240:120,big?1.25:1);if(big)setTimeout(()=>confetti(innerWidth*.2,innerHeight*.35,90),250),setTimeout(()=>confetti(innerWidth*.8,innerHeight*.35,90),450);
+  pop('ok',sub,big);flash('ok');if(pts)floatTxt(el,pts);}
+function bad(el,sub){sBad();shake(el);pop('bad',sub);flash('bad');}
+function celebrate(){sWin();if(RM())return;[.15,.5,.85].forEach((x,k)=>setTimeout(()=>confetti(innerWidth*x,innerHeight*.3,140,1.3),k*280));}
+
+/* ---------- gọi sinh viên ngẫu nhiên ---------- */
+const RL=()=>Array.isArray(S.roster)?S.roster:[];
+function callSV(){const L=RL(),n=L.length||Math.max(1,+S.size||40);let pool=Array.from({length:n},(_,i)=>i+1).filter(x=>!S.called.includes(x));if(!pool.length){S.called=[];pool=Array.from({length:n},(_,i)=>i+1);}
+  const res=pick(pool),box=$('#call'),cn=box.querySelector('.cn'),cl=box.querySelector('.cl');box.hidden=false;box.classList.remove('done');box.classList.toggle('nm',!!L.length);
+  cl.textContent=L.length?'🎲 Mời bạn':'🎲 Mời sinh viên số';box.querySelector('.cs').textContent='Đang quay…';let k=0;
+  const cm=box.querySelector('.cm');const show=x=>{if(!L.length){cn.textContent=x;cm.textContent='';return;}const t=L[x-1],m=t.match(/^(?:\d{1,3}[.)]\s*)?(\d{5,})\s*[–-]?\s*(.+)$/);cn.textContent=m?m[2]:t;cm.textContent=m?'MSSV '+m[1]:'';};
+  const spin=setInterval(()=>{show(1+Math.floor(Math.random()*n));sTick();if(++k>=(RM()?1:22)){clearInterval(spin);show(res);box.classList.add('done');
+    S.called.push(res);save();box.querySelector('.cs').textContent=`${L.length?`STT ${res} · `:''}Đã gọi ${S.called.length}/${n} bạn · bấm vào đây để đóng`;sGood();confetti(innerWidth/2,innerHeight*.45,90);}},75);}
+function setRoster(txt){S.roster=txt.split(/\r?\n/).map(x=>x.replace(/\t+/g,' – ').replace(/\s+/g,' ').trim()).filter(Boolean);S.called=[];save();
+  const c=$('#rcount');if(c)c.textContent=S.roster.length?`${S.roster.length} sinh viên · gọi theo tên`:'Chưa có danh sách · gọi theo số thứ tự';const z=$('#size');if(z)z.disabled=!!S.roster.length;}
+
+/* ---------- MathJax ---------- */
+function tset(el){if(!window.__mjReady||!window.MathJax||!MathJax.typesetPromise)return Promise.resolve();
+  try{MathJax.typesetClear&&MathJax.typesetClear([el]);}catch(_){}return MathJax.typesetPromise([el]).catch(()=>{});}
+window.__typeset=()=>tset(document.body);
+
+/* ---------- đồng hồ ---------- */
+const TM={left:0,total:0,run:false,h:null};
+function tStart(sec){if(sec)TM.left=TM.total=sec;if(TM.left<=0)TM.left=TM.total;TM.run=true;clearInterval(TM.h);
+  TM.h=setInterval(()=>{TM.left--;if(TM.left<=0){TM.left=0;TM.run=false;clearInterval(TM.h);sEnd();}else if(TM.left<=5)tone(880,.06,'square',.04);paintTimer();},1000);paintTimer();}
+function tPause(){TM.run=false;clearInterval(TM.h);paintTimer();}
+function tReset(sec){tPause();TM.left=TM.total=sec;paintTimer();}
+function paintTimer(){const el=$('#tm');if(!el)return;const m=Math.floor(TM.left/60),s=TM.left%60;el.textContent=m+':'+String(s).padStart(2,'0');
+  el.classList.toggle('low',TM.left<=5&&TM.total>0);const b=$('#tmb');if(b)b.textContent=TM.run?'⏸ Tạm dừng':'⏱ Bắt đầu giờ';}
+const timerBtns=()=>`<span class="timer" id="tm"></span><button class="btn" id="tmb"></button>`;
+const callBtn=()=>LOP()&&!NHA?`<button class="btn call" id="callsv" title="Phím G">🎲 Gọi sinh viên</button>`:'';
+const undoBtn=()=>`<button class="btn" id="undo" ${HIST.length?'':'disabled'}>↶ Hoàn tác</button>`;
+
+/* ---------- khung chung ---------- */
+function renderTabs(){$('#tabs').innerHTML=VIEWS.filter(v=>v!=='kq').map(v=>{const d=RD[v];
+  return `<button data-go="${v}" ${S.view===v||(S.view==='kq'&&S.kq===v)?'aria-current="page"':''} style="--rc:${d?d.rc:'#FACC15'}">${d?`<i>${d.n}</i>${d.tab}`:v==='home'?'🏠 Bắt đầu':'🏁 Tổng kết'}</button>`;}).join('');}
+function renderBoard(bump=[]){const r=CR(),b=$('#board');
+  if(LOP()){if(!r){const T=RK.reduce((a,x)=>a+S.st[x].pts,0);b.innerHTML=`<div class="clsb"><span class="cl-l">Điểm cả lớp</span><b class="cl-s">${T}</b></div>`;return;}
+    const st=S.st[r];b.innerHTML=`<div class="clsb${bump.length?' bump':''}"><span class="cl-l">Điểm vòng ${RD[r].n}</span><b class="cl-s">${st.pts}</b>
+      <span class="okc" title="Số lần đúng">✔ ${st.ok}</span><span class="bdc" title="Số lần sai">✘ ${st.bad}</span>${st.run>=2?`<span class="run">🔥 ${st.run}</span>`:''}</div>`;return;}
+  const turnT=r==='r2'?S.r2.turn:r==='pn'?S.pn.turn:-1;
+  b.innerHTML=`<div class="board4">${S.teams.map((t,i)=>`<div class="team${i===turnT?' turn':''}${bump.includes(i)?' bump':''}" style="--tc:${TCOL[i]}">
+   ${S.r5.starUsed[i]?'':`<span class="star" title="Còn ngôi sao hy vọng">★</span>`}
+   <span class="nm">${esc(t.name)}</span><span class="sc">${r?S.sc[r][i]:tot(i)}</span>
+   <span class="sub">${r?`Tổng ${tot(i)}`:'Tổng điểm'}</span>
+   ${r?`<span class="adj"><button data-adj="${i}:-10" aria-label="Trừ 10 điểm ${esc(t.name)}">−10</button><button data-adj="${i}:10" aria-label="Cộng 10 điểm ${esc(t.name)}">+10</button></span>`:''}</div>`).join('')}</div>`;}
+function go(v){if(!VIEWS.includes(v))v='home';S.view=v;if(NHA&&RK.includes(v)){S.t0??={};S.t0[v]??=Date.now();}save();tReset(TDEF[CR()]||0);
+  if(location.hash.slice(1)!==v){try{history.replaceState(null,'','#'+v);}catch(_){location.hash=v;}}render();if(v==='kq'||v==='end')celebrate();}
+function render(){if(NHA&&!S.sv)return vLogin();renderTabs();renderBoard();const st=$('#stage'),r=CR();
+  st.style.setProperty('--rc',r?RD[r].rc:'#4B2A8C');st.style.setProperty('--rc2',r?RD[r].rc2:'#E0457B');
+  ({home:vHome,r1:()=>vMC('r1'),r3:()=>vMC('r3'),r4:()=>vMC('r4'),r2:vMem,pn:vPN,r5:vFinal,kq:vKQ,end:vEnd}[S.view]||vHome)();
+  tset(st).then(fit);fit();paintTimer();}
+function head(r,cnt,done,total,rule){const d=RD[r];const pc=total?Math.round(100*done/total):0;
+  return `<div class="rhead"><span class="rnum">Vòng ${d.n}</span><h1>${d.name}</h1><span class="qcount">${cnt}</span>
+   <span class="prog" title="Tiến độ vòng"><i style="width:${pc}%"></i></span><span class="rule">${rule}</span></div>`;}
+
+/* ---------- Trang chủ ---------- */
+const DESC={r1:'CSTR hay PFR, nối tiếp – song song, tỉ lệ M',r2:'Hệ CSTR nối tiếp, kết luận so sánh, hệ khác loại',pn:'Đổi đặc điểm hoạt động? Bình nào nhỏ hơn? X_Af tăng hay giảm?',r3:'Tính nhanh V₂/V₁, X_A của hệ nhiều bình',r4:'Đọc diện tích của hệ nhiều TBPU trên đồ thị Levenspiel',r5:'Sắp thứ tự bước thiết lập, tìm dòng sai'};
+const cntQ=r=>r==='r2'?R2.reduce((a,b)=>a+b.pairs.length,0):r==='pn'?PN.reduce((a,b)=>a+b.items.length,0):BK(r).length;
+function vHome(){const lop=LOP();
+  $('#stage').innerHTML=`<div class="home"><div class="hero"><h1>Đấu trường<br><span>Hệ thiết bị</span></h1>
+    <p>Sáu trò chơi về so sánh thiết bị phản ứng đơn và hệ nhiều thiết bị mắc nối tiếp, song song, theo chương 4 sách bài tập Kỹ thuật phản ứng. Mỗi vòng tính điểm riêng và có tổng kết đúng / sai.</p>
+    <div class="modes" role="group" aria-label="Chế độ chơi">
+     <button data-mode="lop" aria-pressed="${lop}"><span class="me">🙋</span><b>Cả lớp</b><span>Giáo viên gọi sinh viên phát biểu rồi bấm đáp án; hiệu ứng đúng / sai; điểm chung của lớp</span></button>
+     <button data-mode="thi" aria-pressed="${!lop}"><span class="me">🏁</span><b>Nhiều đội thi</b><span>4 đội giơ thẻ A–D hoặc giành quyền; trang cộng điểm từng đội theo từng vòng</span></button></div>
+    ${lop?`<div class="setup1"><label class="rost">Danh sách lớp (dán vào, mỗi dòng một sinh viên; dán thẳng từ Excel được)
+      <textarea id="roster" rows="5" placeholder="2001230001 Nguyễn Văn An&#10;2001230002 Trần Thị Bình&#10;…">${esc(RL().join('\n'))}</textarea></label>
+      <div class="rrow"><span id="rcount" class="hint">${RL().length?`${RL().length} sinh viên · gọi theo tên`:'Chưa có danh sách · gọi theo số thứ tự'}</span>
+      <label class="sz">hoặc sĩ số <input id="size" type="number" min="1" max="300" value="${S.size}" ${RL().length?'disabled':''}></label>
+      <button class="btn" id="recall">↻ Gọi lại từ đầu</button></div>
+      <p class="hint">Bấm <b>🎲 Gọi sinh viên</b> (phím G): trang quay tên (hoặc số thứ tự nếu chưa dán danh sách), không gọi trùng cho đến khi gọi hết lớp. Sinh viên trả lời, giáo viên bấm vào phương án sinh viên chọn (hoặc phím A–D).
+      Đúng ngay: +điểm đủ; đúng sau khi đã có bạn sai: +nửa số điểm. Đúng liên tiếp tạo <b>🔥 chuỗi</b>. Nút <b>💡 Gợi ý</b> mở câu hỏi gợi mở.</p></div>`
+     :`<div class="setup">${S.teams.map((t,i)=>`<label style="--tc:${TCOL[i]}">Đội ${i+1}<input data-tn="${i}" value="${esc(t.name)}" maxlength="22"></label>`).join('')}</div>
+      <p class="hint">Vòng 1, 4, 5: mỗi đội giơ thẻ, giáo viên bấm chữ cái từng đội rồi <b>Công bố</b>. Vòng 2, 3: các đội lần lượt chơi, đúng thì chơi tiếp, sai thì chuyển lượt. Vòng 6: giành quyền trả lời, có ngôi sao hy vọng.</p>
+      <div class="cards4">Thẻ mỗi đội: ${LET.slice(0,4).map((l,i)=>`<i style="--oc:${OC[i]}">${l}</i>`).join('')}</div>`}
+   </div>
+   <div class="rounds">${RK.map(r=>{const d=RD[r],st=S.st[r],has=st.ok+st.bad;return `<button class="rnd" data-go="${r}" style="--rc:${d.rc};--rc2:${d.rc2}"><span class="n">${d.n}</span>
+     <span><b>${d.name}</b><br><span>${DESC[r]}</span></span><span class="pts">${has?`✔ ${st.ok} · ✘ ${st.bad}`:`${cntQ(r)} ${r==='r2'?'cặp':'câu'} · ${d.pts} đ`}</span></button>`;}).join('')}
+    <div id="rst"></div></div></div>`;
+  $('#ctrl').innerHTML=`<button class="btn pri" data-go="r1">▶ Bắt đầu vòng 1</button>${callBtn()}<span class="sp"></span>
+   <button class="btn" id="mute">${S.mute?'🔇 Bật âm thanh':'🔊 Tắt âm thanh'}</button><button class="btn" id="resetAsk">Chơi lại tất cả</button>`;}
+
+/* ---------- Trắc nghiệm (vòng 1, 4, 5) ---------- */
+function qs(r,i){const o=S[r].q;if(!o[i])o[i]={pick:[null,null,null,null],tried:[],done:false,hint:false};return o[i];}
+function vMC(r){const B=BK(r),i=Math.min(S[r].i,B.length-1),it=B[i],q=qs(r,i),lop=LOP(),fin=q.done;
+  const opt=(o,k)=>{const right=fin&&k===it.a,wrong=q.tried.includes(k)||(fin&&!lop&&k!==it.a&&q.pick.includes(k));
+    const who=!lop&&fin?S.teams.map((t,ti)=>q.pick[ti]===k?`<span class="chip" style="--tc:${TCOL[ti]}">${esc(t.name)}</span>`:'').join(''):'';
+    const tag=lop?'button':'div';
+    return `<${tag} class="opt${right?' right':''}${wrong?' wrong':''}${fin&&!right&&!wrong?' dim':''}" ${lop?`data-ans="${k}" ${fin||q.tried.includes(k)?'disabled':''}`:''} style="--oc:${OC[k]}">
+      <span class="lt">${LET[k]}</span><span class="ot">${OPT(it,o,k)}</span><span class="who">${who}</span></${tag}>`;};
+  let body='';
+  if(r==='r3')body=`<p class="ctx big">${it.ctx}</p>${sysBox(it)}<div class="v3${it.head?'':' nt'}">${it.head?`<div class="dtw"><table class="dt"><thead><tr>${it.head.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${it.rows.map(rw=>`<tr>${rw.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:''}
+    <div><p class="qbox sm">${it.qq||'Chọn cách làm phù hợp:'}</p><div class="opts">${it.o.map(opt).join('')}</div></div></div>`;
+  else if(r==='r4')body=`<div class="v4"><div><div class="qcard"><p class="ctx big">${it.ctx}</p>${sysBox(it)}${it.eq?`<p class="qbox eq">${it.eq}</p>`:''}</div>
+    <div class="plotw"><svg id="plot" viewBox="0 0 600 340" role="img" aria-label="Đồ thị Levenspiel"></svg>
+    <div class="axl"><span>Trục tung: ${it.ax.yl}</span><span>Trục hoành: ${it.ax.xl}</span></div></div></div>
+    <div><p class="qq">${it.qq}</p><div class="opts${typeof it.o[0]==='string'?'':it.o1?' g1':' g'}">${it.o.map(opt).join('')}</div></div></div>`;
+  else body=`<p class="qbox">${it.q}</p>${sysBox(it)}<div class="opts">${it.o.map(opt).join('')}</div>`;
+  const done=Object.values(S[r].q).filter(x=>x.done).length;
+  const rule=lop?`Gọi sinh viên trả lời, bấm vào phương án bạn ấy chọn. Đúng ngay: +${RD[r].pts}; đúng sau lượt sai: +${half(r)}.`:`Mỗi đội giơ thẻ A–D; bấm chữ cái từng đội rồi Công bố. Đúng: +${RD[r].pts} điểm.`;
+  $('#stage').innerHTML=head(r,`Câu ${i+1}/${B.length}`,done,B.length,rule)+body+
+   (q.hint&&it.ask&&!fin?`<div class="why ask"><b class="h">💡 Gợi ý.</b> ${it.ask}</div>`:'')+
+   (fin?`<div class="why"><b class="h">Đáp án ${LET[it.a]}.</b> ${it.why}</div>`:'')+
+   (lop?'':`<div class="picks">${S.teams.map((t,ti)=>`<div class="pk${fin&&q.pick[ti]!==null?(q.pick[ti]===it.a?' ok':' no'):''}" style="--tc:${TCOL[ti]}"><span class="tn">${esc(t.name)}</span>
+     ${it.o.map((_,k)=>`<button data-pick="${ti}:${k}" aria-pressed="${q.pick[ti]===k}" style="--oc:${OC[k]}" ${fin?'disabled':''} aria-label="${esc(t.name)} chọn ${LET[k]}">${LET[k]}</button>`).join('')}</div>`).join('')}</div>`);
+  $('#ctrl').innerHTML=`${timerBtns()}${callBtn()}${lop&&it.ask&&!fin?`<button class="btn" id="hint">💡 Gợi ý</button>`:''}<span class="sp"></span>
+   <button class="btn" data-nav="-1" ${i===0?'disabled':''}>‹ Câu trước</button>
+   <button class="btn gold" id="reveal" ${fin?'disabled':''}>${lop?'Xem đáp án':'Công bố'}</button>
+   <button class="btn pri" data-nav="1">${i===B.length-1?'Kết thúc vòng 🏁':'Câu tiếp ›'}</button>${undoBtn()}`;
+  if(r==='r4')requestAnimationFrame(()=>drawLev(it,fin?1:0));}
+function answer(k){const r=S.view;if(!['r1','r3','r4'].includes(r)||!LOP())return;const it=BK(r)[S[r].i],q=qs(r,S[r].i);if(q.done||q.tried.includes(k)||k>=it.o.length)return;snap();const st=S.st[r];
+  if(k===it.a){const first=!q.tried.length,p=first?RD[r].pts:half(r);q.done=true;st.ok++;st.pts+=p;if(first){st.run++;st.best=Math.max(st.best,st.run);}else st.run=0;
+    save();tPause();render();renderBoard([0]);const el=$(`[data-ans="${k}"]`);good(el,st.run>=3&&first?`🔥 Chuỗi ${st.run} câu đúng liên tiếp!`:(first?'Trả lời đúng ngay lần đầu':'Sửa sai thành công'),{big:first&&st.run>=3,pts:'+'+p});
+    if(r==='r4')animPlot(it);}
+  else{q.tried.push(k);st.bad++;st.run=0;save();render();bad($(`[data-ans="${k}"]`),'Mời bạn khác trả lời');}}
+function reveal(){const r=S.view;if(!['r1','r3','r4'].includes(r))return;const it=BK(r)[S[r].i],q=qs(r,S[r].i);if(q.done)return;snap();q.done=true;tPause();
+  if(LOP()){q.shown=true;S.st[r].run=0;save();render();if(r==='r4')animPlot(it);return;}
+  const win=[];q.pick.forEach((p,t)=>{if(p===null)return;if(p===it.a){S.sc[r][t]+=RD[r].pts;win.push(t);S.st[r].ok++;}else S.st[r].bad++;});
+  save();render();renderBoard(win);if(r==='r4')animPlot(it);const el=$('.opt.right');
+  if(win.length)good(el,win.map(t=>esc(S.teams[t].name)).join(', ')+` +${RD[r].pts}`,{big:win.length===4,pts:'+'+RD[r].pts});
+  else{sBad();pop('bad','Chưa đội nào đúng');flash('bad');}}
+
+/* ---------- đồ thị Levenspiel (hệ nhiều TBPU) ---------- */
+const fmt=(v,d)=>String(+(+v).toFixed(d)).replace('.',',');
+function levG(it,W,H,L,Rr,T,Bt){const A=it.ax,pw=W-L-Rr,ph=H-T-Bt;
+  return {pw,ph,X:x=>L+(x-A.x0)/(A.x1-A.x0)*pw,Y:y=>H-Bt-Math.min(y,A.y1)/A.y1*ph};}
+function crvF(fn,a,b,X,Y,n=90){const p=[];for(let k=0;k<=n;k++){const x=a+(b-a)*k/n;p.push([X(x),Y(fn(x))]);}return p;}
+function shp(it,sh,X,Y){const fn=sh.f2?it.f2:it.f;if(sh.k==='R'){const y=Y(fn(sh.h));return `M${X(sh.a)},${Y(0)} V${y} H${X(sh.b)} V${Y(0)} Z`;}
+  const p=crvF(fn,sh.a,sh.b,X,Y,60);return `M${X(sh.a)},${Y(0)} `+p.map(q=>'L'+q[0].toFixed(1)+','+q[1].toFixed(1)).join(' ')+` L${X(sh.b)},${Y(0)} Z`;}
+const HC={b:'#2E86AB',o:'#E07A1F',r:'#D9344A',g:'#1E9E5A'},ANG={b:45,o:-45,r:-45,g:0};
+function pat(id,c,ang){return `<pattern id="${id}" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(${ang})"><rect width="9" height="9" fill="${c}" fill-opacity=".16"/><line x1="0" y1="0" x2="0" y2="9" stroke="${c}" stroke-width="2.4"/></pattern>`;}
+const pdefs=pre=>Object.keys(HC).map(c=>pat(pre+c,HC[c],ANG[c])).join('');
+const shSVG=(it,sh,X,Y,pre,sw)=>{const c=sh.c||'b';return `<path d="${shp(it,sh,X,Y)}" fill="url(#${pre}${c})" stroke="${HC[c]}" stroke-width="${c==='o'?sw*1.3:sw}" ${c==='o'?'stroke-dasharray="9 6"':''}/>`;};
+function axes(W,H,L,Rr,T,Bt,sw){return `<line x1="${L}" y1="${H-Bt}" x2="${W-Rr}" y2="${H-Bt}" stroke="#13213A" stroke-width="${sw}"/><line x1="${L}" y1="${H-Bt}" x2="${L}" y2="${T}" stroke="#13213A" stroke-width="${sw}"/>
+   <path d="M${W-Rr},${H-Bt} l-${3*sw},-${2*sw} v${4*sw}z M${L},${T} l-${2*sw},${3*sw} h${4*sw}z" fill="#13213A"/>`;}
+const curves=(it,X,Y,n,sw)=>{let s=`<polyline points="${crvF(it.f,it.xmin||0,it.xmax,X,Y,n).map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')}" fill="none" stroke="#14325C" stroke-width="${sw}" stroke-linejoin="round"/>`;
+  if(it.f2)s+=`<polyline points="${crvF(it.f2,it.xmin||0,it.xmax,X,Y,n).map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')}" fill="none" stroke="#D9344A" stroke-width="${sw}" stroke-linejoin="round"/>`;return s;};
+function mini(it,g,k){const W=230,H=130,L=14,Rr=10,T=10,Bt=22,{X,Y}=levG(it,W,H,L,Rr,T,Bt),pre='m'+k,gs=Array.isArray(g)?g:[g];
+  return `<svg class="mini" viewBox="0 0 ${W} ${H}" role="img" aria-label="Phương án ${LET[k]}"><defs>${pdefs(pre)}</defs>
+   ${gs.map(sh=>shSVG(it,sh,X,Y,pre,2)).join('')}${axes(W,H,L,Rr,T,Bt,1.6)}${curves(it,X,Y,90,3)}
+   ${it.ax.xt.map(x=>`<text x="${X(x)}" y="${H-5}" font-size="12" text-anchor="middle" fill="#3A4A63">${fmt(x,it.ax.xf)}</text>`).join('')}</svg>`;}
+function drawLev(it,t){const svg=$('#plot');if(!svg)return;const W=600,H=340,L=60,Rr=18,T=16,Bt=40,A=it.ax,{X,Y,pw}=levG(it,W,H,L,Rr,T,Bt);
+  let s=`<defs>${pdefs('p')}<clipPath id="cpl"><rect x="${L}" y="0" width="${Math.max(0,pw*t).toFixed(1)}" height="${H}"/></clipPath></defs>`;
+  s+=(A.yt||[]).map(y=>`<line x1="${L}" x2="${W-Rr}" y1="${Y(y)}" y2="${Y(y)}" stroke="#DCE3EE" stroke-width="1"/><text x="${L-8}" y="${Y(y)+6}" font-size="17" text-anchor="end" fill="#3A4A63">${fmt(y,0)}</text>`).join('');
+  s+=A.xt.map(x=>`<text x="${X(x)}" y="${H-12}" font-size="17" text-anchor="middle" fill="#3A4A63">${fmt(x,A.xf)}</text>`).join('');
+  s+=(it.pre||[]).map(sh=>shSVG(it,sh,X,Y,'p',2.5)).join('');
+  if(t>0)s+=`<g clip-path="url(#cpl)">${it.shade.map(sh=>shSVG(it,sh,X,Y,'p',2.5)).join('')}</g>`;
+  s+=axes(W,H,L,Rr,T,Bt,2.5)+curves(it,X,Y,160,4);
+  if(it.f2){const xe=it.xmax-0.04;s+=`<text x="${X(xe)-8}" y="${Y(it.f(xe))-8}" font-size="20" font-weight="800" fill="#14325C" text-anchor="end">(1)</text><text x="${X(xe)+4}" y="${Y(it.f2(xe))+24}" font-size="20" font-weight="800" fill="#D9344A">(2)</text>`;}
+  s+=it.pts.map(x=>`<circle cx="${X(x).toFixed(1)}" cy="${Y(it.f(x)).toFixed(1)}" r="6" fill="#fff" stroke="#14325C" stroke-width="3"/>`).join('');
+  [].concat(it.guide??[]).forEach(g=>{const y=it.f(g);s+=`<path d="M${X(g)},${Y(0)} V${Y(y)} H${L}" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-dasharray="7 5"/><circle cx="${X(g)}" cy="${Y(y)}" r="6" fill="#7C3AED"/>`;});
+  if(t>=1&&it.leg){let x=L+20;s+=`<g font-size="18" font-weight="700">`+it.leg.map(([c,lb])=>{const g=`<rect x="${x}" y="${T+4}" width="22" height="16" fill="url(#p${c})" stroke="${HC[c]}" stroke-width="2.5" ${c==='o'?'stroke-dasharray="5 3"':''}/><text x="${x+28}" y="${T+18}" fill="#14325C">${lb}</text>`;x+=40+lb.length*10;return g;}).join('')+'</g>';}
+  svg.innerHTML=s;}
+function animPlot(it){const t0=performance.now(),D=1300;
+  const step=now=>{let t=RM()?1:Math.max(0,Math.min(1,(now-t0)/D));drawLev(it,t);if(t<1)requestAnimationFrame(step);};requestAnimationFrame(step);}
+
+/* ---------- vẽ hệ thiết bị (CSTR có cánh khuấy, PFR dạng ống) ---------- */
+let SID=0;
+const lbl=t=>esc(t).replace(/([A-Za-zυτ])_([A-Za-z0-9\u00C0-\u024F\u1E00-\u1EFF]+)/g,'<tspan font-style="italic">$1</tspan><tspan baseline-shift="sub" font-size="72%">$2</tspan>');
+const tw=t=>String(t).replace(/_/g,'').length*8.6;
+function arrow(x1,x2,cy,t){return `<line x1="${x1}" y1="${cy}" x2="${x2-2}" y2="${cy}" stroke="#14325C" stroke-width="2.6" marker-end="url(#ah${SID})"/>`+(t?`<text x="${(x1+x2)/2}" y="${cy-10}" font-size="16" font-weight="600" text-anchor="middle" fill="#14325C">${lbl(t)}</text>`:'');}
+function unitK(x,cy,v){const w=92,t=cy-36,b=cy+42;
+  return {w,s:`<path d="M${x},${t} V${b-16} Q${x},${b} ${x+16},${b} H${x+w-16} Q${x+w},${b} ${x+w},${b-16} V${t}" fill="#fff" stroke="#14325C" stroke-width="2.6"/>
+   <path d="M${x+2},${cy-22} H${x+w-2} V${b-16} Q${x+w-2},${b-2} ${x+w-16},${b-2} H${x+16} Q${x+2},${b-2} ${x+2},${b-16} Z" fill="url(#lq${SID})"/>
+   <line x1="${x+w/2}" y1="${t-16}" x2="${x+w/2}" y2="${cy+22}" stroke="#14325C" stroke-width="3"/><rect x="${x+w/2-9}" y="${t-24}" width="18" height="10" rx="2" fill="#14325C"/>
+   <ellipse cx="${x+w/2-13}" cy="${cy+22}" rx="13" ry="5" fill="#14325C"/><ellipse cx="${x+w/2+13}" cy="${cy+22}" rx="13" ry="5" fill="#14325C"/>
+   ${v?`<text x="${x+w/2}" y="${b+20}" font-size="15" font-weight="700" text-anchor="middle" fill="#14325C">${lbl(v)}</text>`:''}`};}
+function unitO(x,cy,v){const w=140;
+  return {w,s:`<rect x="${x+6}" y="${cy-16}" width="${w-12}" height="32" rx="7" fill="url(#mt${SID})" stroke="#14325C" stroke-width="2.4"/>
+   <rect x="${x}" y="${cy-21}" width="9" height="42" rx="2" fill="#5B6B86" stroke="#14325C" stroke-width="1.6"/><rect x="${x+w-9}" y="${cy-21}" width="9" height="42" rx="2" fill="#5B6B86" stroke="#14325C" stroke-width="1.6"/>
+   ${v?`<text x="${x+w/2}" y="${cy+40}" font-size="15" font-weight="700" text-anchor="middle" fill="#14325C">${lbl(v)}</text>`:''}`};}
+function norm(a){const o=[];let need=true;a.forEach(e=>{if(typeof e==='string'){if(need){o.push(e);need=false;}else o[o.length-1]+=e;}else{if(need)o.push('');o.push(e);need=true;}});if(need)o.push('');return o;}
+function chainS(a,x0,cy){const q=norm(a);let x=x0,s='';q.forEach((e,i)=>{if(typeof e==='string'){const L=Math.max(i===0||i===q.length-1?50:44,tw(e)+18);s+=arrow(x,x+L,cy,e);x+=L;}else{const u=(e.k==='k'?unitK:unitO)(x,cy,e.v);s+=u.s;x+=u.w;}});return {s,w:x-x0};}
+function sysSVG(sp){SID++;let s='',W,H;
+  if(sp.par){const cy=136,d=70,Li=Math.max(50,tw(sp.i||'')+18),xs=6+Li,r1=chainS(sp.par[0],xs,cy-d),r2=chainS(sp.par[1],xs,cy+d),xe=xs+Math.max(r1.w,r2.w),Lo=Math.max(50,tw(sp.o||'')+18);
+    s=arrow(6,xs,cy,sp.i||'')+`<line x1="${xs}" y1="${cy-d}" x2="${xs}" y2="${cy+d}" stroke="#14325C" stroke-width="2.6"/>`+r1.s+r2.s
+     +[r1,r2].map((r,k)=>r.w<xe-xs?`<line x1="${xs+r.w}" y1="${cy+(k?d:-d)}" x2="${xe}" y2="${cy+(k?d:-d)}" stroke="#14325C" stroke-width="2.6"/>`:'').join('')
+     +`<line x1="${xe}" y1="${cy-d}" x2="${xe}" y2="${cy+d}" stroke="#14325C" stroke-width="2.6"/>`+arrow(xe,xe+Lo,cy,sp.o||'');W=xe+Lo+14;H=282;}
+  else{const r=chainS(sp.c||sp,6,62);s=r.s;W=r.w+14;H=134;}
+  return `<svg class="sysv${sp.par?' par':''}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Sơ đồ hệ thiết bị"><defs><marker id="ah${SID}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#14325C"/></marker>
+   <linearGradient id="lq${SID}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9CD3F5"/><stop offset="1" stop-color="#3F8FD8"/></linearGradient>
+   <linearGradient id="mt${SID}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8EDF5"/><stop offset=".45" stop-color="#FFFFFF"/><stop offset="1" stop-color="#8F9BB3"/></linearGradient></defs>${s}</svg>`;}
+const sysBox=it=>it.sys?`<div class="sys">${it.sys.map(p=>`<div class="sysp">${p.t?`<b>${p.t}</b>`:''}${sysSVG(p.s)}</div>`).join('')}</div>`:'';
+const OPT=(it,o,k)=>typeof o==='string'?o:o.s?sysSVG(o.s):mini(it,o.g,k);
+const IT=x=>typeof x==='string'?NB(x):`<span class="pnd">${sysSVG(x.s)}<span>${x.t||''}</span></span>`;
+
+/* ---------- Vòng 2: lật thẻ, hai phía hai màu ---------- */
+function deck(b){if(!S.r2.decks[b]){const n=R2[b].pairs.length,sh=()=>{const a=Array.from({length:n},(_,i)=>i);for(let i=n-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+  S.r2.decks[b]={L:sh(),R:sh()};S.r2.m[b]={};save();}return S.r2.decks[b];}
+let UP=[],LOCK=false;
+function vMem(){const b=S.r2.b,B=R2[b],d=deck(b),m=S.r2.m[b]||{},lop=LOP();UP=[];LOCK=false;
+  const done=R2.reduce((a,_,k)=>a+Object.keys(S.r2.m[k]||{}).length,0),all=cntQ('r2'),tags=B.tags||['Trường hợp','Phương trình'];
+  const card=(side,pos,p)=>{const own=m[p],isDone=own!==undefined,txt=B.pairs[p][side==='L'?0:1],lab=side==='L'?pos+1:LET[pos];
+    return `<button class="card s${side}${isDone||S.r2.open?' up':''}${isDone?' done':''}" data-card="${side}:${pos}" ${isDone&&!lop?`data-team="${esc(S.teams[own].name)}" style="--tc:${TCOL[own]}"`:''} aria-label="Thẻ ${lab}">
+     <span class="in"><span class="b">${lab}</span><span class="f"><span class="tag">${lab}</span><span>${NB(txt)}</span></span></span></button>`;};
+  const rule=lop?`Gọi sinh viên ghép một thẻ cam với một thẻ xanh (ví dụ “3 – E”) và giải thích. Đúng: +${RD.r2.pts}.`:`Đội đến lượt gọi một thẻ cam và một thẻ xanh. Đúng: +${RD.r2.pts} và chơi tiếp; sai thì chuyển lượt. Đang đến lượt: <b style="color:${TCOL[S.r2.turn]}">${esc(S.teams[S.r2.turn].name)}</b>`;
+  $('#stage').innerHTML=head('r2',`${B.name} · ${Object.keys(m).length}/${B.pairs.length} cặp`,done,all,rule)+
+   (Object.keys(m).length===B.pairs.length?`<div class="banner ok">🎊 Đã ghép xong ${B.name}!</div>`:'')+
+   `<div class="mem2"><div class="side sL"><h3>🟧 ${tags[0]}</h3><div class="grid">${d.L.map((p,pos)=>card('L',pos,p)).join('')}</div></div>
+    <div class="side sR"><h3>🟦 ${tags[1]}</h3><div class="grid">${d.R.map((p,pos)=>card('R',pos,p)).join('')}</div></div></div>`;
+  $('#ctrl').innerHTML=`${timerBtns()}${callBtn()}<span class="hint">Bảng:</span>${R2.map((x,k)=>`<button class="btn${k===b?' pri':''}" data-board="${k}">${k+1}</button>`).join('')}
+   ${lop?'':`<button class="btn" id="turn">Chuyển lượt</button>`}<button class="btn" id="openall">${S.r2.open?'Úp thẻ lại':'Mở tất cả'}</button>
+   <span class="sp"></span><button class="btn" id="reshuf">Xáo lại</button>${undoBtn()}<button class="btn pri" id="endr">Kết thúc vòng 🏁</button>`;}
+function flip(key){if(LOCK||S.r2.open)return;const [side,pos]=key.split(':'),b=S.r2.b,d=deck(b),p=d[side][+pos],m=S.r2.m[b];if(m[p]!==undefined)return;
+  const el=document.querySelector(`[data-card="${key}"]`);const same=UP.findIndex(u=>u.side===side);
+  if(same>=0){const old=UP[same];if(old.key===key)return;document.querySelector(`[data-card="${old.key}"]`)?.classList.remove('up');UP.splice(same,1);}
+  el.classList.add('up');sFlip();UP.push({side,p,key});if(UP.length<2)return;
+  const [a,c]=UP,els=UP.map(u=>document.querySelector(`[data-card="${u.key}"]`)),lop=LOP(),st=S.st.r2;snap();
+  if(a.p===c.p){m[a.p]=S.r2.turn;st.ok++;if(lop){st.pts+=RD.r2.pts;st.run++;st.best=Math.max(st.best,st.run);}else S.sc.r2[S.r2.turn]+=RD.r2.pts;
+    els.forEach(e=>e.classList.add('done','pulse'));save();renderBoard([S.r2.turn]);
+    good(els[1],(lop?(st.run>=3?`🔥 Chuỗi ${st.run} cặp đúng!`:'Ghép đúng một cặp'):`${esc(S.teams[S.r2.turn].name)} +${RD.r2.pts}`)+`<div class="pf">${R2[b].pairs[a.p][1]}</div>`,{big:lop&&st.run>=3,pts:'+'+RD.r2.pts});
+    UP=[];setTimeout(render,1400);}
+  else{LOCK=true;st.bad++;st.run=0;els.forEach(e=>e.classList.add('miss'));bad(els[1],lop?'Mời bạn khác thử':'Chuyển lượt cho đội sau');
+    if(!lop)S.r2.turn=(S.r2.turn+1)%4;save();renderBoard();
+    setTimeout(()=>{els.forEach(e=>e.classList.remove('up','miss'));UP=[];LOCK=false;render();},1900);}}
+
+/* ---------- Vòng 3: Phân nhóm ---------- */
+function pnOrd(b){if(!S.pn.ord[b]){const a=PN[b].items.map((_,i)=>i);for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}S.pn.ord[b]=a;S.pn.m[b]={};save();}return S.pn.ord[b];}
+function vPN(){const b=S.pn.b,B=PN[b],ord=pnOrd(b),m=S.pn.m[b]||{},lop=LOP();
+  const done=PN.reduce((a,_,k)=>a+Object.keys(S.pn.m[k]||{}).length,0),left=ord.filter(i=>m[i]===undefined);
+  const placed=g=>ord.filter(i=>m[i]!==undefined&&B.items[i][1]===g).map(i=>`<span class="placed"><span>${IT(B.items[i][0])}</span>${!lop?`<span class="chip" style="--tc:${TCOL[m[i]]}">${esc(S.teams[m[i]].name)}</span>`:''}</span>`).join('');
+  const bin=g=>`<button class="bin b${g}" data-bin="${g}" ${S.pn.sel===null?'aria-disabled="true"':''}><span class="bh">${B.groups[g]}</span><span class="drop">${S.pn.sel===null?'':'⬇ Xếp vào đây'}</span>${placed(g)}</button>`;
+  const rule=lop?`Gọi sinh viên: chọn một thẻ ở giữa, rồi bấm vào nhóm bạn ấy nói. Đúng: +${RD.pn.pts}.`:`Đội đến lượt chọn thẻ và nhóm. Đúng: +${RD.pn.pts} và chơi tiếp; sai thì chuyển lượt. Đang đến lượt: <b style="color:${TCOL[S.pn.turn]}">${esc(S.teams[S.pn.turn].name)}</b>`;
+  $('#stage').innerHTML=head('pn',`Bảng ${b+1}/${PN.length} · ${Object.keys(m).length}/${B.items.length} thẻ`,done,cntQ('pn'),rule)+
+   `<p class="qbox sm pnq">${B.name}</p><div class="pnw">${bin(0)}
+    <div class="pile${B.items.some(x=>typeof x[0]!=='string')?' two':''}">${left.length?left.map(i=>`<button class="itm${S.pn.sel===i?' sel':''}" data-itm="${i}">${IT(B.items[i][0])}</button>`).join(''):`<div class="banner ok">🎊 Đã xếp xong bảng ${b+1}!</div>`}</div>
+    ${bin(1)}</div>${S.pn.last&&S.pn.last.b===b?(()=>{const L=B.items[S.pn.last.i];return `<div class="why"><b class="h">✔ ${typeof L[0]==='string'?NB(L[0]):L[0].t} → ${B.groups[L[1]]}.</b> ${L[2]||''}</div>`;})():''}`;
+  $('#ctrl').innerHTML=`${timerBtns()}${callBtn()}<span class="hint">Bảng:</span>${PN.map((x,k)=>`<button class="btn${k===b?' pri':''}" data-pnb="${k}">${k+1}</button>`).join('')}
+   ${lop?'':`<button class="btn" id="pnturn">Chuyển lượt</button>`}<span class="sp"></span><button class="btn" id="pnshuf">Xáo lại</button>${undoBtn()}<button class="btn pri" id="endr">Kết thúc vòng 🏁</button>`;}
+function pnDrop(g){const b=S.pn.b,i=S.pn.sel;if(i===null){const e=$('.pile');shake(e);tone(300,.12,'triangle',.06);return;}
+  const it=PN[b].items[i],lop=LOP(),st=S.st.pn;snap();
+  if(it[1]===g){S.pn.m[b][i]=S.pn.turn;S.pn.sel=null;st.ok++;if(lop){st.pts+=RD.pn.pts;st.run++;st.best=Math.max(st.best,st.run);}else S.sc.pn[S.pn.turn]+=RD.pn.pts;
+    S.pn.last={b,i};save();render();renderBoard([S.pn.turn]);good($(`[data-bin="${g}"]`),(lop&&st.run>=3?`🔥 Chuỗi ${st.run}!<br>`:'')+(it[2]||''),{big:lop&&st.run>=3,pts:'+'+RD.pn.pts});}
+  else{st.bad++;st.run=0;if(!lop)S.pn.turn=(S.pn.turn+1)%4;S.pn.sel=null;save();render();bad($(`[data-itm="${i}"]`),lop?'Mời bạn khác thử':'Chuyển lượt cho đội sau');}}
+
+/* ---------- Vòng 6: Về đích ---------- */
+function q5(i){const o=S.r5.q;if(!o[i]){const it=R5[i];let ord=null;if(it.type==='order'){ord=it.steps.map((_,k)=>k);
+   do{for(let a=ord.length-1;a>0;a--){const j=Math.floor(Math.random()*(a+1));[ord[a],ord[j]]=[ord[j],ord[a]];}}while(ord.every((v,k)=>v===k));}
+  o[i]={ord,buzz:null,star:null,picks:[],res:null,tried:[],rev:false,wl:[],fails:0};}return o[i];}
+function vFinal(){const i=Math.min(S.r5.i,R5.length-1),it=R5[i],q=q5(i),lop=LOP(),busy=q.res==='ok'||q.rev,active=lop||q.buzz!==null;
+  const starRow=S.teams.map((t,ti)=>{const used=S.r5.starUsed[ti]&&q.star!==ti;return `<button data-star="${ti}" aria-pressed="${q.star===ti}" ${used||busy||q.tried.length?'disabled':''} style="--tc:${TCOL[ti]}">★ ${esc(t.name)}</button>`;}).join('');
+  const buzzRow=S.teams.map((t,ti)=>`<button data-buzz="${ti}" aria-pressed="${q.buzz===ti}" class="${q.tried.includes(ti)?'tried':''}" ${q.tried.includes(ti)||busy?'disabled':''} style="--tc:${TCOL[ti]}">${esc(t.name)}</button>`).join('');
+  let body='';
+  if(it.type==='order'){const showOK=busy;
+    body=`<p class="hint">${lop?'Gọi sinh viên đọc thứ tự các chữ cái; giáo viên bấm lần lượt theo lời bạn ấy.':'Đội giành quyền đọc thứ tự các chữ cái; giáo viên bấm lần lượt.'} Bấm đủ ${it.steps.length} bước thì trang tự kiểm tra.</p>
+     <div class="steps">${(showOK?it.steps.map((_,k)=>k):q.ord).map((sk,pos)=>{const n=q.picks.indexOf(sk),lt=LET[q.ord.indexOf(sk)];
+      return `<button class="step${showOK?' ok':''}${n>=0&&!showOK?' on':''}" data-step="${sk}" ${!active||busy?'disabled':''} style="--oc:${PAL[q.ord.indexOf(sk)%PAL.length]}"><span class="lt">${showOK?(pos+1):lt}</span><span>${it.steps[sk]}</span>${!showOK&&n>=0?`<span class="no">${n+1}</span>`:''}${showOK?`<span class="no gr">${lt}</span>`:''}</button>`;}).join('')}</div>`;}
+  else{body=`<p class="hint">${lop?'Gọi sinh viên chỉ ra dòng sai đầu tiên; giáo viên bấm vào dòng đó, sau đó bạn ấy nêu cách sửa.':'Đội giành quyền chỉ ra số thứ tự dòng sai đầu tiên; giáo viên bấm vào dòng đó.'}</p>
+     <div class="steps">${it.lines.map((ln,k)=>`<button class="step ln${busy&&k===it.bad?' badl':''}${q.wl.includes(k)?' wl':''}" data-line="${k}" ${!active||busy||q.wl.includes(k)?'disabled':''}><span class="lt">${k+1}</span><span>${ln}</span></button>`).join('')}</div>
+     ${busy?`<div class="why"><b class="h">Sửa dòng ${it.bad+1}:</b> ${it.fix}</div>`:''}`;}
+  const ban=lop?'':q.res==='ok'?`<div class="banner ok">🏆 ${esc(S.teams[q.last].name)} ${q.lastPts>0?'+':''}${q.lastPts} điểm.</div>`
+    :q.res==='bad'?`<div class="banner bad">${esc(S.teams[q.last].name)} ${q.lastPts} điểm. Đội khác có thể giành quyền trả lời (+${RD.r5.pts/2|0}).</div>`:'';
+  const rule=lop?`Đúng ngay: +${RD.r5.pts}; đúng sau lượt sai: +${half('r5')}.`:`Đúng: +${RD.r5.pts}; sai: −10. Ngôi sao hy vọng (mỗi đội một lần): đúng ×2, sai −${RD.r5.pts}. Giành quyền sau khi đội khác sai: +${half('r5')}.`;
+  const done=Object.values(S.r5.q).filter(x=>x.res==='ok'||x.rev).length;
+  const [,...tp]=it.title.split(':'),tq=esc((x=>x.charAt(0).toUpperCase()+x.slice(1))(tp.join(':').trim()))
+    .replace(/\bV([12])\b/g,'<i>V</i><sub>$1</sub>').replace(/\b([kX]) = /g,'<i>$1</i> = ');
+  const fs=R5SYS[i]||[],fig=fs.map(p=>`<span>${p.t?`<b>${p.t}</b>`:''}${sysSVG(p.s)}</span>`).join('');
+  const q6=`<div class="qcard q6"><span class="q6t">${it.type==='order'?'🔢 Sắp thứ tự':'🔍 Tìm dòng sai đầu tiên'}</span>
+    <div class="q6q">${tq}</div>
+    <div class="q6r">👉 ${it.type==='order'?`Sắp <b>${it.steps.length} bước</b> dưới đây theo đúng trình tự.`:`Trong <b>${it.lines.length} dòng</b> lời giải dưới đây, dòng nào <b>sai đầu tiên</b>? Sửa lại thế nào?`}</div>
+    ${fig?`<div class="q6f${fs.length>1?' two':''}">${fig}</div>`:''}</div>`;
+  $('#stage').innerHTML=head('r5',`Câu ${i+1}/${R5.length}`,done,R5.length,rule)+q6+(lop?'':`<div class="buzz"><span class="hint">Ngôi sao:</span>${starRow}</div><div class="buzz"><span class="hint">Đội trả lời:</span>${buzzRow}</div>`)+ban+body;
+  $('#ctrl').innerHTML=`${timerBtns()}${callBtn()}<span class="sp"></span>
+   <button class="btn" data-nav="-1" ${i===0?'disabled':''}>‹ Câu trước</button><button class="btn" id="clr" ${busy||!q.picks.length?'disabled':''}>Xóa thứ tự đang bấm</button>
+   <button class="btn gold" id="show5" ${busy?'disabled':''}>Xem đáp án</button>
+   <button class="btn pri" data-nav="1">${i===R5.length-1?'Kết thúc vòng 🏁':'Câu tiếp ›'}</button>${undoBtn()}`;}
+function judge5(ok,sel){const i=S.r5.i,q=q5(i),t=q.buzz,st=S.st.r5;snap();
+  if(LOP()){if(ok){const first=!q.fails,p=first?RD.r5.pts:half('r5');q.res='ok';st.ok++;st.pts+=p;if(first){st.run++;st.best=Math.max(st.best,st.run);}else st.run=0;tPause();save();render();renderBoard([0]);good($('.steps'),first?'Đúng ngay lần đầu':'Sửa sai thành công',{big:true,pts:'+'+p});}
+    else{q.fails++;st.bad++;st.run=0;q.picks=[];if(sel!==undefined)q.wl.push(sel);save();render();bad(sel!==undefined?$(`[data-line="${sel}"]`):$('.steps'),'Mời bạn khác thử');}return;}
+  const first=q.tried.length===0,star=q.star===t&&first;
+  let d=ok?(first?RD.r5.pts:half('r5'))*(star?2:1):(first?(star?-RD.r5.pts:-10):0);
+  if(star)S.r5.starUsed[t]=true;S.sc.r5[t]+=d;ok?st.ok++:st.bad++;q.last=t;q.lastPts=d;
+  if(ok){q.res='ok';tPause();save();render();renderBoard([t]);good($('.steps'),`${esc(S.teams[t].name)} ${d>0?'+':''}${d}`,{big:star,pts:(d>0?'+':'')+d});}
+  else{q.res='bad';q.tried.push(t);q.buzz=null;q.picks=[];save();render();renderBoard([t]);bad($('.steps'),`${esc(S.teams[t].name)} ${d}`);}}
+
+/* ---------- Tổng kết từng vòng ---------- */
+function doneCnt(r){if(r==='r2')return R2.reduce((a,_,k)=>a+Object.keys(S.r2.m[k]||{}).length,0);if(r==='pn')return PN.reduce((a,_,k)=>a+Object.keys(S.pn.m[k]||{}).length,0);
+  if(r==='r5')return Object.values(S.r5.q).filter(x=>x.res==='ok'||x.rev).length;return Object.values(S[r].q).filter(x=>x.done).length;}
+const acc=st=>st.ok+st.bad?Math.round(100*st.ok/(st.ok+st.bad)):0;
+const stars=st=>{const a=acc(st);return st.ok+st.bad?(a>=80?3:a>=60?2:1):0;};
+function vKQ(){const r=S.kq,d=RD[r],st=S.st[r],lop=LOP(),n=stars(st),nx=RK[RK.indexOf(r)+1];
+  const ttl=st.ok+st.bad;
+  const pod=lop?'':`<div class="pod">${S.teams.map((t,i)=>({...t,i,s:S.sc[r][i]})).sort((a,b)=>b.s-a.s).map((t,k)=>`<div class="col" style="--tc:${TCOL[t.i]};--d:${k*.15}s"><div class="rk">${['🥇','🥈','🥉','🎖️'][k]}</div><div class="nm">${esc(t.name)}</div><div class="bar" style="height:${Math.max(60,Math.round(220*Math.max(t.s,0)/Math.max(1,...S.sc[r])))}px">${t.s}</div></div>`).join('')}</div>`;
+  $('#stage').innerHTML=`<div class="rhead"><span class="rnum">Vòng ${d.n}</span><h1>Tổng kết: ${d.name}</h1></div>
+   <div class="kq"><div class="stars">${[0,1,2].map(k=>`<span class="${k<n?'on':''}" style="--d:${k*.25}s">★</span>`).join('')}</div>
+    <p class="kmsg">${!ttl?'Vòng này chưa có lượt trả lời nào.':n===3?'Cả lớp nắm rất chắc phần này!':n===2?'Khá tốt, còn vài chỗ cần xem lại.':'Phần này cần giảng lại.'}</p>
+    <div class="stats">${lop?`<div class="t-pts"><b>${st.pts}</b><span>điểm của lớp</span></div>`:''}<div class="t-ok"><b>${st.ok}</b><span>lần trả lời đúng</span></div><div class="t-bad"><b>${st.bad}</b><span>lần trả lời sai</span></div>
+     <div><b>${acc(st)} %</b><span>tỉ lệ đúng</span></div><div><b>${doneCnt(r)}/${cntQ(r)}</b><span>${r==='r2'?'cặp':'câu'} đã hoàn thành</span></div>${lop?`<div><b>🔥 ${st.best}</b><span>chuỗi đúng dài nhất</span></div>`:''}</div>
+    <div class="ratio"><i style="width:${acc(st)}%"></i></div>${pod}</div>`;
+  $('#ctrl').innerHTML=`<button class="btn" data-go="${r}">‹ Quay lại vòng ${d.n}</button><button class="btn" id="replay">↻ Chơi lại vòng này</button><span class="sp"></span>
+   <button class="btn" data-go="end">🏁 Tổng kết chung</button>${nx?`<button class="btn pri" data-go="${nx}">Sang vòng ${RD[nx].n} ›</button>`:''}`;}
+function vEnd(){const lop=LOP();
+  const rows=RK.map(r=>{const st=S.st[r],d=RD[r];return `<tr><td><span class="dot" style="--rc:${d.rc}">${d.n}</span> ${d.name}</td><td class="okc">${st.ok}</td><td class="bdc">${st.bad}</td><td>${acc(st)} %</td><td class="stx">${'★'.repeat(stars(st))}<span>${'★'.repeat(3-stars(st))}</span></td>
+    ${lop?`<td><b>${st.pts}</b></td>`:S.teams.map((_,t)=>`<td>${S.sc[r][t]}</td>`).join('')}</tr>`;}).join('');
+  const T=RK.reduce((a,r)=>({ok:a.ok+S.st[r].ok,bad:a.bad+S.st[r].bad,pts:a.pts+S.st[r].pts}),{ok:0,bad:0,pts:0});
+  const redo=[];['r1','r3','r4'].forEach(r=>Object.entries(S[r].q).forEach(([i,q])=>{const it=BK(r)[i];if(!it)return;const w=lop?q.tried.length:q.pick.filter(p=>p!==null&&p!==it.a).length;if(w||q.shown)redo.push({r,i:+i,w,txt:r==='r1'?it.q:it.ctx});}));
+  Object.entries(S.r5.q).forEach(([i,q])=>{const w=lop?q.fails:q.tried.length;if(w||(q.rev&&q.res!=='ok'))redo.push({r:'r5',i:+i,w,txt:esc(R5[i].title)});});
+  redo.sort((a,b)=>b.w-a.w);
+  const rk=S.teams.map((t,i)=>({...t,i,s:tot(i)})).sort((a,b)=>b.s-a.s);
+  $('#stage').innerHTML=`<div class="rhead"><span class="rnum">Kết thúc</span><h1>${lop?'Tổng kết cả lớp':'Bảng vàng Đấu trường Hệ thiết bị'}</h1></div>
+   ${lop?`<div class="stats"><div class="t-pts"><b>${T.pts}</b><span>tổng điểm của lớp</span></div><div class="t-ok"><b>${T.ok}</b><span>lần đúng</span></div><div class="t-bad"><b>${T.bad}</b><span>lần sai</span></div><div><b>${acc(T)} %</b><span>tỉ lệ đúng</span></div></div>`
+    :`<div class="pod">${rk.map((t,k)=>`<div class="col" style="--tc:${TCOL[t.i]};--d:${k*.15}s"><div class="rk">${['🥇','🥈','🥉','🎖️'][k]}</div><div class="nm">${esc(t.name)}</div><div class="bar" style="height:${Math.max(60,Math.round(220*Math.max(t.s,0)/Math.max(1,...rk.map(x=>x.s))))}px">${t.s}</div></div>`).join('')}</div>`}
+   <div class="tblw"><table class="tbl"><thead><tr><th>Vòng</th><th>✔ Đúng</th><th>✘ Sai</th><th>Tỉ lệ</th><th>Sao</th>${lop?'<th>Điểm</th>':S.teams.map((t,i)=>`<th style="color:${TCOL[i]}">${esc(t.name)}</th>`).join('')}</tr></thead><tbody>${rows}</tbody>
+    <tfoot><tr><td>Tổng</td><td class="okc">${T.ok}</td><td class="bdc">${T.bad}</td><td>${acc(T)} %</td><td></td>${lop?`<td><b>${T.pts}</b></td>`:S.teams.map((_,i)=>`<td><b>${tot(i)}</b></td>`).join('')}</tr></tfoot></table></div>
+   ${redo.length?`<h2 class="sumh">Câu nên giảng lại (nhiều lần sai xếp trước)</h2><div class="sum">${redo.slice(0,8).map(x=>`<button class="srow" data-jump="${x.r}:${x.i}"><span class="sv">Vòng ${RD[x.r].n} · câu ${x.i+1}</span><span class="st">${x.txt}</span><span class="sw">${x.w?`${x.w} lần sai`:'chưa ai đúng'}</span></button>`).join('')}</div>`:''}`;
+  $('#ctrl').innerHTML=`<button class="btn" data-go="home">🏠 Về trang đầu</button><span class="sp"></span><button class="btn" id="resetAsk">Chơi lại tất cả</button>`;}
+
+/* ---------- sự kiện ---------- */
+function nav(n){const r=S.view,L=BK(r).length,ni=S[r].i+n;if(ni>=L){S.kq=r;return go('kq');}if(ni<0)return;S[r].i=ni;save();tReset(TDEF[r]);render();}
+document.addEventListener('click',e=>{const call=e.target.closest('#call');if(call){if(call.classList.contains('done'))call.hidden=true;return;}
+  const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+  if(d.go)return go(d.go);
+  if(d.mode){if(d.mode===S.mode)return;const any=RK.some(r=>S.st[r].ok+S.st[r].bad||S.sc[r].some(x=>x));
+    if(any&&!d.force){$('#cf')?.remove();($('#rst')||$('#stage')).insertAdjacentHTML('afterbegin',`<div class="confirm" id="cf">Đổi chế độ sẽ xóa điểm và tiến độ đang có. <button class="btn pri" data-mode="${d.mode}" data-force="1">Đổi và chơi mới</button><button class="btn" id="resetNo">Giữ chế độ cũ</button></div>`);return;}
+    const keep={teams:S.teams,size:S.size,roster:S.roster,mute:S.mute};S=fresh();Object.assign(S,keep);S.mode=d.mode;HIST.length=0;save();render();return;}
+  if(d.jump){const [r,i]=d.jump.split(':');S[r].i=+i;return go(r);}
+  if(b.id==='callsv')return callSV();
+  if(b.id==='recall'){S.called=[];save();b.textContent='✓ Đã làm mới';setTimeout(()=>{b.textContent='↻ Gọi lại từ đầu';},1200);return;}
+  if(d.adj){snap();const [t,v]=d.adj.split(':').map(Number);S.sc[CR()][t]+=v;save();renderBoard([t]);return;}
+  if(b.id==='undo')return undo();
+  if(b.id==='tmb'){TM.run?tPause():tStart(TM.left>0?0:TDEF[CR()]);return;}
+  if(b.id==='mute'){S.mute=!S.mute;save();b.textContent=S.mute?'🔇 Bật âm thanh':'🔊 Tắt âm thanh';return;}
+  if(b.id==='resetAsk'){const box=$('#rst')||$('#stage');box.insertAdjacentHTML('afterbegin',`<div class="confirm" id="cf">Xóa toàn bộ điểm và tiến độ của cả 6 vòng? <button class="btn pri" id="resetYes">Xóa và chơi lại</button><button class="btn" id="resetNo">Giữ nguyên</button></div>`);return;}
+  if(b.id==='resetNo'){$('#cf')?.remove();return;}
+  if(b.id==='resetYes'){const keep={teams:S.teams,mode:S.mode,size:S.size,roster:S.roster,mute:S.mute,sv:S.sv,sent:S.sent,gq:S.gq};S=fresh();Object.assign(S,keep);HIST.length=0;save();go('home');return;}
+  if(b.id==='replay'){snap();const r=S.kq;S[r]=freshRound(r);S.st[r]=fst();S.sc[r]=[0,0,0,0];if(r==='r5')S.r5.starUsed=[false,false,false,false];save();go(r);return;}
+  if(b.id==='endr'){S.kq=S.view;return go('kq');}
+  if(d.ans!==undefined)return answer(+d.ans);
+  if(b.id==='hint'){const r=S.view,q=qs(r,S[r].i);q.hint=true;save();render();tone(988,.12,'sine',.07);return;}
+  if(d.pick){const [t,k]=d.pick.split(':').map(Number),r=S.view,q=qs(r,S[r].i);if(q.done)return;q.pick[t]=q.pick[t]===k?null:k;save();sSel();
+    b.parentElement.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b&&q.pick[t]===k));return;}
+  if(b.id==='reveal')return reveal();
+  if(d.nav){const n=+d.nav;if(S.view==='r5'){const L=R5.length,ni=S.r5.i+n;if(ni>=L){S.kq='r5';return go('kq');}if(ni<0)return;S.r5.i=ni;save();tReset(TDEF.r5);render();return;}return nav(n);}
+  if(d.card!==undefined)return flip(d.card);
+  if(d.board!==undefined){S.r2.b=+d.board;save();render();return;}
+  if(b.id==='turn'){S.r2.turn=(S.r2.turn+1)%4;save();render();return;}
+  if(b.id==='openall'){S.r2.open=!S.r2.open;save();render();return;}
+  if(b.id==='reshuf'){delete S.r2.decks[S.r2.b];save();render();return;}
+  if(d.pnb!==undefined){S.pn.b=+d.pnb;S.pn.sel=null;save();render();return;}
+  if(d.itm!==undefined){const i=+d.itm;S.pn.sel=S.pn.sel===i?null:i;sSel();save();render();return;}
+  if(d.bin!==undefined)return pnDrop(+d.bin);
+  if(b.id==='pnturn'){S.pn.turn=(S.pn.turn+1)%4;save();render();return;}
+  if(b.id==='pnshuf'){delete S.pn.ord[S.pn.b];S.pn.sel=null;save();render();return;}
+  if(d.star!==undefined){const q=q5(S.r5.i),t=+d.star;q.star=q.star===t?null:t;save();render();return;}
+  if(d.buzz!==undefined){const q=q5(S.r5.i),t=+d.buzz;q.buzz=q.buzz===t?null:t;q.picks=[];q.res=q.res==='bad'?null:q.res;save();render();if(q.buzz!==null){sSel();tStart(TDEF.r5);}return;}
+  if(d.step!==undefined){const i=S.r5.i,it=R5[i],q=q5(i),sk=+d.step;if((!LOP()&&q.buzz===null)||q.picks.includes(sk))return;q.picks.push(sk);sSel();save();
+    if(q.picks.length===it.steps.length)return judge5(q.picks.every((v,k)=>v===k));render();return;}
+  if(d.line!==undefined){const i=S.r5.i,q=q5(i),k=+d.line;if(!LOP()&&q.buzz===null)return;return judge5(k===R5[i].bad,k);}
+  if(b.id==='clr'){const q=q5(S.r5.i);q.picks=[];save();render();return;}
+  if(b.id==='show5'){snap();const q=q5(S.r5.i);q.rev=true;S.st.r5.run=0;tPause();save();render();return;}
+});
+document.addEventListener('input',e=>{const t=e.target.dataset.tn;if(t!==undefined){S.teams[+t].name=e.target.value||('Đội '+(+t+1));save();renderBoard();return;}
+  if(e.target.id==='size'){S.size=Math.max(1,Math.min(300,+e.target.value||40));S.called=[];save();}
+  if(e.target.id==='roster')setRoster(e.target.value);});
+document.addEventListener('keydown',e=>{if(e.target.closest('input'))return;const k=e.key.toLowerCase();
+  if(!$('#call').hidden&&(k==='escape'||k==='enter'||k===' ')){$('#call').hidden=true;e.preventDefault();return;}
+  if(k==='arrowright')document.querySelector('[data-nav="1"]')?.click();
+  else if(k==='arrowleft')document.querySelector('[data-nav="-1"]')?.click();
+  else if(k==='enter'&&['r1','r3','r4'].includes(S.view)){e.preventDefault();reveal();}
+  else if(LOP()&&['a','b','c','d'].includes(k)&&['r1','r3','r4'].includes(S.view))answer(k.charCodeAt(0)-97);
+  else if(k==='g'&&LOP()&&!NHA)callSV();
+  else if(k==='t')$('#tmb')?.click();});
+/* ================= LÀM BÀI Ở NHÀ → Google Sheet ================= */
+const hash=t=>{let h=5381;for(const c of t)h=(h*33+c.codePointAt(0))>>>0;return h.toString(36).toUpperCase().padStart(7,'0').slice(-6);};
+function vLogin(){$('#tabs').innerHTML='';$('#board').innerHTML='';$('#ctrl').innerHTML='';
+  $('#stage').innerHTML=`<form class="login" id="svf" autocomplete="on"><h1>Đấu trường Hệ thiết bị</h1>
+   <p>Bài tập về nhà${BAI?` · <b>${esc(BAI)}</b>`:''}. Nhập đúng thông tin; kết quả từng vòng sẽ tự gửi cho giáo viên để tính điểm chuyên cần.</p>
+   <label for="sv1">Mã số sinh viên</label><input id="sv1" name="mssv" inputmode="numeric" required maxlength="12" placeholder="2001230001">
+   <label for="sv2">Họ và tên</label><input id="sv2" name="name" required maxlength="60" placeholder="Nguyễn Văn An">
+   <label for="sv3">Lớp</label><input id="sv3" name="lop" required maxlength="20" placeholder="14DHHH01">
+   <p class="err" id="sverr" role="alert"></p><button class="btn pri" type="submit">Vào làm bài ▶</button></form>`;}
+document.addEventListener('submit',e=>{if(e.target.id!=='svf')return;e.preventDefault();
+  const m=$('#sv1').value.replace(/\s/g,''),t=$('#sv2').value.trim().replace(/\s+/g,' '),l=$('#sv3').value.trim().toUpperCase().replace(/\s+/g,'');
+  if(!/^\d{8,12}$/.test(m))return $('#sverr').textContent='Mã số sinh viên gồm 8–12 chữ số.';
+  if(t.split(' ').length<2)return $('#sverr').textContent='Nhập đầy đủ họ và tên.';
+  if(!l)return $('#sverr').textContent='Nhập tên lớp.';
+  S.sv={mssv:m,ten:t,lop:l};save();go('home');});
+function payload(r){const st=S.st[r],d=RD[r],t0=(S.t0||{})[r];
+  const p={game:GAME,bai:BAI,mssv:S.sv.mssv,ten:S.sv.ten,lop:S.sv.lop,vn:d.n,vong:d.name,tong:cntQ(r),xong:doneCnt(r),dung:st.ok,sai:st.bad,tile:acc(st),diem:st.pts,phut:t0?Math.round((Date.now()-t0)/6000)/10:''};
+  p.ma=hash([p.mssv,p.vn,p.xong,p.dung,p.sai,p.diem,BAI].join('|'));return p;}
+function sendRound(r){if(!NHA||!S.sv)return;const p=payload(r);if(!p.dung&&!p.sai&&!p.xong)return;
+  S.sent??={};S.gq??=[];if(S.sent[r]?.ma===p.ma)return;
+  S.gq=S.gq.filter(x=>x.vn!==p.vn);S.gq.push(p);save();flush();}
+let FL=false;
+async function flush(){if(!GS||FL||!(S.gq||[]).length)return paintGS();FL=true;paintGS();
+  for(const p of [...S.gq]){try{await fetch(GS,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)});
+      S.gq=S.gq.filter(x=>x!==p&&!(x.vn===p.vn&&x.ma===p.ma));const r=RK[p.vn-1];S.sent[r]={ma:p.ma,at:new Date().toLocaleString('vi-VN')};save();}
+    catch(_){break;}}
+  FL=false;paintGS();}
+function gsMsg(r){const p=S.sv&&payload(r),s=(S.sent||{})[r],w=(S.gq||[]).find(x=>x.vn===RD[r].n);
+  if(!p||(!p.dung&&!p.sai&&!p.xong))return ['','Vòng này chưa có câu trả lời nào nên chưa gửi kết quả.'];
+  if(!GS)return ['wait',`Chụp màn hình gửi giáo viên · mã xác nhận <code>${p.ma}</code> (link chưa gắn Google Sheet).`];
+  if(s&&s.ma===p.ma)return ['ok',`✔ Đã gửi kết quả cho giáo viên lúc ${s.at} · mã xác nhận <code>${s.ma}</code>`];
+  if(w)return FL?['wait','⏳ Đang gửi kết quả…']:['bad',`Chưa gửi được (mất mạng?). <button class="btn" id="gsre">↻ Gửi lại</button>`];
+  return ['wait','⏳ Đang gửi kết quả…'];}
+function paintGS(){const b=$('#gs');if(!b)return;const r=b.dataset.r;
+  if(r){const [c,m]=gsMsg(r);b.className='gsbox '+c;b.innerHTML=m;return;}
+  b.innerHTML='<b>Kết quả đã gửi cho giáo viên</b><br>'+RK.map(x=>{const [c]=gsMsg(x);return `Vòng ${RD[x].n}: ${c==='ok'?'✔ đã gửi':c==='bad'?'✘ chưa gửi được':S.st[x].ok+S.st[x].bad?'⏳ đang gửi':'— chưa làm'}`;}).join(' · ')+
+   ((S.gq||[]).length&&!FL?` <button class="btn" id="gsre">↻ Gửi lại</button>`:'');b.className='gsbox';}
+if(NHA){
+  const _kq=vKQ;vKQ=function(){_kq();$('.kq').insertAdjacentHTML('beforeend',`<div class="gsbox" id="gs" data-r="${S.kq}"></div>`);sendRound(S.kq);paintGS();};
+  const _end=vEnd;vEnd=function(){_end();$('#stage .rhead').insertAdjacentHTML('afterend',`<div class="gsbox" id="gs"></div>`);RK.forEach(sendRound);paintGS();};
+  const _home=vHome;vHome=function(){_home();const h=$('.hero');h.querySelectorAll('.modes,.setup1,.setup,.cards4').forEach(x=>x.remove());
+    h.insertAdjacentHTML('beforeend',`<div class="svcard"><span>👤 <b>${esc(S.sv.ten)}</b> · ${esc(S.sv.mssv)} · Lớp ${esc(S.sv.lop)}${BAI?` · ${esc(BAI)}`:''}</span><span class="sp"></span><button class="btn" id="svchg">Đổi sinh viên</button></div>
+     <p class="hint">Làm lần lượt 6 vòng. Làm hết câu của một vòng rồi bấm <b>Kết thúc vòng 🏁</b>: kết quả vòng đó tự gửi cho giáo viên. Được làm lại (<b>↻ Chơi lại vòng này</b>) để cải thiện; giáo viên lấy kết quả tốt nhất. Bấm <b>Xem đáp án</b> thì câu đó không được tính đúng.</p>`);};
+  document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+    if(b.id==='gsre'){flush();return;}
+    if(b.id==='svchg'){if(!confirm('Đổi sinh viên sẽ xóa toàn bộ tiến độ làm bài trên máy này. Tiếp tục?'))return;S=fresh();S.mode='lop';save();render();}},true);
+  addEventListener('online',flush);
+  /* đổi lời hướng dẫn dành cho giáo viên thành lời cho sinh viên tự làm */
+  const TX=[['Gọi sinh viên trả lời, bấm vào phương án bạn ấy chọn.','Bấm vào phương án bạn chọn.'],
+    ['Gọi sinh viên ghép một thẻ cam với một thẻ xanh (ví dụ “3 – E”) và giải thích.','Ghép một thẻ cam với một thẻ xanh.'],
+    ['Gọi sinh viên: chọn một thẻ ở giữa, rồi bấm vào nhóm bạn ấy nói.','Chọn một thẻ ở giữa, rồi bấm vào nhóm đúng.'],
+    ['Gọi sinh viên đọc thứ tự các chữ cái; giáo viên bấm lần lượt theo lời bạn ấy.','Bấm lần lượt các bước theo đúng thứ tự.'],
+    ['Gọi sinh viên chỉ ra dòng sai đầu tiên; giáo viên bấm vào dòng đó, sau đó bạn ấy nêu cách sửa.','Bấm vào dòng sai đầu tiên, sau đó tự nêu cách sửa.'],
+    ['Mời bạn khác trả lời','Thử lại nhé'],['Mời bạn khác thử','Thử lại nhé'],['Điểm cả lớp','Tổng điểm của bạn'],['điểm của lớp','điểm của bạn'],
+    ['Cả lớp nắm rất chắc phần này!','Bạn nắm rất chắc phần này!'],['Phần này cần giảng lại.','Bạn nên ôn lại phần này (chương 4, sách bài tập).'],
+    ['Tổng kết cả lớp','Kết quả của bạn'],['Câu nên giảng lại','Câu nên xem lại'],['chưa ai đúng','chưa đúng']];
+  const fixT=root=>{const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){let v=n.nodeValue,o=v;for(const [a,b] of TX)if(v.includes(a))v=v.split(a).join(b);if(v!==o)n.nodeValue=v;}};
+  new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(x=>x.nodeType===1?fixT(x):x.nodeType===3&&fixT(x.parentNode||document.body)))).observe(document.body,{childList:true,subtree:true});
+  fixT(document.body);
+}
+addEventListener('hashchange',()=>{const v=location.hash.slice(1);if(VIEWS.includes(v)&&v!==S.view)go(v);});
+{const h=location.hash.slice(1);if(VIEWS.includes(h))S.view=h;}
+tReset(TDEF[CR()]||0);render();if(NHA)flush();
+
+</script>
+
+</body></html>
