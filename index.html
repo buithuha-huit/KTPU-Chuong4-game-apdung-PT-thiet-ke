@@ -1,4 +1,22 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}/* v3 – vòng Tính nhanh */
+.tnrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin-top:14px}
+.tnl{font-weight:800;color:#4B2A8C}
+.tnin{font:inherit;font-size:clamp(20px,1.6vw,30px);font-weight:800;width:9em;max-width:100%;padding:8px 12px;border:3px solid #7C3AED;border-radius:12px;background:#fff;color:#13213A;font-variant-numeric:tabular-nums}
+.tnin:focus{outline:3px solid #FACC15;outline-offset:2px}
+.tnin:disabled{opacity:1;background:#F8FAFC}
+.tnu{font-weight:700;color:#3A4A63;font-size:clamp(17px,1.3vw,26px)}
+.tnok{font-size:clamp(20px,1.6vw,30px);color:#15803D}
+.tnmsg{min-height:1.3em;color:#B91C1C;font-weight:700;margin:8px 0 0}
+.tntried{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px}
+.tntried .x{background:#FEE2E2;color:#B91C1C;border-radius:10px;padding:4px 10px;font-weight:700}
+.tnteams{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.tnt{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;border:3px solid var(--tc);border-radius:14px;padding:8px 10px;background:#fff}
+.tnt .tn{font-weight:800;color:var(--tc);width:100%}
+.tnt .tnin{width:7em;font-size:clamp(18px,1.3vw,26px);border-color:var(--tc)}
+.tnt.ok{background:#DCFCE7}.tnt.no{background:#FEE2E2}
+.tnv .qbox.sm{margin-top:0}
+@media (max-width:700px){.tnin{font-size:18px;width:8.5em}.tnteams{grid-template-columns:1fr 1fr;gap:8px}.tnt .tnin{width:100%;min-width:0}.tnrow .btn{flex:1 1 auto}}
+</style></head><body>
 <title>Đấu trường Hệ thiết bị</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -548,7 +566,7 @@ const R1 = [
   why:R`\(\dfrac{V}{F_\mathrm{Ao}} = \displaystyle\int_0^{X_\mathrm{Af}}\dfrac{dX_\mathrm{A}}{(-r_\mathrm{A})} = \sum\dfrac{V_i}{F_\mathrm{Ao}}\): PFR mắc nối tiếp không thay đổi đặc điểm hoạt động (Q4.12).`},
  {q:R`Một CSTR 10 L so với hai CSTR 5 L mắc <b>song song</b>, mỗi bình nhận \(v_\mathrm{o}/2\).`,o:[R`\(X_\mathrm{A1} > X_\mathrm{A2}\)`,R`\(X_\mathrm{A1} < X_\mathrm{A2}\)`,R`\(X_\mathrm{A1} = X_\mathrm{A2}\)`,'Không thể xác định'],a:2,
   why:R`Mỗi bình nhỏ có \(\tau_i = \dfrac{5}{v_\mathrm{o}/2} = \dfrac{10}{v_\mathrm{o}} = \tau\): cùng thời gian lưu nên cùng \(X_\mathrm{A}\) (Q4.13).`},
- {q:R`A + B → R trong cùng một PFR, cùng lưu lượng. Trường hợp 1: \(C_\mathrm{Ao} = 1\ \mathrm{M}\), \(C_\mathrm{Bo} = 2\ \mathrm{M}\); trường hợp 2: \(C_\mathrm{Ao} = C_\mathrm{Bo} = 1\ \mathrm{M}\).`,o:[R`\(X_\mathrm{A1} > X_\mathrm{A2}\)`,R`\(X_\mathrm{A1} < X_\mathrm{A2}\)`,R`\(X_\mathrm{A1} = X_\mathrm{A2}\)`,'Không thể xác định'],a:0,
+ {q:R`Phản ứng sơ đẳng A + B → R trong cùng một PFR, cùng lưu lượng. Trường hợp 1: \(C_\mathrm{Ao} = 1\ \mathrm{mol/L}\), \(C_\mathrm{Bo} = 2\ \mathrm{mol/L}\); trường hợp 2: \(C_\mathrm{Ao} = C_\mathrm{Bo} = 1\ \mathrm{mol/L}\).`,o:[R`\(X_\mathrm{A1} > X_\mathrm{A2}\)`,R`\(X_\mathrm{A1} < X_\mathrm{A2}\)`,R`\(X_\mathrm{A1} = X_\mathrm{A2}\)`,'Không thể xác định'],a:0,
   why:R`\(M = C_\mathrm{Bo}/C_\mathrm{Ao} = 2\): B dư nên \((-r_\mathrm{A}) = kC_\mathrm{Ao}^2(1-X_\mathrm{A})(M-X_\mathrm{A})\) lớn hơn, A chuyển hóa nhiều hơn (Q4.16).`},
  {q:R`Phản ứng bậc hai, cùng dòng nhập liệu và \(X_\mathrm{Af}\). Tỉ số tổng thể tích của 5 CSTR nối tiếp so với 1 PFR:`,o:[R`\(V_{j\mathrm{k}}/V_\mathrm{\hat{o}} < 1\)`,R`\(V_{j\mathrm{k}}/V_\mathrm{\hat{o}} = 1\)`,R`\(V_{j\mathrm{k}}/V_\mathrm{\hat{o}} > 1\)`,'Không thể xác định'],a:2,
   why:R`\(V_{1\mathrm{k}} > V_{j\mathrm{k}} > V_\mathrm{\hat{o}}\); chỉ khi \(j\to\infty\) thì \(V_{j\mathrm{k}}/V_\mathrm{\hat{o}} \to 1\) (Q4.17, Hình 4.6).`},
@@ -578,7 +596,7 @@ const R2 = [
   [R`CSTR so với PFR, \(X_\mathrm{A}\to 0\)`, R`\(V_\mathrm{k}/V_\mathrm{\hat{o}} \to 1\)`],
   [R`\(j\) CSTR nối tiếp, \(j\to\infty\)`, R`\(V_{j\mathrm{k}} \to V_\mathrm{\hat{o}}\)`],
   [R`1 CSTR, \(j\) CSTR nối tiếp và PFR (\(n > 0\))`, R`\(V_{1\mathrm{k}} > V_{j\mathrm{k}} > V_\mathrm{\hat{o}}\)`],
-  [R`\(j\) PFR nhỏ nối tiếp hoặc song song`, R`\(V_\text{lớn} = \sum V_i\), không đổi đặc điểm hoạt động`],
+  [R`\(j\) PFR nhỏ nối tiếp, hoặc song song với dòng chia tỉ lệ \(V_i\) (cùng \(\tau\))`, R`\(V_\text{lớn} = \sum V_i\), không đổi đặc điểm hoạt động`],
   [R`\(j\) CSTR giống nhau song song, chia đều dòng`, R`\(\tau_i = \dfrac{V_i}{v_\mathrm{o}/j} = \tau\): như 1 CSTR lớn`],
   [R`Bậc 2, \(M = C_\mathrm{Bo}/C_\mathrm{Ao} > 1\)`, R`\(V_{M>1}/V_{M=1} < 1\)`]]},
  {name:'Bảng 3 · Hệ TBPU khác loại nối tiếp',tags:['Trường hợp','Biểu thức'],pairs:[
@@ -771,8 +789,8 @@ R1[3].q=R`Cùng dòng nhập liệu, cùng tổng thể tích. So sánh độ ch
 R1[3].sys=[{t:'(1)',s:['υ_o',O('V'),'X_A1']},{t:'(2)',s:['υ_o',O('V/2'),'',O('V/2'),'X_A2']}];
 R1[4].q=R`Cùng dòng nhập liệu. So sánh độ chuyển hóa đạt được (Q4.13):`;
 R1[4].sys=[{t:'(1)',s:['υ_o',K('10 L'),'X_A1']},{t:'(2)',s:{par:[['υ_o/2',K('5 L'),''],['υ_o/2',K('5 L'),'']],i:'υ_o',o:'X_A2'}}];
-R1[5].q=R`A + B → R trong cùng một PFR, cùng lưu lượng. So sánh độ chuyển hóa của A (Q4.16):`;
-R1[5].sys=[{t:'(1)',s:['C_Ao = 1 M, C_Bo = 2 M',O(''),'X_A1']},{t:'(2)',s:['C_Ao = C_Bo = 1 M',O(''),'X_A2']}];
+R1[5].q=R`Phản ứng sơ đẳng A + B → R, \((-r_\mathrm{A}) = kC_\mathrm{A}C_\mathrm{B}\), trong cùng một PFR, cùng lưu lượng. So sánh độ chuyển hóa của A (Q4.16):`;
+R1[5].sys=[{t:'(1)',s:['C_Ao = 1 mol/L, C_Bo = 2 mol/L',O(''),'X_A1']},{t:'(2)',s:['C_Ao = C_Bo = 1 mol/L',O(''),'X_A2']}];
 R1[6].q=R`Phản ứng bậc hai, cùng dòng nhập liệu và \(X_\mathrm{Af}\). Tỉ số tổng thể tích hệ (1) so với hệ (2) (Q4.17):`;
 R1[6].sys=[{t:'(1) 5 CSTR nối tiếp',s:['',K(''),'',K(''),'',K(''),'',K(''),'',K(''),'X_Af']},{t:'(2) 1 PFR',s:['',O(''),'X_Af']}];
 R1[8].q=R`Cùng dòng nhập liệu, \(n > 0\), cả hai hệ đạt \(X_\mathrm{A} = 0{,}8\). So sánh thể tích (Q4.11):`;
@@ -811,6 +829,67 @@ PN[0].items[6][0]={s:['',O(''),'',K(''),''],t:'PFR rồi CSTR'};
 R4[0].o1=true;R4[6].o1=true;
 
 /* ================= ĐIỀU KHIỂN GAME · 2 chế độ: Nhiều đội / Cả lớp ================= */
+/* ---------- Câu tình huống thiết bị (bổ sung vòng Thám tử) ---------- */
+R3.push(
+ {ctx:R`Nhà máy có một CSTR đang chạy phản ứng pha lỏng bậc 1 với năng suất \(F_\mathrm{Ao}\), đạt \(X_\mathrm{Af} = 0{,}8\). Cần tăng gấp đôi năng suất (\(2F_\mathrm{Ao}\), cùng nồng độ nhập liệu) và đã mua thêm một bình giống hệt.`,
+  qq:'Hai cách lắp bình thứ hai cho dòng 2F<sub>Ao</sub>: song song (chia đều dòng) hay nối tiếp. Cách nào cho độ chuyển hóa cao hơn?',
+  o:['Nối tiếp cho <i>X</i><sub>A</sub> cao hơn','Song song cho <i>X</i><sub>A</sub> cao hơn','Hai cách như nhau','Không thể xác định'],a:0,
+  ask:R`Lúc đầu \(k\tau = \dfrac{0{,}8}{0{,}2} = 4\). Song song: mỗi bình nhận \(v_\mathrm{o}\) như cũ. Nối tiếp: mỗi bình nhận \(2v_\mathrm{o}\), \(\tau_i\) còn một nửa.`,
+  why:R`Song song: \(\tau_i = \dfrac{V}{2v_\mathrm{o}/2} = \tau\), \(k\tau = 4\), \(X_\mathrm{A} = 0{,}8\). Nối tiếp: \(k\tau_i = 2\), \(X_\mathrm{A2} = 1-\dfrac{1}{(1+2)^2} = 0{,}889\). Với \(n > 0\), ghép nối tiếp đưa hệ gần PFR hơn nên chuyển hóa cao hơn (Q4.10, Q4.13).`},
+ {ctx:R`Phản ứng pha lỏng bậc 1 <b>tỏa nhiệt mạnh</b>, cần \(X_\mathrm{Af} = 0{,}95\). Kỹ sư chọn dãy 4 CSTR có vỏ áo làm lạnh thay cho một PFR.`,
+  qq:'Lý do hợp lý nhất:',
+  o:['Thể tích chỉ lớn hơn PFR khoảng 1,5 lần, mà mỗi bình khuấy trộn đều nên dễ giải nhiệt, giữ nhiệt độ đồng đều',
+     'Dãy CSTR luôn cần tổng thể tích nhỏ hơn một PFR có cùng độ chuyển hóa','Ở cùng tổng thể tích, dãy CSTR cho độ chuyển hóa cao hơn PFR','Phản ứng tỏa nhiệt mạnh không thể thực hiện trong thiết bị dạng ống'],a:0,
+  ask:R`So sánh \(k\tau\) của PFR, 1 CSTR và 4 CSTR ở \(X_\mathrm{A} = 0{,}95\). Ngoài thể tích, thiết bị nào dễ điều khiển nhiệt độ hơn?`,
+  why:R`PFR: \(k\tau = \ln 20 = 3{,}0\); 4 CSTR: \(k\tau = 4(20^{1/4}-1) = 4{,}46\) (gấp 1,49 lần); 1 CSTR: \(k\tau = 19\) (gấp 6,3 lần). Bình khuấy có nhiệt độ đồng đều, giải nhiệt bằng vỏ áo hoặc ống xoắn; PFR tỏa nhiệt mạnh dễ có điểm nóng ở đầu ống.`},
+ {ctx:R`Hai PFR mắc <b>song song</b>: \(V_1 = 40\ \mathrm{L}\), \(V_2 = 60\ \mathrm{L}\); tổng lưu lượng nhập liệu \(10\ \mathrm{L/min}\), phản ứng bậc \(n > 0\).`,
+  qq:'Chia dòng thế nào để hệ đạt độ chuyển hóa cao nhất (bằng một PFR 100 L)?',
+  o:['4 L/min vào ống 40 L, 6 L/min vào ống 60 L','5 L/min vào mỗi ống','6 L/min vào ống 40 L, 4 L/min vào ống 60 L','Chia thế nào cũng như nhau'],a:0,
+  ask:R`Hai nhánh song song tương đương một PFR lớn khi thời gian lưu hai nhánh bằng nhau: \(\tau_1 = \tau_2\).`,
+  why:R`Chia dòng tỉ lệ với thể tích: \(\tau_1 = \dfrac{40}{4} = \tau_2 = \dfrac{60}{6} = 10\ \mathrm{min} = \dfrac{100\ \mathrm{L}}{10\ \mathrm{L/min}}\). Chia khác đi thì nhánh có \(\tau\) nhỏ chuyển hóa kém, trộn lại cho \(X_\mathrm{A}\) thấp hơn.`});
+
+/* ---------- Vòng Tính nhanh (số liệu thay đổi theo lượt chơi / theo MSSV) ---------- */
+const TN = [
+ g=>{let k,ti,j;do{k=tnP(g,[0.1,0.2,0.25,0.4]);ti=tnP(g,[1,2,3,4,5]);j=tnP(g,[2,3,4]);}while(k*ti<0.2||k*ti>1.2||Math.pow(1+k*ti,j)>12);
+  const X=1-Math.pow(1+k*ti,-j);
+  return {ctx:R`Phản ứng bậc 1, \(k = ${LX(k)}\ \mathrm{min^{-1}}\), thực hiện trong ${j} CSTR giống nhau mắc nối tiếp, mỗi bình có \(\tau_i = ${LX(ti)}\ \mathrm{min}\).`,
+   qq:R`Độ chuyển hóa ra khỏi bình cuối \(X_{\mathrm{A}${j}}\) (dạng thập phân):`,unit:'',ans:X,frac:1,tol:0.01,
+   ask:R`\(\dfrac{C_\mathrm{Ao}}{C_{\mathrm{A}j}} = (1+k\tau_i)^j\).`,
+   why:R`\(X_{\mathrm{A}${j}} = 1-\dfrac{1}{(1+k\tau_i)^{${j}}} = 1-\dfrac{1}{(1+${LX(k)}\times${LX(ti)})^{${j}}} = ${RX(X)}\)`};},
+ g=>{const X=tnP(g,[0.9,0.95,0.98,0.99]),k=tnP(g,[0.002,0.004,0.005,0.01]),j=tnP(g,[2,3,4]),ti=(Math.pow(1/(1-X),1/j)-1)/k;
+  return {ctx:R`Phản ứng bậc 1, \(k = ${LX(k)}\ \mathrm{s^{-1}}\). Dùng ${j} CSTR giống nhau mắc nối tiếp, cần \(X_{\mathrm{A}${j}} = ${LX(X)}\).`,
+   qq:R`Thời gian lưu của <b>mỗi</b> bình \(\tau_i\):`,unit:'s',ans:ti,
+   ask:R`\((1+k\tau_i)^{j} = \dfrac{1}{1-X_{\mathrm{A}j}}\): lấy căn bậc \(j\), không chia cho \(j\).`,
+   why:R`\(\tau_i = \dfrac{1}{k}\left[\left(\dfrac{1}{1-X_{\mathrm{A}${j}}}\right)^{1/${j}}-1\right] = \dfrac{1}{${LX(k)}}\left[\left(\dfrac{1}{1-${LX(X)}}\right)^{1/${j}}-1\right] = ${RX(ti)}\ \mathrm{s}\)`};},
+ g=>{const X1=tnP(g,[0.3,0.4,0.5,0.6]),X2=+(X1+tnP(g,[0.2,0.3])).toFixed(2),r=((X2-X1)/(1-X2))/(X1/(1-X1));
+  return {ctx:R`Phản ứng bậc 1 trong hai CSTR mắc nối tiếp, đẳng nhiệt: \(X_\mathrm{Ao} = 0\), \(X_\mathrm{A1} = ${LX(X1)}\), \(X_\mathrm{A2} = ${LX(X2)}\).`,
+   qq:R`Tỉ số thể tích \(V_2/V_1\):`,unit:'',ans:r,
+   ask:R`Bình 2 nhận dòng đã chuyển hóa \(X_\mathrm{A1}\): \(k\tau_2 = \dfrac{X_\mathrm{A2}-X_\mathrm{A1}}{1-X_\mathrm{A2}}\).`,
+   why:R`\(\dfrac{V_2}{V_1} = \dfrac{(X_\mathrm{A2}-X_\mathrm{A1})/(1-X_\mathrm{A2})}{X_\mathrm{A1}/(1-X_\mathrm{A1})} = \dfrac{(${LX(X2)}-${LX(X1)})/(1-${LX(X2)})}{${LX(X1)}/(1-${LX(X1)})} = ${RX(r)}\)`};},
+ g=>{const X1=tnP(g,[0.3,0.4,0.5,0.6]),X2=+(X1+tnP(g,[0.2,0.3])).toFixed(2),r=((X2-X1)/(1-X2)**2)/(X1/(1-X1)**2);
+  return {ctx:R`Phản ứng sơ đẳng <b>bậc 2</b> A → R trong hai CSTR mắc nối tiếp, đẳng nhiệt: \(X_\mathrm{Ao} = 0\), \(X_\mathrm{A1} = ${LX(X1)}\), \(X_\mathrm{A2} = ${LX(X2)}\).`,
+   qq:R`Tỉ số thể tích \(V_2/V_1\):`,unit:'',ans:r,
+   ask:R`Bậc 2: \(kC_\mathrm{Ao}\tau_i = \dfrac{X_{\mathrm{A}i}-X_{\mathrm{A},i-1}}{(1-X_{\mathrm{A}i})^2}\).`,
+   why:R`\(\dfrac{V_2}{V_1} = \dfrac{(X_\mathrm{A2}-X_\mathrm{A1})/(1-X_\mathrm{A2})^2}{X_\mathrm{A1}/(1-X_\mathrm{A1})^2} = \dfrac{(${LX(X2)}-${LX(X1)})/(1-${LX(X2)})^2}{${LX(X1)}/(1-${LX(X1)})^2} = ${RX(r)}\)`};},
+ g=>{const k=tnP(g,[0.1,0.158,0.2,0.25]),v=tnP(g,[0.4,0.5,1]),Vs=[0,1,2].map(()=>tnP(g,[1,1.5,2,2.5,3])),P=Vs.reduce((a,V)=>a*(1+k*V/v),1),X=1-1/P;
+  return {ctx:R`Phản ứng bậc 1, \((-r_\mathrm{A}) = ${LX(k)}C_\mathrm{A}\) [mol/(L·min)], \(v_\mathrm{o} = ${LX(v)}\ \mathrm{L/min}\), ba CSTR <b>khác nhau</b> mắc nối tiếp.`,
+   head:['Bình',R`\(V_i\) (L)`],rows:Vs.map((V,i)=>[i+1,NT(V)]),
+   qq:R`Độ chuyển hóa ra khỏi bình 3 \(X_\mathrm{A3}\) (dạng thập phân):`,unit:'',ans:X,frac:1,tol:0.01,
+   ask:R`Tính \(\tau_i = V_i/v_\mathrm{o}\) từng bình; \(\dfrac{C_\mathrm{Ao}}{C_\mathrm{A3}} = (1+k\tau_1)(1+k\tau_2)(1+k\tau_3)\).`,
+   why:R`\(X_\mathrm{A3} = 1-\dfrac{1}{(1+k\tau_1)(1+k\tau_2)(1+k\tau_3)} = 1-\dfrac{1}{\left(1+${LX(k)}\times\frac{${LX(Vs[0])}}{${LX(v)}}\right)\left(1+${LX(k)}\times\frac{${LX(Vs[1])}}{${LX(v)}}\right)\left(1+${LX(k)}\times\frac{${LX(Vs[2])}}{${LX(v)}}\right)} = ${RX(X)}\)`};},
+ g=>{const a=tnP(g,[0.5,1,1.5]),M=tnP(g,[1.5,2]),b=(M-1)*a,E=Math.exp(b),X=M*(E-1)/(M*E-1);
+  return {ctx:R`Phản ứng sơ đẳng bậc 2 A + B → R trong PFR, \(V\) = const, \(kC_\mathrm{Ao}\tau = ${LX(a)}\), nạp dư B với \(M = C_\mathrm{Bo}/C_\mathrm{Ao} = ${LX(M)}\).`,
+   qq:R`Độ chuyển hóa của A \(X_\mathrm{A}\) (dạng thập phân):`,unit:'',ans:X,frac:1,tol:0.01,
+   ask:R`\(\ln\dfrac{M-X_\mathrm{A}}{M(1-X_\mathrm{A})} = (M-1)kC_\mathrm{Ao}\tau\). Đặt vế phải bằng \(b\), rút \(X_\mathrm{A}\).`,
+   why:R`\((M-1)kC_\mathrm{Ao}\tau = (${LX(M)}-1)\times${LX(a)} = ${LX(b)}\); \(X_\mathrm{A} = \dfrac{M(e^{b}-1)}{Me^{b}-1} = \dfrac{${LX(M)}\times(e^{${LX(b)}}-1)}{${LX(M)}\times e^{${LX(b)}}-1} = ${RX(X)}\)`};},
+ g=>{const k=tnP(g,[0.1,0.2,0.3]),t1=tnP(g,[2,3,5]),t2=tnP(g,[2,3,5]),X=1-Math.exp(-k*t2)/(1+k*t1);
+  return {ctx:R`Phản ứng pha lỏng bậc 1, \(k = ${LX(k)}\ \mathrm{min^{-1}}\). Hệ gồm một CSTR (\(\tau_1 = ${LX(t1)}\ \mathrm{min}\)) rồi đến một PFR (\(\tau_2 = ${LX(t2)}\ \mathrm{min}\)) mắc nối tiếp.`,
+   qq:R`Độ chuyển hóa ra khỏi PFR \(X_\mathrm{A2}\) (dạng thập phân):`,unit:'',ans:X,frac:1,tol:0.01,
+   ask:R`CSTR: \(\dfrac{C_\mathrm{Ao}}{C_\mathrm{A1}} = 1+k\tau_1\). PFR: \(\dfrac{C_\mathrm{A1}}{C_\mathrm{A2}} = e^{k\tau_2}\).`,
+   why:R`\(X_\mathrm{A2} = 1-\dfrac{e^{-k\tau_2}}{1+k\tau_1} = 1-\dfrac{e^{-${LX(k)}\times${LX(t2)}}}{1+${LX(k)}\times${LX(t1)}} = ${RX(X)}\)`};}
+];
+const TNDESC='Tự bấm máy: X_A, τ_i, V₂/V₁ của hệ nhiều bình; số liệu đổi theo lượt chơi';
+
 const KEY='ktpu-c4-dau-truong-v2';
 /* ---- Chế độ LÀM BÀI Ở NHÀ: link ?nha=<mã triển khai Apps Script>[&bai=<tên đợt>] ---- */
 const GAME='KTPU-C4 Đấu trường Hệ thiết bị';
@@ -823,16 +902,17 @@ const SKEY=NHA?KEY+'-nha':KEY;
 const LET=['A','B','C','D','E','F','G','H'];
 const OC=['var(--oA)','var(--oB)','var(--oC)','var(--oD)'];
 const TCOL=['var(--t0)','var(--t1)','var(--t2)','var(--t3)'];
-const RK=['r1','r2','pn','r3','r4','r5'];
+const RK=['r1','r2','pn','r3','r4','tn','r5'];
 const RD={r1:{n:1,name:'Khởi động',tab:'Khởi động',pts:10,rc:'#F26B3A',rc2:'#FFB13B'},
   r2:{n:2,name:'Lật thẻ ghép đôi',tab:'Ghép đôi',pts:10,rc:'#8B5CF6',rc2:'#D946EF'},
   pn:{n:3,name:'Phân nhóm',tab:'Phân nhóm',pts:10,rc:'#E0457B',rc2:'#FF8A4C'},
   r3:{n:4,name:'Thám tử thiết bị',tab:'Thám tử',pts:20,rc:'#0EA5A0',rc2:'#22C55E'},
   r4:{n:5,name:'Diện tích bí ẩn',tab:'Diện tích',pts:20,rc:'#2F7DE1',rc2:'#06B6D4'},
-  r5:{n:6,name:'Về đích',tab:'Về đích',pts:30,rc:'#E3A008',rc2:'#F26B3A'}};
+  tn:{n:6,vn:7,name:'Tính nhanh',tab:'Tính nhanh',pts:20,rc:'#7C3AED',rc2:'#0EA5E9'},
+  r5:{n:7,vn:6,name:'Về đích',tab:'Về đích',pts:30,rc:'#E3A008',rc2:'#F26B3A'}};
 const VIEWS=['home','the',...RK,'kq','end'];
-const TDEF={r1:20,r2:20,pn:20,r3:45,r4:40,r5:60};
-const BK=r=>({r1:R1,r3:R3,r4:R4,r5:R5})[r];
+const TDEF={r1:20,r2:20,pn:20,r3:45,r4:40,tn:90,r5:60};
+const BK=r=>r==='tn'?tnList():({r1:R1,r3:R3,r4:R4,r5:R5})[r];
 const $=s=>document.querySelector(s);
 const LOP=()=>S.mode==='lop';
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -842,7 +922,7 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 const RM=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
 const half=r=>Math.round(RD[r].pts/2);
 
-function freshRound(r){return {r1:{i:0,q:{}},r3:{i:0,q:{}},r4:{i:0,q:{}},r5:{i:0,q:{},starUsed:[false,false,false,false]},
+function freshRound(r){return {tn:{i:0,q:{},v:{}},r1:{i:0,q:{}},r3:{i:0,q:{}},r4:{i:0,q:{}},r5:{i:0,q:{},starUsed:[false,false,false,false]},
   r2:{b:0,decks:{},m:{},turn:0,open:false},pn:{b:0,ord:{},m:{},turn:0,sel:null}}[r];}
 const fst=()=>({ok:0,bad:0,pts:0,run:0,best:0});
 function fresh(){const s={mode:'lop',teams:[0,1,2,3].map(i=>({name:'Đội '+(i+1)})),size:40,roster:[],called:[],view:'home',kq:'r1',mute:false,sc:{},st:{}};
@@ -943,9 +1023,9 @@ function renderBoard(bump=[]){const r=CR(),b=$('#board');
    ${r?`<span class="adj"><button data-adj="${i}:-10" aria-label="Trừ 10 điểm ${esc(t.name)}">−10</button><button data-adj="${i}:10" aria-label="Cộng 10 điểm ${esc(t.name)}">+10</button></span>`:''}</div>`).join('')}</div>`;}
 function go(v){if(!VIEWS.includes(v))v='home';S.view=v;if(NHA&&RK.includes(v)){S.t0??={};S.t0[v]??=Date.now();}save();tReset(TDEF[CR()]||0);
   if(location.hash.slice(1)!==v){try{history.replaceState(null,'','#'+v);}catch(_){location.hash=v;}}render();if(v==='kq'||v==='end')celebrate();}
-function render(){if(NHA&&!S.sv)return vLogin();renderTabs();renderBoard();const st=$('#stage'),r=CR();
+function render(){ensureShuf();if(NHA&&!S.sv)return vLogin();renderTabs();renderBoard();const st=$('#stage'),r=CR();
   st.style.setProperty('--rc',r?RD[r].rc:'#4B2A8C');st.style.setProperty('--rc2',r?RD[r].rc2:'#E0457B');
-  ({home:vHome,the:()=>FC4.vFC(),r1:()=>vMC('r1'),r3:()=>vMC('r3'),r4:()=>vMC('r4'),r2:vMem,pn:vPN,r5:vFinal,kq:vKQ,end:vEnd}[S.view]||vHome)();
+  ({home:vHome,the:()=>FC4.vFC(),r1:()=>vMC('r1'),r3:()=>vMC('r3'),r4:()=>vMC('r4'),r2:vMem,pn:vPN,tn:vTN,r5:vFinal,kq:vKQ,end:vEnd}[S.view]||vHome)();
   tset(st).then(fit);fit();paintTimer();}
 function head(r,cnt,done,total,rule){const d=RD[r];const pc=total?Math.round(100*done/total):0;
   return `<div class="rhead"><span class="rnum">Vòng ${d.n}</span><h1>${d.name}</h1><span class="qcount">${cnt}</span>
@@ -956,7 +1036,7 @@ const DESC={r1:'CSTR hay PFR, nối tiếp – song song, tỉ lệ M',r2:'Hệ 
 const cntQ=r=>r==='r2'?R2.reduce((a,b)=>a+b.pairs.length,0):r==='pn'?PN.reduce((a,b)=>a+b.items.length,0):BK(r).length;
 function vHome(){const lop=LOP();
   $('#stage').innerHTML=`<div class="home"><div class="hero"><h1>Đấu trường<br><span>Hệ thiết bị</span></h1>
-    <p>Sáu trò chơi về so sánh thiết bị phản ứng đơn và hệ nhiều thiết bị mắc nối tiếp, song song, theo chương 4 sách bài tập Kỹ thuật phản ứng. Mỗi vòng tính điểm riêng và có tổng kết đúng / sai.</p>
+    <p>Bảy trò chơi về so sánh thiết bị phản ứng đơn và hệ nhiều thiết bị mắc nối tiếp, song song, theo chương 4 sách bài tập Kỹ thuật phản ứng. Mỗi vòng tính điểm riêng và có tổng kết đúng / sai.</p>
     <div class="modes" role="group" aria-label="Chế độ chơi">
      <button data-mode="lop" aria-pressed="${lop}"><span class="me">🙋</span><b>Cả lớp</b><span>Giáo viên gọi sinh viên phát biểu rồi bấm đáp án; hiệu ứng đúng / sai; điểm chung của lớp</span></button>
      <button data-mode="thi" aria-pressed="${!lop}"><span class="me">🏁</span><b>Nhiều đội thi</b><span>4 đội giơ thẻ A–D hoặc giành quyền; trang cộng điểm từng đội theo từng vòng</span></button></div>
@@ -968,7 +1048,7 @@ function vHome(){const lop=LOP();
       <p class="hint">Bấm <b>🎲 Gọi sinh viên</b> (phím G): trang quay tên (hoặc số thứ tự nếu chưa dán danh sách), không gọi trùng cho đến khi gọi hết lớp. Sinh viên trả lời, giáo viên bấm vào phương án sinh viên chọn (hoặc phím A–D).
       Đúng ngay: +điểm đủ; đúng sau khi đã có bạn sai: +nửa số điểm. Đúng liên tiếp tạo <b>🔥 chuỗi</b>. Nút <b>💡 Gợi ý</b> mở câu hỏi gợi mở.</p></div>`
      :`<div class="setup">${S.teams.map((t,i)=>`<label style="--tc:${TCOL[i]}">Đội ${i+1}<input data-tn="${i}" value="${esc(t.name)}" maxlength="22"></label>`).join('')}</div>
-      <p class="hint">Vòng 1, 4, 5: mỗi đội giơ thẻ, giáo viên bấm chữ cái từng đội rồi <b>Công bố</b>. Vòng 2, 3: các đội lần lượt chơi, đúng thì chơi tiếp, sai thì chuyển lượt. Vòng 6: giành quyền trả lời, có ngôi sao hy vọng.</p>
+      <p class="hint">Vòng 1, 4, 5: mỗi đội giơ thẻ, giáo viên bấm chữ cái từng đội rồi <b>Công bố</b>. Vòng 2, 3: các đội lần lượt chơi, đúng thì chơi tiếp, sai thì chuyển lượt. Vòng 6: mỗi đội ghi đáp số lên bảng con, giáo viên nhập số từng đội rồi <b>Công bố</b>. Vòng 7: giành quyền trả lời, có ngôi sao hy vọng.</p>
       <div class="cards4">Thẻ mỗi đội: ${LET.slice(0,4).map((l,i)=>`<i style="--oc:${OC[i]}">${l}</i>`).join('')}</div>`}
    </div>
    <div class="rounds">${RK.map(r=>{const d=RD[r],st=S.st[r],has=st.ok+st.bad;return `<button class="rnd" data-go="${r}" style="--rc:${d.rc};--rc2:${d.rc2}"><span class="n">${d.n}</span>
@@ -1192,6 +1272,7 @@ function vEnd(){const lop=LOP();
   const T=RK.reduce((a,r)=>({ok:a.ok+S.st[r].ok,bad:a.bad+S.st[r].bad,pts:a.pts+S.st[r].pts}),{ok:0,bad:0,pts:0});
   const redo=[];['r1','r3','r4'].forEach(r=>Object.entries(S[r].q).forEach(([i,q])=>{const it=BK(r)[i];if(!it)return;const w=lop?q.tried.length:q.pick.filter(p=>p!==null&&p!==it.a).length;if(w||q.shown)redo.push({r,i:+i,w,txt:r==='r1'?it.q:it.ctx});}));
   Object.entries(S.r5.q).forEach(([i,q])=>{const w=lop?q.fails:q.tried.length;if(w||(q.rev&&q.res!=='ok'))redo.push({r:'r5',i:+i,w,txt:esc(R5[i].title)});});
+  Object.entries(S.tn.q).forEach(([i,q])=>{const it=tnList()[i];if(!it)return;const w=lop?q.tried.length:q.pick.filter(p=>p!==null&&p!==''&&!tnOK(it,p)).length;if(w||q.shown)redo.push({r:'tn',i:+i,w,txt:it.ctx});});
   redo.sort((a,b)=>b.w-a.w);
   const rk=S.teams.map((t,i)=>({...t,i,s:tot(i)})).sort((a,b)=>b.s-a.s);
   $('#stage').innerHTML=`<div class="rhead"><span class="rnum">Kết thúc</span><h1>${lop?'Tổng kết cả lớp':'Bảng vàng Đấu trường Hệ thiết bị'}</h1></div>
@@ -1217,7 +1298,7 @@ document.addEventListener('click',e=>{const call=e.target.closest('#call');if(ca
   if(b.id==='undo')return undo();
   if(b.id==='tmb'){TM.run?tPause():tStart(TM.left>0?0:TDEF[CR()]);return;}
   if(b.id==='mute'){S.mute=!S.mute;save();b.textContent=S.mute?'🔇 Bật âm thanh':'🔊 Tắt âm thanh';return;}
-  if(b.id==='resetAsk'){const box=$('#rst')||$('#stage');box.insertAdjacentHTML('afterbegin',`<div class="confirm" id="cf">Xóa toàn bộ điểm và tiến độ của cả 6 vòng? <button class="btn pri" id="resetYes">Xóa và chơi lại</button><button class="btn" id="resetNo">Giữ nguyên</button></div>`);return;}
+  if(b.id==='resetAsk'){const box=$('#rst')||$('#stage');box.insertAdjacentHTML('afterbegin',`<div class="confirm" id="cf">Xóa toàn bộ điểm và tiến độ của cả 7 vòng? <button class="btn pri" id="resetYes">Xóa và chơi lại</button><button class="btn" id="resetNo">Giữ nguyên</button></div>`);return;}
   if(b.id==='resetNo'){$('#cf')?.remove();return;}
   if(b.id==='resetYes'){const keep={teams:S.teams,mode:S.mode,size:S.size,roster:S.roster,mute:S.mute,sv:S.sv,sent:S.sent,gq:S.gq};S=fresh();Object.assign(S,keep);HIST.length=0;save();go('home');return;}
   if(b.id==='replay'){snap();const r=S.kq;S[r]=freshRound(r);S.st[r]=fst();S.sc[r]=[0,0,0,0];if(r==='r5')S.r5.starUsed=[false,false,false,false];save();go(r);return;}
@@ -1668,7 +1749,7 @@ document.addEventListener('submit',e=>{if(e.target.id!=='svf')return;e.preventDe
   if(!l)return $('#sverr').textContent='Nhập tên lớp.';
   S.sv={mssv:m,ten:t,lop:l};save();go('home');});
 function payload(r){const st=S.st[r],d=RD[r],t0=(S.t0||{})[r];
-  const p={game:GAME,bai:BAI,mssv:S.sv.mssv,ten:S.sv.ten,lop:S.sv.lop,vn:d.n,vong:d.name,tong:cntQ(r),xong:doneCnt(r),dung:st.ok,sai:st.bad,tile:acc(st),diem:st.pts,phut:t0?Math.round((Date.now()-t0)/6000)/10:''};
+  const p={game:GAME,bai:BAI,mssv:S.sv.mssv,ten:S.sv.ten,lop:S.sv.lop,vn:d.vn||d.n,vong:d.name,tong:cntQ(r),xong:doneCnt(r),dung:st.ok,sai:st.bad,tile:acc(st),diem:st.pts,phut:t0?Math.round((Date.now()-t0)/6000)/10:''};
   p.ma=hash([p.mssv,p.vn,p.xong,p.dung,p.sai,p.diem,BAI].join('|'));return p;}
 function sendRound(r){if(!NHA||!S.sv)return;const p=payload(r);if(!p.dung&&!p.sai&&!p.xong)return;
   S.sent??={};S.gq??=[];if(S.sent[r]?.ma===p.ma)return;
@@ -1676,10 +1757,10 @@ function sendRound(r){if(!NHA||!S.sv)return;const p=payload(r);if(!p.dung&&!p.sa
 let FL=false;
 async function flush(){if(!GS||FL||!(S.gq||[]).length)return paintGS();FL=true;paintGS();
   for(const p of [...S.gq]){try{await fetch(GS,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)});
-      S.gq=S.gq.filter(x=>x!==p&&!(x.vn===p.vn&&x.ma===p.ma));const r=RK[p.vn-1];S.sent[r]={ma:p.ma,at:new Date().toLocaleString('vi-VN')};save();}
+      S.gq=S.gq.filter(x=>x!==p&&!(x.vn===p.vn&&x.ma===p.ma));const r=RK.find(x=>(RD[x].vn||RD[x].n)===p.vn);S.sent[r]={ma:p.ma,at:new Date().toLocaleString('vi-VN')};save();}
     catch(_){break;}}
   FL=false;paintGS();}
-function gsMsg(r){const p=S.sv&&payload(r),s=(S.sent||{})[r],w=(S.gq||[]).find(x=>x.vn===RD[r].n);
+function gsMsg(r){const p=S.sv&&payload(r),s=(S.sent||{})[r],w=(S.gq||[]).find(x=>x.vn===(RD[r].vn||RD[r].n));
   if(!p||(!p.dung&&!p.sai&&!p.xong))return ['','Vòng này chưa có câu trả lời nào nên chưa gửi kết quả.'];
   if(!GS)return ['wait',`Chụp màn hình gửi giáo viên · mã xác nhận <code>${p.ma}</code> (link chưa gắn Google Sheet).`];
   if(s&&s.ma===p.ma)return ['ok',`✔ Đã gửi kết quả cho giáo viên lúc ${s.at} · mã xác nhận <code>${s.ma}</code>`];
@@ -1694,7 +1775,7 @@ if(NHA){
   const _end=vEnd;vEnd=function(){_end();$('#stage .rhead').insertAdjacentHTML('afterend',`<div class="gsbox" id="gs"></div>`);RK.forEach(sendRound);paintGS();};
   const _home=vHome;vHome=function(){_home();const h=$('.hero');h.querySelectorAll('.modes,.setup1,.setup,.cards4').forEach(x=>x.remove());
     h.insertAdjacentHTML('beforeend',`<div class="svcard"><span>👤 <b>${esc(S.sv.ten)}</b> · ${esc(S.sv.mssv)} · Lớp ${esc(S.sv.lop)}${BAI?` · ${esc(BAI)}`:''}</span><span class="sp"></span><button class="btn" id="svchg">Đổi sinh viên</button></div>
-     <p class="hint">Làm lần lượt 6 vòng. Làm hết câu của một vòng rồi bấm <b>Kết thúc vòng 🏁</b>: kết quả vòng đó tự gửi cho giáo viên. Được làm lại (<b>↻ Chơi lại vòng này</b>) để cải thiện; giáo viên lấy kết quả tốt nhất. Bấm <b>Xem đáp án</b> thì câu đó không được tính đúng.</p>`);};
+     <p class="hint">Làm lần lượt 7 vòng. Làm hết câu của một vòng rồi bấm <b>Kết thúc vòng 🏁</b>: kết quả vòng đó tự gửi cho giáo viên. Được làm lại (<b>↻ Chơi lại vòng này</b>) để cải thiện; giáo viên lấy kết quả tốt nhất. Bấm <b>Xem đáp án</b> thì câu đó không được tính đúng.</p>`);};
   document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
     if(b.id==='gsre'){flush();return;}
     if(b.id==='svchg'){if(!confirm('Đổi sinh viên sẽ xóa toàn bộ tiến độ làm bài trên máy này. Tiếp tục?'))return;S=fresh();S.mode='lop';save();render();}},true);
@@ -1712,6 +1793,92 @@ if(NHA){
   new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(x=>x.nodeType===1?fixT(x):x.nodeType===3&&fixT(x.parentNode||document.body)))).observe(document.body,{childList:true,subtree:true});
   fixT(document.body);
 }
+/* ================= v3: XÁO PHƯƠNG ÁN + VÒNG TÍNH NHANH ================= */
+const h32=s=>{let h=2166136261;for(const c of String(s)){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0;}return h>>>0;};
+const RNG=sd=>{let a=h32(sd);return()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};};
+const tnP=(g,a)=>a[Math.floor(g()*a.length)];
+const sg=(v,s=3)=>+(+v).toPrecision(s);
+function fmtN(v,sig=3){if(!isFinite(v))return '—';if(v===0)return '0';const d=Math.floor(Math.log10(Math.abs(v)))+1;
+  let s=String(+(+v).toPrecision(Math.min(21,Math.max(sig,d))));if(/e/.test(s))s=(+s).toFixed(Math.max(0,sig-d));
+  let [ip,fp]=s.split('.');const neg=ip[0]==='-';if(neg)ip=ip.slice(1);if(ip.length>3)ip=ip.replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+  return (neg?'−':'')+ip+(fp?','+fp:'');}
+const LX=(v,s=4)=>fmtN(v,s).replace(/,/g,'{,}').replace(/ /g,'\\,').replace('−','-');
+const RX=v=>LX(v,3);
+const NT=(v,s=4)=>fmtN(v,s).replace(/ /g,' ');
+
+/* ---- xáo phương án trắc nghiệm (vòng Khởi động, Thám tử, vòng đồ thị) ---- */
+const plainT=o=>typeof o==='string'?o.replace(/<[^>]+>/g,'').trim():'';
+const NATORD=/^(?:bậc\s*\d+|(?:≈\s*|khoảng\s*)?\d[\d\s ,.]*(?:\s*(?:%|[A-Za-zμ·\/³⁻¹]+))?)$/i;
+const KEEPLAST=/không thể xác định|cần thêm thông tin|chưa so sánh được|không xác định được|tùy giá trị/i;
+const MCO={};
+function applyShuf(sd){['r1','r3','r4'].forEach(r=>{const B=BK(r);if(!B)return;MCO[r]??=B.map(it=>({o:it.o.slice(),a:it.a}));
+  B.forEach((it,i)=>{const O=MCO[r][i];if(!O)return;const n=O.o.length,txt=O.o.map(plainT);let idx=[...Array(n).keys()];
+    if(sd!=='0'&&n>2&&!txt.every(t=>NATORD.test(t))){const mov=idx.filter(k=>!KEEPLAST.test(txt[k])),fix=idx.filter(k=>KEEPLAST.test(txt[k]));
+      const g=RNG(sd+'|'+r+'|'+i);for(let k=mov.length-1;k>0;k--){const j=Math.floor(g()*(k+1));[mov[k],mov[j]]=[mov[j],mov[k]];}idx=[...mov,...fix];}
+    it.o=idx.map(k=>O.o[k]);it.a=idx.indexOf(O.a);});});}
+/* trạng thái cũ (đang làm dở, chưa có hạt giống) giữ thứ tự gốc để không lệch đáp án đã chọn */
+if(!S.tn){S.tn=freshRound('tn');S.st.tn=fst();S.sc.tn=[0,0,0,0];
+  if(!S.seed&&['r1','r3','r4'].some(r=>Object.keys((S[r]||{}).q||{}).length))S.seed='0';save();}
+function seedOf(){if(!S.seed){S.seed=Math.random().toString(36).slice(2,8);save();}return S.seed==='0'?'0':(NHA&&S.sv?'sv'+S.sv.mssv:S.seed);}
+let SHUF=null;
+function ensureShuf(){const sd=seedOf();if(sd!==SHUF){SHUF=sd;applyShuf(sd);}}
+
+/* ---- vòng Tính nhanh: số liệu sinh theo hạt giống (MSSV khi làm ở nhà) ---- */
+let TNC={k:null,L:null};
+function tnList(){const sd=seedOf(),v=(S.tn&&S.tn.v)||{},k=sd+'|'+JSON.stringify(v);if(TNC.k===k)return TNC.L;
+  const L=TN.map((gen,i)=>gen(RNG(sd+'|tn|'+i+'|'+(v[i]||0))));TNC={k,L};return L;}
+function parseN(s){s=String(s??'').trim().replace(/[\s  ]/g,'').replace(/−/g,'-').replace(/[×x·*]10\^?\(?([-+]?\d+)\)?$/i,'e$1');
+  if(!s)return NaN;if(s.includes(',')&&s.includes('.'))s=s.replace(/\./g,'');s=s.replace(',','.');
+  return /^[-+]?(\d+\.?\d*|\.\d+)(e[-+]?\d+)?$/i.test(s)?parseFloat(s):NaN;}
+function tnOK(it,raw){const v=typeof raw==='number'?raw:parseN(raw);if(!isFinite(v))return false;
+  const ok=x=>Math.abs(x-it.ans)<=Math.max((it.tol??0.02)*Math.abs(it.ans),it.tabs||0)+1e-12;
+  return ok(v)||(!!it.frac&&v>1&&v<=100&&ok(v/100));}
+function tnDir(it,v){const r=v/it.ans;if(r>0){const e=Math.log10(r),n=Math.round(e);if(n!==0&&Math.abs(e-n)<0.01)return `Lệch đúng 10${n>0?'':'⁻'}${String(Math.abs(n)).replace(/\d/g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d])} lần: kiểm tra đổi đơn vị`;}
+  return v>it.ans?'Kết quả của bạn lớn hơn đáp số':'Kết quả của bạn nhỏ hơn đáp số';}
+const vq=(r,i)=>typeof VQ!=='undefined'&&VQ[r]&&VQ[r].includes(i)?VQBTN:'';
+function vTN(){const B=tnList(),i=Math.min(S.tn.i,B.length-1),it=B[i],q=qs('tn',i),lop=LOP(),fin=q.done;
+  const tbl=it.head?`<div class="dtw"><table class="dt"><thead><tr>${it.head.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${it.rows.map(rw=>`<tr>${rw.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:'';
+  const unit=it.unit?`<span class="tnu">${it.unit}</span>`:'';
+  const inp=lop?(fin?(q.val?`<div class="tnrow"><span class="tnl">Đáp số đã nhập</span><b class="tnok">✔ ${esc(q.val)}</b>${unit}</div>`:'')
+      :`<div class="tnrow"><label class="tnl" for="tnin">Đáp số</label><input id="tnin" class="tnin" inputmode="decimal" autocomplete="off" placeholder="ví dụ 12,5">${unit}<button class="btn pri" id="tnchk">Kiểm tra</button></div><p class="tnmsg" id="tnmsg" role="alert"></p>`)
+    :`<div class="tnteams">${S.teams.map((t,ti)=>{const p=q.pick[ti],has=p!==null&&p!=='',ok=fin&&has&&tnOK(it,p);
+      return `<label class="tnt${fin&&has?(ok?' ok':' no'):''}" style="--tc:${TCOL[ti]}"><span class="tn">${esc(t.name)}${fin&&has?(ok?' ✔':' ✘'):''}</span><input data-tnp="${ti}" class="tnin" inputmode="decimal" autocomplete="off" value="${esc(p??'')}" ${fin?'disabled':''} aria-label="Đáp số của ${esc(t.name)}">${unit}</label>`;}).join('')}</div>`;
+  const tried=q.tried.length?`<div class="tntried"><span class="tnl">Đã thử:</span>${q.tried.map(x=>`<span class="x">✘ ${esc(x)}</span>`).join('')}</div>`:'';
+  const done=Object.values(S.tn.q).filter(x=>x.done).length;
+  const rule=lop?`Nhập đáp số rồi bấm Kiểm tra (dấu phẩy thập phân; sai số cho phép ±${Math.round((it.tol??0.02)*100)} %). Đúng ngay: +${RD.tn.pts}; đúng sau lượt sai: +${half('tn')}.`
+    :`Mỗi đội ghi đáp số lên bảng con; nhập số của từng đội rồi bấm Công bố. Sai số cho phép ±${Math.round((it.tol??0.02)*100)} %. Đúng: +${RD.tn.pts} điểm.`;
+  $('#stage').innerHTML=head('tn',`Câu ${i+1}/${B.length}`,done,B.length,rule)+
+   `<div class="v3 tnv${it.head?'':' nt'}"><div><p class="ctx big">${it.ctx}</p>${tbl}</div><div><p class="qbox sm">${it.qq}</p>${inp}${tried}</div></div>`+
+   (q.hint&&it.ask&&!fin?`<div class="why ask"><b class="h">💡 Gợi ý.</b> ${it.ask}</div>`:'')+
+   (fin?`<div class="why"><b class="h">Đáp số: ${NT(it.ans,it.sig||3)}${it.unit?' '+it.unit:''}.</b> ${it.why}${vq('tn',i)}</div>`:'');
+  $('#ctrl').innerHTML=`${timerBtns()}${callBtn()}${lop&&it.ask&&!fin?`<button class="btn" id="hint">💡 Gợi ý</button>`:''}${NHA?'':`<button class="btn" id="tnnew" title="Sinh bộ số liệu khác cho câu này">🎲 Đổi số liệu</button>`}<span class="sp"></span>
+   <button class="btn" data-nav="-1" ${i===0?'disabled':''}>‹ Câu trước</button>
+   <button class="btn gold" id="tnrev" ${fin?'disabled':''}>${lop?'Xem đáp án':'Công bố'}</button>
+   <button class="btn pri" data-nav="1">${i===B.length-1?'Kết thúc vòng 🏁':'Câu tiếp ›'}</button>${undoBtn()}`;
+  if(lop&&!fin&&!matchMedia('(pointer:coarse)').matches)setTimeout(()=>$('#tnin')?.focus({preventScroll:true}),0);}
+function tnCheck(){if(S.view!=='tn'||!LOP())return;const it=tnList()[S.tn.i],q=qs('tn',S.tn.i);if(q.done)return;
+  const el=$('#tnin'),raw=(el?el.value:'').trim(),v=parseN(raw);
+  if(!isFinite(v)){$('#tnmsg').textContent='Nhập một số, ví dụ 12,5 hoặc 4,2e-3.';shake(el);return;}
+  snap();const st=S.st.tn;
+  if(tnOK(it,v)){const first=!q.tried.length,p=first?RD.tn.pts:half('tn');q.done=true;q.val=raw;st.ok++;st.pts+=p;if(first){st.run++;st.best=Math.max(st.best,st.run);}else st.run=0;
+    save();tPause();render();renderBoard([0]);good($('.tnok')||$('#stage .why'),st.run>=3&&first?`🔥 Chuỗi ${st.run} câu đúng liên tiếp!`:(first?'Đáp số chính xác ngay lần đầu':'Sửa sai thành công'),{big:first&&st.run>=3,pts:'+'+p});}
+  else{q.tried.push(raw);st.bad++;st.run=0;save();render();bad($('#tnin'),tnDir(it,v));const m=$('#tnmsg');if(m)m.textContent=tnDir(it,v)+'. Thử lại hoặc bấm 💡 Gợi ý.';}}
+function tnReveal(){if(S.view!=='tn')return;const it=tnList()[S.tn.i],q=qs('tn',S.tn.i);if(q.done)return;snap();q.done=true;tPause();
+  if(LOP()){q.shown=true;S.st.tn.run=0;save();render();return;}
+  const win=[];q.pick.forEach((p,t)=>{if(p===null||p==='')return;if(tnOK(it,p)){S.sc.tn[t]+=RD.tn.pts;win.push(t);S.st.tn.ok++;}else S.st.tn.bad++;});
+  save();render();renderBoard(win);
+  if(win.length)good($('#stage .why'),win.map(t=>esc(S.teams[t].name)).join(', ')+` +${RD.tn.pts}`,{big:win.length===4,pts:'+'+RD.tn.pts});
+  else{sBad();pop('bad','Chưa đội nào đúng');flash('bad');}}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.id==='tnchk')return tnCheck();
+  if(b.id==='tnrev')return tnReveal();
+  if(b.id==='tnnew'){snap();const i=S.tn.i;S.tn.v[i]=(S.tn.v[i]||0)+1;delete S.tn.q[i];save();render();sFlip();}});
+document.addEventListener('input',e=>{const t=e.target.dataset.tnp;if(t===undefined||S.view!=='tn')return;const q=qs('tn',S.tn.i);if(q.done)return;q.pick[+t]=e.target.value;save();});
+document.addEventListener('keydown',e=>{if(e.key!=='Enter')return;
+  if(e.target.id==='tnin'){e.preventDefault();tnCheck();return;}
+  if(e.target.dataset&&e.target.dataset.tnp!==undefined){e.preventDefault();const n=document.querySelector(`[data-tnp="${+e.target.dataset.tnp+1}"]`);(n||$('#tnrev'))?.focus();}});
+DESC.tn=TNDESC;
+
 addEventListener('hashchange',()=>{const v=location.hash.slice(1);if(VIEWS.includes(v)&&v!==S.view)go(v);});
 {const h=location.hash.slice(1);if(VIEWS.includes(h))S.view=h;}
 tReset(TDEF[CR()]||0);render();if(NHA)flush();
@@ -1722,7 +1889,7 @@ tReset(TDEF[CR()]||0);render();if(NHA)flush();
  const mq=matchMedia('(max-width:700px)'),touch=matchMedia('(pointer:coarse)');
  const SH=[['‹ Thẻ trước','‹ Trước'],['Thẻ sau ›','Sau ›'],['⟳ Chạy lại hình','⟳ Hình'],['🔊 Nghe giải thích','🔊 Nghe'],
    ['🎲 Gọi sinh viên','🎲 Gọi SV'],['↶ Hoàn tác','↶'],['⏱ Bắt đầu giờ','⏱'],['⏸ Tạm dừng','⏸'],['↺ Xem mặt trước','↺ Mặt trước'],
-   ['‹ Câu trước','‹ Trước'],['Câu tiếp ›','Tiếp ›'],['Xóa thứ tự đang bấm','Xóa thứ tự'],['✔ Đã hiểu','✔ Hiểu'],['✘ Chưa chắc','✘ Chưa']];
+   ['‹ Câu trước','‹ Trước'],['Câu tiếp ›','Tiếp ›'],['Xóa thứ tự đang bấm','Xóa thứ tự'],['✔ Đã hiểu','✔ Hiểu'],['✘ Chưa chắc','✘ Chưa'],['🎲 Đổi số liệu','🎲 Đổi số']];
  const FULL=new Map(SH.map(([a,b])=>[b,a])),SHORT=new Map(SH);
  function relabel(root){(root||document).querySelectorAll('.ctrl .btn').forEach(b=>{if(b.children.length)return;
    const t=b.textContent.trim();if(mq.matches&&SHORT.has(t)){b.title=t;b.textContent=SHORT.get(t);}
